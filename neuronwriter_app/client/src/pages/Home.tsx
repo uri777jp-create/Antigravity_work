@@ -92,10 +92,11 @@ export default function Home() {
           </div>
 
           <div className="mb-12">
-            <a href={getLoginUrl()}>
+            {/* Direct link to mock login for reliability in dev mode */}
+            <a href="/api/auth/mock-login" className="inline-block">
               <Button size="lg" className="text-lg px-8 py-6 h-auto">
                 <Sparkles className="w-5 h-5 mr-2" />
-                今すぐ始める
+                今すぐ始める (Dev)
               </Button>
             </a>
           </div>

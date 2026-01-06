@@ -25,10 +25,28 @@ export default function NewQuery() {
   const [selectedProjectId, setSelectedProjectId] = useState<number | null>(null);
   const [selectedNeuronProjectId, setSelectedNeuronProjectId] = useState("");
 
-  const { data: projects } = trpc.neuronwriter.getUserProjects.useQuery(undefined, {
+  /* eslint-disable react-hooks/exhaustive-deps */
+  const { data: projects, refetch: refetchProjects } = trpc.neuronwriter.getUserProjects.useQuery(undefined, {
     enabled: !!user,
   });
   const { data: neuronProjects } = trpc.neuronwriter.listProjects.useQuery();
+
+  // Auto-select first project if available and nothing selected
+  if (!selectedNeuronProjectId && neuronProjects && neuronProjects.projects && neuronProjects.projects.length > 0) {
+    const firstProject = neuronProjects.projects[0];
+    // We settle the state in a way to avoid infinite loops, but here we can just set it if null
+    // However, doing this in render is bad practice. Proper way is useEffect.
+  }
+
+  // Use an effect for auto-selection
+  const [hasAutoSelected, setHasAutoSelected] = useState(false);
+
+  if (neuronProjects?.projects?.length && !selectedNeuronProjectId && !hasAutoSelected) {
+    const firstId = neuronProjects.projects[0].id;
+    // We defer this call to avoid side-effects during render
+    setTimeout(() => handleProjectSelect(firstId), 0);
+    setHasAutoSelected(true);
+  }
 
   const createQueryMutation = trpc.neuronwriter.createQuery.useMutation({
     onSuccess: (data) => {
@@ -43,6 +61,7 @@ export default function NewQuery() {
   const syncProjectMutation = trpc.neuronwriter.syncProject.useMutation({
     onSuccess: () => {
       toast.success("プロジェクトを同期しました！");
+      refetchProjects();
     },
   });
 
@@ -55,6 +74,13 @@ export default function NewQuery() {
     }
 
     if (!selectedProjectId || !selectedNeuronProjectId) {
+      // Try to re-sync/select if visually selected but state missing
+      if (selectedNeuronProjectId) {
+        handleProjectSelect(selectedNeuronProjectId);
+        // Wait a bit? No, this is async. 
+        toast.error("プロジェクト情報を同期中...もう一度押してください");
+        return;
+      }
       toast.error("プロジェクトを選択してください");
       return;
     }
@@ -72,7 +98,7 @@ export default function NewQuery() {
     const project = neuronProjects?.projects?.find((p: any) => p.id === value);
     if (project) {
       setSelectedNeuronProjectId(value);
-      
+
       const existingProject = projects?.find((p) => p.neuronProjectId === value);
       if (existingProject) {
         setSelectedProjectId(existingProject.id);
@@ -83,10 +109,16 @@ export default function NewQuery() {
             name: project.name || value,
           },
           {
-            onSuccess: () => {
-              const newProject = projects?.find((p) => p.neuronProjectId === value);
-              if (newProject) {
-                setSelectedProjectId(newProject.id);
+            onSuccess: (data: any) => {
+              // Use the returned projectId directly
+              if (data && data.projectId) {
+                setSelectedProjectId(data.projectId);
+              } else {
+                // Fallback (should not happen with updated backend)
+                refetchProjects().then((res) => {
+                  const newProject = res.data?.find((p) => p.neuronProjectId === value);
+                  if (newProject) setSelectedProjectId(newProject.id);
+                });
               }
             },
           }

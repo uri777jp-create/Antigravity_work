@@ -5,7 +5,7 @@ import { publicProcedure, protectedProcedure, router } from "./_core/trpc";
 import { z } from "zod";
 
 export const appRouter = router({
-    // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
+  // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
   system: systemRouter,
   auth: router({
     me: publicProcedure.query(opts => opts.ctx.user),
@@ -39,12 +39,12 @@ export const appRouter = router({
       )
       .mutation(async ({ ctx, input }) => {
         const { createProject } = await import("./db");
-        await createProject({
+        const result = await createProject({
           userId: ctx.user.id,
           neuronProjectId: input.neuronProjectId,
           name: input.name,
         });
-        return { success: true };
+        return { success: true, projectId: result[0].insertId };
       }),
 
     getProjectById: protectedProcedure
@@ -282,16 +282,16 @@ export const appRouter = router({
         // 推奨データからキーワードを抽出
         const titleKeywords = recommendations.terms?.title?.slice(0, 15).map((t: any) => `${t.t}(使用率${t.usage_pc}%)`).join(", ") || "";
         const descKeywords = recommendations.terms?.desc?.slice(0, 15).map((t: any) => `${t.t}(使用率${t.usage_pc}%)`).join(", ") || "";
-        
+
         // SERP分析データを詳細に取得
         const serpSummary = recommendations.serp_summary || {};
         const intents = serpSummary.intents || [];
         const contentTypes = serpSummary.content_types || [];
-        
+
         // インテント情報を整形
         const topIntent = intents.length > 0 ? intents[0] : { type: 'informational', percentage: 0 };
         const intentInfo = intents.map((i: any) => `${i.type || i.name}(${i.percentage || i.pc}%)`).join(", ") || "情報提供型";
-        
+
         // コンテンツタイプ情報を整形
         const topContentType = contentTypes.length > 0 ? contentTypes[0] : { type: 'article', percentage: 0 };
         const contentTypeInfo = contentTypes.map((c: any) => `${c.type || c.name}(${c.percentage || c.pc}%)`).join(", ") || "記事";
@@ -552,16 +552,16 @@ ${descKeywords}
 
         // 推奨データからキーワードを抽出（本文用）
         const articleKeywords = recommendations.terms?.h?.slice(0, 20).map((t: any) => `${t.t}(使用率${t.avgTopTen || t.usage_pc || 0}%)`).join(", ") || "";
-        
+
         // SERP分析データを詳細に取得
         const serpSummary = recommendations.serp_summary || {};
         const intents = serpSummary.intents || [];
         const contentTypes = serpSummary.content_types || [];
-        
+
         // インテント情報を整形
         const topIntent = intents.length > 0 ? intents[0] : { type: 'informational', percentage: 0 };
         const intentInfo = intents.map((i: any) => `${i.type || i.name}(${i.percentage || i.pc}%)`).join(", ") || "情報提供型";
-        
+
         // コンテンツタイプ情報を整形
         const topContentType = contentTypes.length > 0 ? contentTypes[0] : { type: 'article', percentage: 0 };
         const contentTypeInfo = contentTypes.map((c: any) => `${c.type || c.name}(${c.percentage || c.pc}%)`).join(", ") || "記事";
@@ -758,7 +758,7 @@ ${articleKeywords}
 
         // 推薦データを取得
         const recommendations = await getQuery(query.neuronQueryId);
-        
+
         // 現在のスコアをevaluateContentで取得
         let currentScore = 0;
         if (query.title || query.description) {
@@ -776,20 +776,45 @@ ${articleKeywords}
         // キーワード情報を抽出（使用率付き）
         const topKeywords = recommendations.terms?.h?.slice(0, 25).map((t: any) => `${t.t}(使用率${t.avgTopTen || t.usage_pc || Math.round(t.p * 100)}%)`).join("、") || "";
         const h2Keywords = recommendations.terms?.h2?.slice(0, 20).map((t: any) => `${t.t}(使用率${t.avgTopTen || t.usage_pc || 0}%)`).join("、") || "";
-        
+
         // SERP分析データを詳細に取得
         const serpSummary = recommendations.serp_summary || {};
         const intents = serpSummary.intents || [];
         const contentTypes = serpSummary.content_types || [];
-        
+
         // インテント情報を整形
         const topIntent = intents.length > 0 ? intents[0] : { type: 'informational', percentage: 0 };
         const intentInfo = intents.map((i: any) => `${i.type || i.name}(${i.percentage || i.pc}%)`).join(", ") || "情報提供型";
-        
+
+        // コンテンツタイプ情報を整形
         // コンテンツタイプ情報を整形
         const topContentType = contentTypes.length > 0 ? contentTypes[0] : { type: 'article', percentage: 0 };
-        const contentTypeInfo = contentTypes.map((c: any) => `${c.type || c.name}(${c.percentage || c.pc}%)`).join(", ") || "記事";
-        
+        const secondContentType = contentTypes.length > 1 ? contentTypes[1] : null;
+
+        let contentTypeInfo = "";
+        let contentTypeInstruction = "";
+
+        // ハイブリッド判定（1位と2位が両方とも重要、あるいは僅差の場合）
+        const isHybridType = secondContentType && (secondContentType.percentage || secondContentType.pc || 0) >= 30;
+
+        if (isHybridType) {
+          const type1Name = topContentType.type || topContentType.name || '記事';
+          const type2Name = secondContentType.type || secondContentType.name || '記事';
+          contentTypeInfo = `主要なタイプ: ${type1Name}(${topContentType.percentage || topContentType.pc}%), 次点: ${type2Name}(${secondContentType.percentage || secondContentType.pc}%)`;
+          contentTypeInstruction = `主要なコンテンツタイプは「${type1Name}」と「${type2Name}」の傾向が強く出ています。**両方の要素を取り入れたハイブリッドな構成**にしてください（例: ${type1Name}の網羅性と${type2Name}の読みやすさを両立）。`;
+        } else {
+          contentTypeInfo = contentTypes.map((c: any) => `${c.type || c.name}(${c.percentage || c.pc}%)`).join(", ") || "記事";
+          contentTypeInstruction = `主要なコンテンツタイプは「${topContentType.type || topContentType.name || '記事'}」です。この形式に適した構成にしてください。`;
+        }
+
+        // 文字数ターゲットによる追加指示
+        const targetWordCount = recommendations.metrics?.word_count?.target || 0;
+        if (targetWordCount >= 5000) {
+          contentTypeInstruction += `\nまた、目標文字数が${targetWordCount}文字と非常に多いため、**網羅的な「完全ガイド」のような深堀りした構成**にしてください。H3見出しを多めに配置し、トピックを徹底的に解説する必要があります。`;
+        } else if (targetWordCount >= 3000) {
+          contentTypeInstruction += `\n目標文字数が${targetWordCount}文字と多めであるため、情報の網羅性を意識してH2・H3見出しを構成してください。`;
+        }
+
         // 競合記事の見出し構成を抽出
         const competitorOutlines = recommendations.serp?.slice(0, 5).map((item: any, idx: number) => {
           const headings = item.headings || [];
@@ -821,7 +846,7 @@ ${intentInfo}
 
 ### コンテンツタイプ
 ${contentTypeInfo}
-→ 主要なコンテンツタイプは「${topContentType.type || topContentType.name || '記事'}」です。
+→ ${contentTypeInstruction}
 
 ## 推奨キーワード（使用率順）
 
@@ -1011,7 +1036,8 @@ ${headingsHtml}
         })
       )
       .mutation(async ({ ctx, input }) => {
-        const { getOutlineById, updateOutline } = await import("./db");
+        const { getOutlineById, updateOutline, getQueryById, getProjectById } = await import("./db");
+        const { importContent } = await import("./neuronwriter");
 
         const outline = await getOutlineById(input.outlineId);
         if (!outline || outline.userId !== ctx.user.id) {
@@ -1021,6 +1047,55 @@ ${headingsHtml}
         await updateOutline(input.outlineId, {
           structure: input.structure,
         });
+
+        // NeuronWriterへ同期
+        try {
+          const query = await getQueryById(outline.queryId);
+          if (query) {
+            const project = await getProjectById(query.projectId);
+            if (project) {
+              const parsed = JSON.parse(input.structure);
+              // 目次をHTMLタグに変換
+              const headingsHtml = parsed.headings.map((h: any) => {
+                const tag = `h${h.level}`;
+                let html = `<${tag}>${h.text}</${tag}>`;
+                if (h.content) {
+                  html += `\n${h.content}`;
+                }
+                return html;
+              }).join("\n");
+
+              // リード文がある場合はHTMLの先頭に追加
+              let fullHtml = headingsHtml;
+              if (query.leadText) {
+                // リード文はプレーンテキストかHTMLか不明だが、安全のためpタグで囲む（改行はbrに変換など簡易的）
+                // 既存実装のleadTextはTextarea入力なので改行コードが含まれる可能性あり
+                const formattedLead = query.leadText.split('\n').map(line => line.trim()).filter(Boolean).map(line => `<p>${line}</p>`).join('');
+                fullHtml = `${formattedLead}\n${headingsHtml}`;
+              }
+
+              // Import用パラメータ構築
+              // タイトル・ディスクリプションが設定されていれば送る
+              const importParams: any = {
+                project: project.neuronProjectId,
+                query: query.neuronQueryId,
+                html: fullHtml,
+              };
+
+              if (query.title) {
+                importParams.title = query.title;
+              }
+              if (query.description) {
+                importParams.description = query.description;
+              }
+
+              await importContent(importParams);
+            }
+          }
+        } catch (e) {
+          console.error("NeuronWriter sync failed:", e);
+          // Sync失敗はログに出すが、ローカル保存は成功しているのでエラーにはしない
+        }
 
         return { success: true };
       }),
@@ -1077,6 +1152,173 @@ ${headingsHtml}
       }),
 
     // Snapshot management removed - each new query gets a new ID
+
+    writeSectionWithSearch: protectedProcedure
+      .input(
+        z.object({
+          heading: z.string(),
+          keywords: z.array(z.string()).optional(),
+        })
+      )
+      .mutation(async ({ ctx, input }) => {
+        const { searchTavily } = await import("./_core/tavily");
+        const { invokeLLM } = await import("./_core/llm");
+
+        // 1. TavilyでWeb検索
+        // 見出しそのままだと検索意図がブレる可能性があるため、少し補足する
+        const searchQuery = `${input.heading} ${input.keywords?.join(" ") || ""} 解説`;
+        console.log(`Searching Web for: ${searchQuery}`);
+
+        let searchContext = "";
+        try {
+          const searchResults = await searchTavily(searchQuery, 5);
+          searchContext = searchResults.results
+            .map((r, i) => `【出典${i + 1}】${r.title} (${r.url})\n${r.content}`)
+            .join("\n\n");
+        } catch (e) {
+          console.error("Tavily search failed:", e);
+          throw new Error("Web検索に失敗しました。APIキー設定を確認してください。");
+        }
+
+        // 2. LLMで執筆
+        const prompt = `あなたはプロのWebライターです。
+以下の「見出し」について、提供された「Web検索結果」**のみ**を情報源として、事実に即した記事セクションを執筆してください。
+
+## 執筆対象の見出し
+${input.heading}
+
+## 推奨キーワード（文脈に自然に含めてください）
+${input.keywords?.join(", ") || "特になし"}
+
+## Web検索結果（これを唯一の事実情報として扱うこと）
+${searchContext}
+
+## 執筆ルール
+1. **検索結果に含まれない情報は一切書かないでください**（ハルシネーション防止）。
+2. 情報が不足している場合は、「検索結果からは詳細が不明ですが」と断りを入れるか、書ける範囲で記述してください。
+3. 読者に語りかけるような、丁寧かつ読みやすい文体（です・ます調）で書いてください。
+4. 適切なHTMLタグ（<p>, <ul>, <li>, <strong>など）を使用して構造化してください（hタグは不要）。
+5. 300文字〜600文字程度で簡潔にまとめてください。
+6. 出典への言及（例：「出典1によると〜」）は文脈上自然であれば含めても良いですが、必須ではありません。
+
+出力はHTML形式の本文のみを返してください。`;
+
+        const response = await invokeLLM({
+          messages: [
+            { role: "system", content: "あなたは事実に基づき正確な記事を書くライターです。" },
+            { role: "user", content: prompt },
+          ],
+        });
+
+        const rawContent = response.choices[0]?.message?.content;
+        let content = "";
+        if (typeof rawContent === "string") {
+          content = rawContent;
+        } else if (Array.isArray(rawContent)) {
+          content = rawContent
+            .filter((c: any) => c.type === "text")
+            .map((c: any) => c.text)
+            .join("\n");
+        }
+
+        // マークダウンのコードブロックが含まれていたら除去
+        const cleanContent = content.replace(/```html/g, "").replace(/```/g, "").trim();
+
+        return { content: cleanContent, references: searchContext };
+      }),
+
+    writeChapterWithSearch: protectedProcedure
+      .input(
+        z.object({
+          h2: z.object({
+            heading: z.string(),
+            keywords: z.array(z.string()).optional(),
+          }),
+          h3s: z.array(z.object({
+            heading: z.string(),
+            keywords: z.array(z.string()).optional(),
+          })),
+        })
+      )
+      .mutation(async ({ ctx, input }) => {
+        const { searchTavily } = await import("./_core/tavily");
+        const { invokeLLM } = await import("./_core/llm");
+
+        // 1. TavilyでWeb検索（章全体を網羅する検索）
+        // H2とH3のキーワードを組み合わせて検索クエリを作成
+        const mainKeywords = input.h2.keywords?.join(" ") || "";
+        const subKeywords = input.h3s.map(h => h.heading).join(" "); // H3の見出し自体をキーワードとして扱う
+        const searchQuery = `${input.h2.heading} ${mainKeywords} ${subKeywords} 解説`;
+        console.log(`Searching Web for Chapter: ${searchQuery}`);
+
+        let searchContext = "";
+        let referenceLinks: { title: string; url: string }[] = [];
+
+        try {
+          // 章単位なので少し多めに取得
+          const searchResults = await searchTavily(searchQuery, 7);
+          referenceLinks = searchResults.results.map(r => ({ title: r.title, url: r.url }));
+          searchContext = searchResults.results
+            .map((r, i) => `【出典${i + 1}】${r.title} (${r.url})\n${r.content}`)
+            .join("\n\n");
+        } catch (e) {
+          console.error("Tavily search failed:", e);
+          throw new Error("Web検索に失敗しました。APIキー設定を確認してください。");
+        }
+
+        // 2. LLMで執筆
+        const h3Structure = input.h3s.map(h => `- ${h.heading} (キーワード: ${h.keywords?.join(", ") || "なし"})`).join("\n");
+
+        const prompt = `あなたはSEOに強いプロのWebライターです。
+以下の「章構成」と「取材メモ（Web検索結果）」を元に、読者の悩みを解決する高品質な記事の1章（Chapter）を執筆してください。
+
+## 執筆対象の章構成
+### 大見出し (H2)
+${input.h2.heading}
+(キーワード: ${input.h2.keywords?.join(", ") || "なし"})
+
+### 小見出し構成 (H3)
+${h3Structure}
+
+## 取材メモ（Web検索結果）
+${searchContext}
+
+## 執筆指示
+1. **「取材メモ」の内容をそのままコピペせず、あなたの言葉で咀嚼・再構成して執筆してください**。
+2. 複数の情報源からの情報を統合し、単なる要約ではなく、一つの読み物として成立させてください。
+3. 冒頭（H2直下）には、この章で何を解説するか、読者の興味を惹く導入文を書いてください。
+4. 情報が不足している部分は、「一般的な観点では〜」と補足するか、明記された事実のみで構成してください（嘘は書かない）。
+5. 各H3見出しの内容は、具体的かつ実用的に書いてください。
+6. **HTML形式**で出力してください。
+   - 各H3見出しは \`<h3>見出しテキスト</h3>\` で記述。
+   - 本文は \`<p>\`, \`<ul>\`, \`<li>\` 等で適切にマークアップ。
+   - H2タグは不要。
+
+出力はHTML形式の本文のみを返してください。`;
+
+        const response = await invokeLLM({
+          messages: [
+            { role: "system", content: "あなたは読者に寄り添う記事を書くプロのライターです。事実に忠実でありながら、機械的な文章にならないよう注意してください。" },
+            { role: "user", content: prompt },
+          ],
+        });
+
+        const rawContent = response.choices[0]?.message?.content;
+        let content = "";
+        if (typeof rawContent === "string") {
+          content = rawContent;
+        } else if (Array.isArray(rawContent)) {
+          content = rawContent
+            .filter((c: any) => c.type === "text")
+            .map((c: any) => c.text)
+            .join("\n");
+        }
+
+        const cleanContent = content.replace(/```html/g, "").replace(/```/g, "").trim();
+
+        const referencesText = referenceLinks.map((r, i) => `[${i + 1}] ${r.title}\n${r.url}`).join("\n\n");
+        return { content: cleanContent, references: referencesText };
+      }),
   }),
 });
 

@@ -112,10 +112,10 @@ export default function QueryDetail() {
       setOutlineHeadings(data.structure);
       setOutlineScore(data.seoScore);
       setIsGeneratingOutline(false);
-      
+
       // 目次データを再取得して永続化を確認
       refetchOutlines();
-      
+
       const scoreIncrease = data.seoScore - (data.currentScore || 0);
       toast.success(`目次を生成・保存しました！`, {
         description: `現在のスコア: ${data.currentScore || 0} → ${data.seoScore} (+${scoreIncrease}ポイント) | ${data.attempts}回の試行`,
@@ -204,7 +204,7 @@ export default function QueryDetail() {
     onSuccess: (data) => {
       setTitle(data.title);
       setDescription(data.description);
-      
+
       // NeuronWriterに保存されたスコアを表示
       if (data.saved && data.seoScore !== undefined) {
         setSeoScore(data.seoScore);
@@ -352,7 +352,7 @@ export default function QueryDetail() {
   // リアルタイム更新（デバウンス処理）
   useEffect(() => {
     if (!query || (!title && !description)) return;
-    
+
     const timeoutId = setTimeout(() => {
       setIsEvaluating(true);
       evaluateSeoMutation.mutate({
@@ -577,7 +577,7 @@ export default function QueryDetail() {
                     <span className="font-semibold">{comp.readability}</span>
                   </div>
                 </div>
-                
+
                 {/* 見出し階層表示 */}
                 {headings.length > 0 ? (
                   <div>
@@ -586,8 +586,8 @@ export default function QueryDetail() {
                       {headings.map((h, hIdx) => {
                         const indent = parseInt(h.level.replace('h', '')) - 1;
                         return (
-                          <div 
-                            key={hIdx} 
+                          <div
+                            key={hIdx}
                             className="text-sm py-0.5"
                             style={{ paddingLeft: `${indent * 16}px` }}
                           >
@@ -798,6 +798,46 @@ export default function QueryDetail() {
                               {renderQuestions(recommendations.ideas.people_also_ask, "よくある質問 (People Also Ask)")}
                               {renderQuestions(recommendations.ideas.suggest_questions, "推奨質問")}
                               {renderQuestions(recommendations.ideas.content_questions, "コンテンツ質問")}
+                              {recommendations.ideas.topic_matrix && (
+                                <div className="space-y-2">
+                                  <h4 className="font-semibold text-sm flex items-center gap-2">
+                                    <Target className="w-4 h-4" />
+                                    トピックマトリックス
+                                  </h4>
+                                  <div className="flex flex-wrap gap-2">
+                                    {Array.isArray(recommendations.ideas.topic_matrix) ? (
+                                      recommendations.ideas.topic_matrix.map((topic: any, idx: number) => (
+                                        <Badge key={idx} variant="outline" className="text-sm py-1">
+                                          {typeof topic === 'string' ? topic : JSON.stringify(topic)}
+                                        </Badge>
+                                      ))
+                                    ) : typeof recommendations.ideas.topic_matrix === 'object' ? (
+                                      <div className="w-full grid gap-2">
+                                        {Object.entries(recommendations.ideas.topic_matrix)
+                                          .sort(([, a]: [string, any], [, b]: [string, any]) => (b.importance || 0) - (a.importance || 0))
+                                          .map(([question, data]: [string, any], idx) => (
+                                            <div key={idx} className="flex items-center justify-between p-3 rounded-lg bg-white border shadow-sm">
+                                              <div className="text-sm font-medium text-gray-800">{question}</div>
+                                              <div className="flex items-center gap-2">
+                                                <span className="text-xs text-muted-foreground">重要度</span>
+                                                <Badge
+                                                  variant={(data.importance || 0) >= 8 ? "default" : "secondary"}
+                                                  className="w-8 h-8 flex items-center justify-center rounded-full p-0"
+                                                >
+                                                  {data.importance || 0}
+                                                </Badge>
+                                              </div>
+                                            </div>
+                                          ))}
+                                      </div>
+                                    ) : (
+                                      <pre className="text-xs bg-muted p-2 rounded w-full overflow-x-auto">
+                                        {JSON.stringify(recommendations.ideas.topic_matrix, null, 2)}
+                                      </pre>
+                                    )}
+                                  </div>
+                                </div>
+                              )}
                             </div>
                           </AccordionContent>
                         </AccordionItem>
@@ -840,8 +880,8 @@ export default function QueryDetail() {
                     </CardTitle>
                     <CardDescription>検索結果に表示されるページタイトルを作成</CardDescription>
                   </div>
-                  <Button 
-                    variant="outline" 
+                  <Button
+                    variant="outline"
                     size="sm"
                     onClick={handleGenerateTitleDesc}
                     disabled={generateMutation.isPending}
@@ -855,11 +895,10 @@ export default function QueryDetail() {
                 <div>
                   <div className="flex items-center justify-between mb-2">
                     <label className="text-sm font-medium">タイトルテキスト</label>
-                    <span className={`text-sm ${
-                      title.length === 0 ? 'text-muted-foreground' :
+                    <span className={`text-sm ${title.length === 0 ? 'text-muted-foreground' :
                       title.length >= 30 && title.length <= 60 ? 'text-green-600 font-medium' :
-                      'text-orange-600 font-medium'
-                    }`}>
+                        'text-orange-600 font-medium'
+                      }`}>
                       {title.length} / 60文字 (推奨: 30-60)
                     </span>
                   </div>
@@ -870,7 +909,7 @@ export default function QueryDetail() {
                     placeholder="例: FX口座おすすめ比較ランキング【最新版】初心者向けに選び方も詳しく解説"
                   />
                 </div>
-                
+
                 {/* 推奨キーワード */}
                 {recommendations?.terms?.title && recommendations.terms.title.length > 0 && (
                   <div>
@@ -910,8 +949,8 @@ export default function QueryDetail() {
                     </CardTitle>
                     <CardDescription>検索結果に表示されるページの説明文を作成</CardDescription>
                   </div>
-                  <Button 
-                    variant="outline" 
+                  <Button
+                    variant="outline"
                     size="sm"
                     onClick={handleGenerateTitleDesc}
                     disabled={generateMutation.isPending}
@@ -925,11 +964,10 @@ export default function QueryDetail() {
                 <div>
                   <div className="flex items-center justify-between mb-2">
                     <label className="text-sm font-medium">ディスクリプションテキスト</label>
-                    <span className={`text-sm ${
-                      description.length === 0 ? 'text-muted-foreground' :
+                    <span className={`text-sm ${description.length === 0 ? 'text-muted-foreground' :
                       description.length >= 80 && description.length <= 160 ? 'text-green-600 font-medium' :
-                      'text-orange-600 font-medium'
-                    }`}>
+                        'text-orange-600 font-medium'
+                      }`}>
                       {description.length} / 160文字 (推奨: 80-160)
                     </span>
                   </div>
@@ -940,7 +978,7 @@ export default function QueryDetail() {
                     placeholder="例: FX初心者におすすめのFX口座を比較しランキングにまとめました。トレードスタイルごとに比較したFX口座ランキングも公開しているため、自分に合ったFX口座を比較検討できます。"
                   />
                 </div>
-                
+
                 {/* 推奨キーワード */}
                 {recommendations?.terms?.desc && recommendations.terms.desc.length > 0 && (
                   <div>
@@ -998,15 +1036,15 @@ export default function QueryDetail() {
                   </div>
                   {/* 保存ボタン */}
                   <div className="flex gap-2 mt-4">
-                    <Button 
-                      onClick={handleSaveTitleDesc} 
+                    <Button
+                      onClick={handleSaveTitleDesc}
                       disabled={saveTitleDescMutation.isPending || (!title && !description)}
                     >
                       {saveTitleDescMutation.isPending ? "保存中..." : "タイトル・ディスクリプションを保存"}
                     </Button>
-                    <Button 
-                      variant="outline" 
-                      onClick={handleCheckScore} 
+                    <Button
+                      variant="outline"
+                      onClick={handleCheckScore}
                       disabled={isEvaluating || (!title && !description)}
                     >
                       {isEvaluating ? "評価中..." : "SEOスコア確認"}
@@ -1027,8 +1065,8 @@ export default function QueryDetail() {
                     </CardTitle>
                     <CardDescription>記事の導入部分を作成（読者の興味を引きつける文章）</CardDescription>
                   </div>
-                  <Button 
-                    variant="outline" 
+                  <Button
+                    variant="outline"
                     size="sm"
                     onClick={handleGenerateLeadText}
                     disabled={isGeneratingLeadText || generateLeadTextMutation.isPending || !title || !description}
@@ -1049,11 +1087,10 @@ export default function QueryDetail() {
                     <div>
                       <div className="flex items-center justify-between mb-2">
                         <label className="text-sm font-medium">リード文テキスト</label>
-                        <span className={`text-sm ${
-                          leadText.length === 0 ? 'text-muted-foreground' :
+                        <span className={`text-sm ${leadText.length === 0 ? 'text-muted-foreground' :
                           leadText.length < 200 ? 'text-yellow-600' :
-                          leadText.length <= 400 ? 'text-green-600' : 'text-red-600'
-                        }`}>
+                            leadText.length <= 400 ? 'text-green-600' : 'text-red-600'
+                          }`}>
                           {leadText.length} / 400文字 (推奨: 200-400)
                         </span>
                       </div>
@@ -1076,9 +1113,8 @@ export default function QueryDetail() {
                               <Badge
                                 key={index}
                                 variant={isUsed ? "default" : "outline"}
-                                className={`cursor-pointer transition-colors ${
-                                  isUsed ? 'bg-green-600 hover:bg-green-700' : 'hover:bg-primary/10'
-                                }`}
+                                className={`cursor-pointer transition-colors ${isUsed ? 'bg-green-600 hover:bg-green-700' : 'hover:bg-primary/10'
+                                  }`}
                                 onClick={() => {
                                   if (!isUsed) {
                                     setLeadText(prev => prev + (prev ? ' ' : '') + term.t);
@@ -1095,8 +1131,8 @@ export default function QueryDetail() {
 
                     {/* 保存ボタン */}
                     <div className="flex gap-2 mt-4">
-                      <Button 
-                        onClick={handleSaveLeadText} 
+                      <Button
+                        onClick={handleSaveLeadText}
                         disabled={saveLeadTextMutation.isPending || !leadText}
                       >
                         {saveLeadTextMutation.isPending ? "保存中..." : "リード文を保存"}
@@ -1118,8 +1154,8 @@ export default function QueryDetail() {
                     </CardTitle>
                     <CardDescription>SEO最適化された記事の目次を作成</CardDescription>
                   </div>
-                  <Button 
-                    variant="outline" 
+                  <Button
+                    variant="outline"
                     size="sm"
                     onClick={handleGenerateOutline}
                     disabled={isGeneratingOutline || generateOutlineMutation.isPending}
@@ -1169,7 +1205,7 @@ export default function QueryDetail() {
                         </Button>
                       </div>
                     </div>
-                    
+
                     {outlineScore !== null && (
                       <SEOScoreBar
                         currentScore={outlineScore}
@@ -1198,7 +1234,7 @@ export default function QueryDetail() {
                     {isEvaluating ? "評価中..." : "スコア確認"}
                   </Button>
                 </div>
-                
+
                 {seoScore !== null && (
                   <SEOScoreBar
                     currentScore={seoScore}
@@ -1207,7 +1243,7 @@ export default function QueryDetail() {
                     keywordUsage={0}
                   />
                 )}
-                
+
                 {isEvaluating && seoScore === null && (
                   <div className="text-center py-8 text-muted-foreground">
                     <RefreshCw className="w-8 h-8 animate-spin mx-auto mb-2" />

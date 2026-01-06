@@ -70,6 +70,16 @@ export default function DashboardLayout({
           </div>
           <Button
             onClick={() => {
+              window.location.href = "/api/auth/mock-login";
+            }}
+            variant="outline"
+            size="lg"
+            className="w-full transition-all"
+          >
+            Mock Login (Dev Mode)
+          </Button>
+          <Button
+            onClick={() => {
               window.location.href = getLoginUrl();
             }}
             size="lg"

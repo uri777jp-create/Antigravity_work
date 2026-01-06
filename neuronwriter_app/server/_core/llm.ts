@@ -19,7 +19,7 @@ export type FileContent = {
   type: "file_url";
   file_url: {
     url: string;
-    mime_type?: "audio/mpeg" | "audio/wav" | "application/pdf" | "audio/mp4" | "video/mp4" ;
+    mime_type?: "audio/mpeg" | "audio/wav" | "application/pdf" | "audio/mp4" | "video/mp4";
   };
 };
 
@@ -209,14 +209,21 @@ const normalizeToolChoice = (
   return toolChoice;
 };
 
-const resolveApiUrl = () =>
-  ENV.forgeApiUrl && ENV.forgeApiUrl.trim().length > 0
-    ? `${ENV.forgeApiUrl.replace(/\/$/, "")}/v1/chat/completions`
-    : "https://forge.manus.im/v1/chat/completions";
+const resolveApiUrl = () => {
+  if (ENV.forgeApiUrl && ENV.forgeApiUrl.trim().length > 0) {
+    // If the URL already ends with /chat/completions, use it as is
+    if (ENV.forgeApiUrl.endsWith("/chat/completions")) {
+      return ENV.forgeApiUrl;
+    }
+    // Otherwise try to append the standard path (OpenAI compatible)
+    return `${ENV.forgeApiUrl.replace(/\/$/, "")}/v1/chat/completions`;
+  }
+  return "https://forge.manus.im/v1/chat/completions";
+};
 
 const assertApiKey = () => {
   if (!ENV.forgeApiKey) {
-    throw new Error("OPENAI_API_KEY is not configured");
+    throw new Error("LLM API Key (BUILT_IN_FORGE_API_KEY) is not configured in .env");
   }
 };
 
@@ -280,7 +287,7 @@ export async function invokeLLM(params: InvokeParams): Promise<InvokeResult> {
   } = params;
 
   const payload: Record<string, unknown> = {
-    model: "gemini-2.5-flash",
+    model: ENV.llmModel,
     messages: messages.map(normalizeMessage),
   };
 
@@ -296,9 +303,26 @@ export async function invokeLLM(params: InvokeParams): Promise<InvokeResult> {
     payload.tool_choice = normalizedToolChoice;
   }
 
-  payload.max_tokens = 32768
-  payload.thinking = {
-    "budget_tokens": 128
+  // Set default max_tokens, but allow override if needed (though existing type definition uses maxTokens/max_tokens in InvokeParams which are not currently destructured from params above properly? 
+  // Wait, let's look at the original code. It hardcoded max_tokens=32768. 
+  // I should probably keep it safe but allow it to be dynamic if I was rewriting the whole thing. 
+  // For now, I'll stick to replacing the block effectively.)
+
+  if (params.maxTokens || params.max_tokens) {
+    payload.max_tokens = params.maxTokens || params.max_tokens;
+  } else {
+    payload.max_tokens = 32768;
+  }
+
+  // Note: "thinking" parameter might be specific to Flash 2.5 on Vertex/Forge. 
+  // OpenRouter or standard OpenAI might reject it if it's not supported.
+  // I will conditionally include it only if the model is 'gemini-2.5-flash' to be safe, 
+  // OR just remove it if it's not critical. 
+  // Since user wants OpenRouter, I should probably remove it or make it conditional.
+  if (ENV.llmModel.includes("gemini-2.5-flash")) {
+    payload.thinking = {
+      "budget_tokens": 128
+    };
   }
 
   const normalizedResponseFormat = normalizeResponseFormat({
