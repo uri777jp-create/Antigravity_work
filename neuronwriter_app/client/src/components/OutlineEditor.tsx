@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
-import { GripVertical, Plus, Trash2, Sparkles, BookOpen, Loader2 } from "lucide-react";
+import { GripVertical, Plus, Trash2, Sparkles, BookOpen, Loader2, ShieldCheck, CheckCircle2, AlertTriangle, HelpCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
@@ -28,7 +28,8 @@ interface OutlineEditorProps {
 export function OutlineEditor({ headings, onChange, recommendedKeywords = [] }: OutlineEditorProps) {
   const [draggedId, setDraggedId] = useState<string | null>(null);
   const [writingId, setWritingId] = useState<string | null>(null); // 現在執筆中のID
-  const [expandedId, setExpandedId] = useState<string | null>(null); // 本文表示中のID
+  const [checkingId, setCheckingId] = useState<string | null>(null); // ファクトチェック中のID
+  const [factCheckResults, setFactCheckResults] = useState<Record<string, any[]>>({});
 
   const writeSectionMutation = trpc.neuronwriter.writeSectionWithSearch.useMutation({
     onSuccess: () => {
@@ -39,6 +40,31 @@ export function OutlineEditor({ headings, onChange, recommendedKeywords = [] }: 
       setWritingId(null);
     }
   });
+
+  const factCheckMutation = trpc.neuronwriter.factCheckSection.useMutation({
+    onSuccess: () => {
+      toast.success("ファクトチェックが完了しました");
+    },
+    onError: (error) => {
+      toast.error(`検証エラー: ${error.message}`);
+      setCheckingId(null);
+    }
+  });
+
+  const handleFactCheck = (heading: OutlineHeading) => {
+    if (!heading.content) return;
+    setCheckingId(heading.id);
+    factCheckMutation.mutateAsync({
+      heading: heading.text,
+      content: heading.content
+    }).then((res) => {
+      setFactCheckResults(prev => ({
+        ...prev,
+        [heading.id]: res.results
+      }));
+      setCheckingId(null);
+    }).catch(() => setCheckingId(null));
+  };
 
   const writeChapterMutation = trpc.neuronwriter.writeChapterWithSearch.useMutation({
     onSuccess: () => {
@@ -67,7 +93,7 @@ export function OutlineEditor({ headings, onChange, recommendedKeywords = [] }: 
           h.id === heading.id ? { ...h, content: result.content, references: result.references } : h
         );
         onChange(updated);
-        setExpandedId(heading.id);
+
         setWritingId(null);
       }).catch(() => {
         setWritingId(null);
@@ -95,12 +121,24 @@ export function OutlineEditor({ headings, onChange, recommendedKeywords = [] }: 
         keywords: heading.keywords
       },
       h3s: h3s
-    }).then((result) => {
-      const updated = headings.map((h) =>
-        h.id === heading.id ? { ...h, content: result.content, references: result.references } : h
+    }).then((result: any) => {
+      // H2のコンテンツ更新
+      let updated = headings.map((h) =>
+        h.id === heading.id ? { ...h, content: result.content } : h
       );
+
+      // H3のコンテンツ更新
+      if (result.h3Contents && Array.isArray(result.h3Contents)) {
+        result.h3Contents.forEach((h3Data: any) => {
+          // テキストとレベルが一致するH3を探して更新
+          // 注意: 同じテキストのH3が複数あると両方更新されるが、通常はユニークか、順番で判断すべきだが簡易的にテキストマッチ
+          updated = updated.map(h =>
+            h.level === 3 && h.text === h3Data.heading ? { ...h, content: h3Data.content } : h
+          );
+        });
+      }
+
       onChange(updated);
-      setExpandedId(heading.id);
       setWritingId(null);
     }).catch(() => setWritingId(null));
   };
@@ -203,7 +241,7 @@ export function OutlineEditor({ headings, onChange, recommendedKeywords = [] }: 
               className={cn(
                 "group relative border rounded-lg bg-card transition-all",
                 draggedId === heading.id && "opacity-50",
-                expandedId === heading.id ? "ring-2 ring-primary/20" : "hover:bg-accent/50"
+                "hover:bg-accent/50"
               )}
             >
               {/* ヘッダー部分 */}
@@ -249,16 +287,15 @@ export function OutlineEditor({ headings, onChange, recommendedKeywords = [] }: 
                     />
 
                     {/* 執筆ボタン（H2のみ、または既にコンテンツがあるH3） */}
-                    {(heading.level === 2 || heading.content || heading.level === 3) && ( // H3のボタン表示制御: 一旦非表示にしたいが、既存コンテンツがある場合は表示
+                    {(heading.level === 2 || heading.content || heading.level === 3) && (
                       <Button
-                        variant={heading.content ? "default" : "outline"}
+                        variant={heading.content ? "secondary" : "outline"}
                         size="sm"
-                        onClick={() => heading.content ? setExpandedId(expandedId === heading.id ? null : heading.id) : handleWrite(heading)}
+                        onClick={() => handleWrite(heading)}
                         disabled={writingId === heading.id}
                         className={cn(
                           "whitespace-nowrap",
-                          heading.content && "bg-green-600 hover:bg-green-700",
-                          heading.level === 3 && !heading.content && "hidden" // コンテンツがないH3はWeb執筆ボタンを隠す
+                          heading.level === 3 && !heading.content && "hidden" // コンテンツがないH3はWeb執筆ボタンを隠す（H2から一括生成するため）
                         )}
                       >
                         {writingId === heading.id ? (
@@ -266,20 +303,83 @@ export function OutlineEditor({ headings, onChange, recommendedKeywords = [] }: 
                             <Loader2 className="h-4 w-4 mr-2 animate-spin" />
                             執筆中...
                           </>
-                        ) : heading.content ? (
+                        ) : (
                           <>
-                            <BookOpen className="h-4 w-4 mr-2" />
-                            本文を確認
+                            <Sparkles className={cn("h-4 w-4 mr-2", heading.content ? "text-primary" : "text-yellow-500")} />
+                            {heading.content ? "AI再生成" : "Web執筆"}
+                          </>
+                        )}
+                      </Button>
+                    )}
+                    {/* Fact Check Button */}
+                    {heading.content && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleFactCheck(heading)}
+                        disabled={checkingId === heading.id}
+                        className="whitespace-nowrap ml-1 text-blue-600 hover:text-blue-700 hover:bg-blue-50"
+                      >
+                        {checkingId === heading.id ? (
+                          <>
+                            <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                            検証中...
                           </>
                         ) : (
                           <>
-                            <Sparkles className="h-4 w-4 mr-2 text-yellow-500" />
-                            Web執筆
+                            <ShieldCheck className="h-4 w-4 mr-2" />
+                            ファクトチェック
                           </>
                         )}
                       </Button>
                     )}
                   </div>
+
+                  {/* Fact Check Results */}
+                  {factCheckResults[heading.id] && (
+                    <div className="mt-3 border rounded-md p-3 bg-white">
+                      <div className="flex items-center gap-2 mb-2 pb-2 border-b">
+                        <ShieldCheck className="h-4 w-4 text-blue-600" />
+                        <span className="font-semibold text-sm">ファクトチェック結果</span>
+                      </div>
+                      {factCheckResults[heading.id].length === 0 ? (
+                        <p className="text-sm text-muted-foreground">検証に必要な具体的な主張が見つかりませんでした。</p>
+                      ) : (
+                        <div className="space-y-3">
+                          {factCheckResults[heading.id].map((res: any, idx: number) => (
+                            <div key={idx} className="text-sm">
+                              <div className="flex items-start gap-2">
+                                <div className="mt-0.5">
+                                  {res.status === "verified" ? (
+                                    <CheckCircle2 className="h-4 w-4 text-green-600" />
+                                  ) : res.status === "contradicted" ? (
+                                    <AlertTriangle className="h-4 w-4 text-red-500" />
+                                  ) : (
+                                    <HelpCircle className="h-4 w-4 text-amber-500" />
+                                  )}
+                                </div>
+                                <div className="flex-1">
+                                  <p className="font-medium text-foreground/90">{res.claim}</p>
+                                  <p className={cn(
+                                    "text-xs mt-1",
+                                    res.status === "verified" ? "text-green-700" :
+                                      res.status === "contradicted" ? "text-red-600" : "text-amber-700"
+                                  )}>
+                                    判定: {res.reason}
+                                  </p>
+                                  {res.sourceUrl && (
+                                    <a href={res.sourceUrl} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-500 hover:underline block mt-1">
+                                      出典を確認
+                                    </a>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  )}
 
                   {/* キーワードバッジ */}
                   {heading.keywords.length > 0 && (
@@ -321,39 +421,17 @@ export function OutlineEditor({ headings, onChange, recommendedKeywords = [] }: 
                 </Button>
               </div>
 
-              {/* 本文エディタエリア (展開時) */}
-              {expandedId === heading.id && (
-                <div className="px-4 pb-4 pl-12 fade-in-section">
-                  <div className="relative">
-                    <Textarea
-                      value={heading.content || ""}
-                      onChange={(e) => handleContentChange(heading.id, e.target.value)}
-                      className="min-h-[200px] font-mono text-sm bg-muted/30"
-                      placeholder="ここにこのセクションの本文が生成されます。手動で編集も可能です。"
-                    />
-                    {heading.references && (
-                      <div className="mt-2 text-xs text-muted-foreground bg-muted p-2 rounded">
-                        <p className="font-semibold mb-1">参照元:</p>
-                        <pre className="whitespace-pre-wrap">{heading.references}</pre>
-                      </div>
-                    )}
-                  </div>
-                  <div className="mt-2 flex justify-end gap-2">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleWrite(heading)}
-                      disabled={writingId === heading.id}
-                    >
-                      <Sparkles className="h-3 w-3 mr-1" />
-                      再生成（上書き）
-                    </Button>
-                    <Button variant="secondary" size="sm" onClick={() => setExpandedId(null)}>
-                      閉じる
-                    </Button>
-                  </div>
+              {/* 本文エディタエリア (常時表示) */}
+              <div className="px-4 pb-4 pl-12">
+                <div className="relative">
+                  <Textarea
+                    value={heading.content || ""}
+                    onChange={(e) => handleContentChange(heading.id, e.target.value)}
+                    className="min-h-[150px] font-mono text-sm bg-muted/30"
+                    placeholder="ここにこのセクションの本文が生成されます。手動で編集も可能です。"
+                  />
                 </div>
-              )}
+              </div>
 
               {/* 見出し追加ボタン（ホバー時表示） */}
               <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity z-10">

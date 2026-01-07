@@ -1285,39 +1285,156 @@ ${searchContext}
 
 ## 執筆指示
 1. **「取材メモ」の内容をそのままコピペせず、あなたの言葉で咀嚼・再構成して執筆してください**。
-2. 複数の情報源からの情報を統合し、単なる要約ではなく、一つの読み物として成立させてください。
-3. 冒頭（H2直下）には、この章で何を解説するか、読者の興味を惹く導入文を書いてください。
-4. 情報が不足している部分は、「一般的な観点では〜」と補足するか、明記された事実のみで構成してください（嘘は書かない）。
-5. 各H3見出しの内容は、具体的かつ実用的に書いてください。
-6. **HTML形式**で出力してください。
-   - 各H3見出しは \`<h3>見出しテキスト</h3>\` で記述。
-   - 本文は \`<p>\`, \`<ul>\`, \`<li>\` 等で適切にマークアップ。
-   - H2タグは不要。
+2. 複数の情報源からの情報を統合し、一つの読み物として成立させてください。
+3. H2直下の「導入文」と、各H3の「本文」を明確に分けて執筆してください。
+4. **JSON形式**で出力してください。
 
-出力はHTML形式の本文のみを返してください。`;
+## 出力フォーマット（JSON）
+必ず以下のJSON形式で返答してください：
+{
+  "h2_intro": "H2直下に配置する導入文（HTML形式、<p>など使用）",
+  "h3_contents": [
+    {
+      "heading": "H3の見出しテキスト（入力のH3と一致させてください）",
+      "content": "このH3に対応する本文（HTML形式、<h3>タグは含めないでください。<p><ul><li>などで構成）"
+    },
+    ...
+  ]
+}
+`;
 
         const response = await invokeLLM({
           messages: [
-            { role: "system", content: "あなたは読者に寄り添う記事を書くプロのライターです。事実に忠実でありながら、機械的な文章にならないよう注意してください。" },
+            { role: "system", content: "あなたは読者に寄り添う記事を書くプロのライターです。指定されたJSONフォーマットで確実に出力してください。" },
             { role: "user", content: prompt },
           ],
+          response_format: { type: "json_object" }
         });
 
         const rawContent = response.choices[0]?.message?.content;
-        let content = "";
-        if (typeof rawContent === "string") {
-          content = rawContent;
-        } else if (Array.isArray(rawContent)) {
-          content = rawContent
-            .filter((c: any) => c.type === "text")
-            .map((c: any) => c.text)
-            .join("\n");
+
+        let result = { h2_intro: "", h3_contents: [] };
+        try {
+          const contentString = typeof rawContent === "string" ? rawContent : JSON.stringify(rawContent);
+          result = JSON.parse(contentString);
+        } catch (e) {
+          console.error("Failed to parse LLM JSON response:", e);
+          // フォールバック: 生テキストをH2イントロに入れておく
+          result = { h2_intro: typeof rawContent === "string" ? rawContent : "", h3_contents: [] };
         }
 
-        const cleanContent = content.replace(/```html/g, "").replace(/```/g, "").trim();
-
         const referencesText = referenceLinks.map((r, i) => `[${i + 1}] ${r.title}\n${r.url}`).join("\n\n");
-        return { content: cleanContent, references: referencesText };
+
+        return {
+          content: result.h2_intro,
+          h3Contents: result.h3_contents,
+          references: referencesText
+        };
+      }),
+
+    factCheckSection: protectedProcedure
+      .input(
+        z.object({
+          heading: z.string(),
+          content: z.string(),
+        })
+      )
+      .mutation(async ({ ctx, input }) => {
+        const { searchTavily } = await import("./_core/tavily");
+        const { invokeLLM } = await import("./_core/llm");
+
+        // 1. LLMで検証すべき事実（クレーム）を抽出
+        const extractionPrompt = `以下の記事セクションから、ファクトチェック（事実確認）が必要な具体的な主張、数値、固有名詞、日付などを抽出してください。
+
+## 記事セクション
+見出し: ${input.heading}
+本文: ${input.content}
+
+## 抽出ルール
+- 検証可能な客観的な事実のみを抽出してください。
+- 一般常識や主観的な意見は除外してください。
+- 最大5つまで抽出してください。
+- JSON形式で出力してください: { "claims": ["主張1", "主張2", ...] }`;
+
+        const extractionResponse = await invokeLLM({
+          messages: [{ role: "user", content: extractionPrompt }],
+          response_format: { type: "json_object" }
+        });
+
+        const extractionContent = extractionResponse.choices[0]?.message?.content;
+        let claims: string[] = [];
+        try {
+          const parsed = JSON.parse(typeof extractionContent === "string" ? extractionContent : JSON.stringify(extractionContent));
+          claims = parsed.claims || [];
+        } catch (e) {
+          console.error("Fact check extraction failed:", e);
+          return { results: [] };
+        }
+
+        if (claims.length === 0) {
+          return { results: [] };
+        }
+
+        // 2. Tavilyで裏取り検索
+        const searchQuery = `${input.heading} ${claims.join(" ")}`;
+        console.log(`Fact Check Search: ${searchQuery}`);
+
+        let searchContext = "";
+        try {
+          const searchResults = await searchTavily(searchQuery, 5);
+          searchContext = searchResults.results
+            .map((r, i) => `【出典${i + 1}】${r.title} (${r.url})\n${r.content}`)
+            .join("\n\n");
+        } catch (e) {
+          console.error("Fact check search failed:", e);
+          // 検索失敗時は検証不能として返す
+          return { results: claims.map(c => ({ claim: c, status: "unverified", reason: "検索に失敗しました" })) };
+        }
+
+        // 3. LLMで事実検証
+        const verificationPrompt = `あなたは厳格なファクトチェッカーです。
+以下の「検証対象の主張」が、「検索結果」と整合しているか判定してください。
+
+## 検証対象の主張
+${claims.map((c, i) => `${i + 1}. ${c}`).join("\n")}
+
+## 検索結果（証拠）
+${searchContext}
+
+## 判定ルール
+- **Verified (検証OK)**: 検索結果に明確な証拠があり、主張が正しい。
+- **Contradicted (矛盾)**: 検索結果と矛盾している、または誤りである。
+- **Unverified (検証不能)**: 検索結果からは判断できない、情報が見つからない。
+
+## 出力フォーマット（JSON）
+{
+  "results": [
+    {
+      "claim": "主張テキスト",
+      "status": "verified" | "contradicted" | "unverified",
+      "reason": "判定理由（簡潔に）",
+      "sourceUrl": "根拠となる出典URL（あれば）"
+    },
+    ...
+  ]
+}`;
+
+        const verificationResponse = await invokeLLM({
+          messages: [{ role: "system", content: "あなたは客観的なファクトチェッカーです。" }, { role: "user", content: verificationPrompt }],
+          response_format: { type: "json_object" }
+        });
+
+        const verificationContent = verificationResponse.choices[0]?.message?.content;
+        let results = [];
+        try {
+          const parsed = JSON.parse(typeof verificationContent === "string" ? verificationContent : JSON.stringify(verificationContent));
+          results = parsed.results || [];
+        } catch (e) {
+          console.error("Fact check verification failed:", e);
+          return { results: [] };
+        }
+
+        return { results };
       }),
   }),
 });
