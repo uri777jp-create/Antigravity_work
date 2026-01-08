@@ -1128,14 +1128,22 @@ ${headingsHtml}
           return `<${tag}>${h.text}</${tag}>`;
         }).join("\n");
 
+        // リード文がある場合はHTMLの先頭に追加
+        let leadHtml = "";
+        if (query.leadText) {
+          leadHtml = query.leadText.split('\n').map(line => line.trim()).filter(Boolean).map(line => `<p>${line}</p>`).join('\n');
+        }
+
         const html = `
 <!DOCTYPE html>
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>${query.keyword}</title>
+  <title>${query.title || ""}</title>
+  <meta name="description" content="${query.description || ""}">
 </head>
 <body>
+${leadHtml}
 ${headingsHtml}
 </body>
 </html>
@@ -1146,6 +1154,8 @@ ${headingsHtml}
           project: project.neuronProjectId,
           query: query.neuronQueryId,
           html,
+          title: query.title || undefined,
+          description: query.description || undefined,
         });
 
         return evaluation;
