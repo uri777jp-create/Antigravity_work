@@ -471,7 +471,9 @@ export default function QueryDetail() {
       'video': '動画コンテンツ',
       'guide': 'ガイド記事',
       'product': '商品ページ',
-      'review': 'レビュー記事'
+      'review': 'レビュー記事',
+      'tool': 'ツール',
+      'product-category': '商品カテゴリ'
     };
     return typeMap[type] || type;
   };
@@ -1218,6 +1220,7 @@ export default function QueryDetail() {
                     headings={outlineHeadings}
                     onChange={handleOutlineChange}
                     recommendedKeywords={recommendations?.terms?.h?.map((t: any) => t.t) || []}
+                    onAutoSave={handleSaveOutline}
                   />
                 )}
 

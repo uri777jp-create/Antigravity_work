@@ -30,9 +30,10 @@ interface OutlineEditorProps {
   headings: OutlineHeading[];
   onChange: (headings: OutlineHeading[]) => void;
   recommendedKeywords?: string[];
+  onAutoSave?: () => void;
 }
 
-export function OutlineEditor({ headings, onChange, recommendedKeywords = [] }: OutlineEditorProps) {
+export function OutlineEditor({ headings, onChange, recommendedKeywords = [], onAutoSave }: OutlineEditorProps) {
   const [draggedId, setDraggedId] = useState<string | null>(null);
   const [writingId, setWritingId] = useState<string | null>(null); // 現在執筆中のID
   const [checkingId, setCheckingId] = useState<string | null>(null); // ファクトチェック中のID
@@ -69,6 +70,15 @@ export function OutlineEditor({ headings, onChange, recommendedKeywords = [] }: 
       );
       onChange(updated);
       setCheckingId(null);
+
+      // オートセーブ実行
+      if (onAutoSave) {
+        // State更新が反映されるのを少し待つか、上位コンポーネントで最新のheadingsを参照してもらう
+        // ここでは即座に保存リクエストを投げるトリガーを引く
+        setTimeout(() => {
+          onAutoSave();
+        }, 100);
+      }
     }).catch(() => setCheckingId(null));
   };
 
