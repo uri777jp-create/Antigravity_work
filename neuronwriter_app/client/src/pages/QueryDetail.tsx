@@ -269,8 +269,11 @@ export default function QueryDetail() {
   };
 
   // 目次保存ハンドラー
-  const handleSaveOutline = useCallback(() => {
-    if (!query || outlineHeadings.length === 0) {
+  const handleSaveOutline = useCallback((arg?: OutlineHeading[] | React.MouseEvent) => {
+    // 引数が配列ならデータとして使用、イベントならStateを使用
+    const targetHeadings = (Array.isArray(arg)) ? arg : outlineHeadings;
+
+    if (!query || targetHeadings.length === 0) {
       toast.error("目次が空です。まず目次を生成してください。");
       return;
     }
@@ -280,7 +283,7 @@ export default function QueryDetail() {
       toast.error("保存する目次が見つかりません。先に目次を生成してください。");
       return;
     }
-    const structure = JSON.stringify({ headings: outlineHeadings });
+    const structure = JSON.stringify({ headings: targetHeadings });
     updateOutlineMutation.mutate({
       outlineId: latestOutline.id,
       structure,

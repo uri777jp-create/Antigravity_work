@@ -30,7 +30,7 @@ interface OutlineEditorProps {
   headings: OutlineHeading[];
   onChange: (headings: OutlineHeading[]) => void;
   recommendedKeywords?: string[];
-  onAutoSave?: () => void;
+  onAutoSave?: (headings: OutlineHeading[]) => void;
 }
 
 export function OutlineEditor({ headings, onChange, recommendedKeywords = [], onAutoSave }: OutlineEditorProps) {
@@ -73,11 +73,7 @@ export function OutlineEditor({ headings, onChange, recommendedKeywords = [], on
 
       // オートセーブ実行
       if (onAutoSave) {
-        // State更新が反映されるのを少し待つか、上位コンポーネントで最新のheadingsを参照してもらう
-        // ここでは即座に保存リクエストを投げるトリガーを引く
-        setTimeout(() => {
-          onAutoSave();
-        }, 100);
+        onAutoSave(updated);
       }
     }).catch(() => setCheckingId(null));
   };
