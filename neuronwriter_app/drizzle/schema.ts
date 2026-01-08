@@ -1,4 +1,4 @@
-import { int, mysqlEnum, mysqlTable, text, timestamp, varchar } from "drizzle-orm/mysql-core";
+import { int, mysqlEnum, mysqlTable, text, timestamp, varchar, longtext } from "drizzle-orm/mysql-core";
 
 /**
  * Core user table backing auth flow.
@@ -70,7 +70,7 @@ export const contents = mysqlTable("contents", {
   id: int("id").autoincrement().primaryKey(),
   userId: int("userId").notNull(),
   queryId: int("queryId").notNull(),
-  htmlContent: text("htmlContent").notNull(),
+  htmlContent: longtext("htmlContent").notNull(),
   evaluationScore: int("evaluationScore"),
   seoAnalysis: text("seoAnalysis"),
   isAutoSaved: int("isAutoSaved").default(0).notNull(),
@@ -89,20 +89,20 @@ export const outlines = mysqlTable("outlines", {
   id: int("id").autoincrement().primaryKey(),
   userId: int("userId").notNull(),
   queryId: int("queryId").notNull(),
-  
+
   // 目次構造データ（JSON形式）
   // { headings: [{ id: "h1", level: 2, text: "見出し1", keywords: ["キーワード1"], order: 0 }] }
-  structure: text("structure").notNull(),
-  
+  structure: longtext("structure").notNull(),
+
   // SEOメトリクス
   seoScore: int("seoScore"), // NeuronWriter APIから取得したスコア
   wordCount: int("wordCount"), // 推定文字数
   keywordUsage: text("keywordUsage"), // キーワード使用状況（JSON）
-  
+
   // バージョン管理
   version: int("version").default(1).notNull(),
   isActive: int("isActive").default(1).notNull(), // 1=active, 0=archived
-  
+
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
