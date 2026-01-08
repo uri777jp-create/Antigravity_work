@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { GripVertical, Plus, Trash2, Sparkles, BookOpen, Loader2, ShieldCheck, CheckCircle2, AlertTriangle, HelpCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { trpc } from "@/lib/trpc";
@@ -17,6 +18,12 @@ export interface OutlineHeading {
   order: number;
   content?: string;     // 生成された本文
   references?: string;  // 参照元
+  factCheckResults?: {
+    claim: string;
+    status: "verified" | "contradicted" | "unverified";
+    reason: string;
+    sourceUrl?: string;
+  }[];
 }
 
 interface OutlineEditorProps {
@@ -29,7 +36,6 @@ export function OutlineEditor({ headings, onChange, recommendedKeywords = [] }: 
   const [draggedId, setDraggedId] = useState<string | null>(null);
   const [writingId, setWritingId] = useState<string | null>(null); // 現在執筆中のID
   const [checkingId, setCheckingId] = useState<string | null>(null); // ファクトチェック中のID
-  const [factCheckResults, setFactCheckResults] = useState<Record<string, any[]>>({});
 
   const writeSectionMutation = trpc.neuronwriter.writeSectionWithSearch.useMutation({
     onSuccess: () => {
@@ -58,10 +64,10 @@ export function OutlineEditor({ headings, onChange, recommendedKeywords = [] }: 
       heading: heading.text,
       content: heading.content
     }).then((res) => {
-      setFactCheckResults(prev => ({
-        ...prev,
-        [heading.id]: res.results
-      }));
+      const updated = headings.map((h) =>
+        h.id === heading.id ? { ...h, factCheckResults: res.results } : h
+      );
+      onChange(updated);
       setCheckingId(null);
     }).catch(() => setCheckingId(null));
   };
@@ -336,17 +342,17 @@ export function OutlineEditor({ headings, onChange, recommendedKeywords = [] }: 
                   </div>
 
                   {/* Fact Check Results */}
-                  {factCheckResults[heading.id] && (
+                  {heading.factCheckResults && (
                     <div className="mt-3 border rounded-md p-3 bg-white">
                       <div className="flex items-center gap-2 mb-2 pb-2 border-b">
                         <ShieldCheck className="h-4 w-4 text-blue-600" />
                         <span className="font-semibold text-sm">ファクトチェック結果</span>
                       </div>
-                      {factCheckResults[heading.id].length === 0 ? (
+                      {heading.factCheckResults.length === 0 ? (
                         <p className="text-sm text-muted-foreground">検証に必要な具体的な主張が見つかりませんでした。</p>
                       ) : (
                         <div className="space-y-3">
-                          {factCheckResults[heading.id].map((res: any, idx: number) => (
+                          {heading.factCheckResults.map((res: any, idx: number) => (
                             <div key={idx} className="text-sm">
                               <div className="flex items-start gap-2">
                                 <div className="mt-0.5">
@@ -423,14 +429,40 @@ export function OutlineEditor({ headings, onChange, recommendedKeywords = [] }: 
 
               {/* 本文エディタエリア (常時表示) */}
               <div className="px-4 pb-4 pl-12">
-                <div className="relative">
-                  <Textarea
-                    value={heading.content || ""}
-                    onChange={(e) => handleContentChange(heading.id, e.target.value)}
-                    className="min-h-[150px] font-mono text-sm bg-muted/30"
-                    placeholder="ここにこのセクションの本文が生成されます。手動で編集も可能です。"
-                  />
-                </div>
+                <Tabs defaultValue="preview" className="w-full">
+                  <div className="flex items-center justify-between mb-2">
+                    <TabsList className="grid w-[200px] grid-cols-2 h-8">
+                      <TabsTrigger value="preview" className="text-xs">プレビュー</TabsTrigger>
+                      <TabsTrigger value="edit" className="text-xs">HTML編集</TabsTrigger>
+                    </TabsList>
+                  </div>
+
+                  <TabsContent value="preview" className="mt-0">
+                    <div className="min-h-[150px] p-4 border rounded-md bg-white/50 text-sm overflow-hidden">
+                      {heading.content ? (
+                        <div
+                          className="prose prose-sm max-w-none dark:prose-invert prose-p:my-2 prose-ul:my-2 prose-li:my-0.5"
+                          dangerouslySetInnerHTML={{ __html: heading.content }}
+                        />
+                      ) : (
+                        <p className="text-muted-foreground text-center py-8">
+                          コンテンツはまだ生成されていません
+                        </p>
+                      )}
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="edit" className="mt-0">
+                    <div className="relative">
+                      <Textarea
+                        value={heading.content || ""}
+                        onChange={(e) => handleContentChange(heading.id, e.target.value)}
+                        className="min-h-[150px] font-mono text-sm bg-muted/30"
+                        placeholder="ここにこのセクションの本文が生成されます。手動で編集も可能です。"
+                      />
+                    </div>
+                  </TabsContent>
+                </Tabs>
               </div>
 
               {/* 見出し追加ボタン（ホバー時表示） */}

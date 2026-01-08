@@ -349,16 +349,56 @@ export default function QueryDetail() {
     });
   }, [query, queryId, leadText, saveLeadTextMutation]);
 
-  // リアルタイム更新（デバウンス処理）
+  // リアルタイム更新（コンテンツ統合）
+  useEffect(() => {
+    // 構成要素からHTMLを構築
+    let parts: string[] = [];
+
+    // 1. タイトル
+    if (title) {
+      parts.push(`<h1>${title}</h1>`);
+    }
+
+    // 2. リード文
+    if (leadText) {
+      // 簡易的なHTML変換（改行を考慮）
+      const formattedLead = leadText.split('\n').filter(line => line.trim()).map(line => `<p class="lead">${line}</p>`).join('');
+      parts.push(formattedLead);
+    }
+
+    // 3. 目次と本文
+    if (outlineHeadings.length > 0) {
+      outlineHeadings.forEach(h => {
+        parts.push(`<h${h.level}>${h.text}</h${h.level}>`);
+        if (h.content) {
+          parts.push(h.content);
+        }
+      });
+    }
+
+    const aggregatedHtml = parts.join('\n\n');
+
+    // 生成されたHTMLが既存のものと異なる場合のみ更新（ループ防止）
+    // 初期ロード時の"<h1>Your content here...</h1>"は上書きする
+    if (aggregatedHtml && (htmlContent === "<h1>Your content here...</h1>" || htmlContent !== aggregatedHtml)) {
+      setHtmlContent(aggregatedHtml);
+    }
+  }, [title, leadText, outlineHeadings]);
+
+  // リアルタイム更新（SEOスコア評価 - デバウンス処理）
   useEffect(() => {
     if (!query || (!title && !description)) return;
 
     const timeoutId = setTimeout(() => {
+      // 評価対象のHTML（本文が空の場合は統合されたHTMLを使用）
+      const contentToEvaluate = htmlContent !== "<h1>Your content here...</h1>" ? htmlContent : "";
+
       setIsEvaluating(true);
       evaluateSeoMutation.mutate({
         queryId,
         title,
         description,
+        // htmlContentも含めて評価に送るとなお良いが、現状のAPIはタイトル・デスクメインか
       });
     }, 2000); // 2秒後に自動評価
 
@@ -1219,39 +1259,7 @@ export default function QueryDetail() {
               </CardContent>
             </Card>
 
-            {/* SEOスコア表示 */}
-            {(title || description) && (
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-semibold">SEOスコア評価</h3>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={handleCheckScore}
-                    disabled={isEvaluating || evaluateSeoMutation.isPending}
-                  >
-                    <RefreshCw className={`mr-2 h-4 w-4 ${isEvaluating ? 'animate-spin' : ''}`} />
-                    {isEvaluating ? "評価中..." : "スコア確認"}
-                  </Button>
-                </div>
 
-                {seoScore !== null && (
-                  <SEOScoreBar
-                    currentScore={seoScore}
-                    targetScore={targetScore}
-                    wordCount={title.length + description.length}
-                    keywordUsage={0}
-                  />
-                )}
-
-                {isEvaluating && seoScore === null && (
-                  <div className="text-center py-8 text-muted-foreground">
-                    <RefreshCw className="w-8 h-8 animate-spin mx-auto mb-2" />
-                    <p>SEOスコアを評価中...</p>
-                  </div>
-                )}
-              </div>
-            )}
 
             {/* HTMLコンテンツ編集 */}
             <Card>
