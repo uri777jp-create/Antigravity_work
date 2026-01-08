@@ -1066,13 +1066,25 @@ ${headingsHtml}
               }).join("\n");
 
               // リード文がある場合はHTMLの先頭に追加
-              let fullHtml = headingsHtml;
+              let leadHtml = "";
               if (query.leadText) {
-                // リード文はプレーンテキストかHTMLか不明だが、安全のためpタグで囲む（改行はbrに変換など簡易的）
-                // 既存実装のleadTextはTextarea入力なので改行コードが含まれる可能性あり
-                const formattedLead = query.leadText.split('\n').map(line => line.trim()).filter(Boolean).map(line => `<p>${line}</p>`).join('');
-                fullHtml = `${formattedLead}\n${headingsHtml}`;
+                leadHtml = query.leadText.split('\n').map(line => line.trim()).filter(Boolean).map(line => `<p>${line}</p>`).join('\n');
               }
+
+              const fullHtml = `
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>${query.title || ""}</title>
+  <meta name="description" content="${query.description || ""}">
+</head>
+<body>
+${leadHtml}
+${headingsHtml}
+</body>
+</html>
+`;
 
               // Import用パラメータ構築
               // タイトル・ディスクリプションが設定されていれば送る
