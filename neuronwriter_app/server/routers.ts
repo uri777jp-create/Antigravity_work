@@ -1379,12 +1379,13 @@ Content: ${input.content}
 - For each claim, suggest 1-2 optimal search keywords for verification.
 - Extract up to 5 items.
 - Output in JSON format.
+- **IMPORTANT: The "claim" text must be extracted and written in Japanese.**
 
 ## Output Format (JSON)
 {
   "claims": [
     {
-      "claim": "Claim text",
+      "claim": "Claim text (Japanese)",
       "category": "Numeric/Spec/ProperNoun/Date",
       "suggested_queries": ["Search Keyword 1", "Search Keyword 2"]
     }
