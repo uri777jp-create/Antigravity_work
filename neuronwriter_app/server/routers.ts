@@ -1457,18 +1457,19 @@ ${searchContext}
 - **Unverified**: Insufficient evidence to judge.
 
 ## Rules
-- Write a "thought" process analyzing which parts of the evidence support or contradict the claim.
+- Write a "thought" process analyzing which parts of the evidence support or contradict the claim. **(Must be in Japanese)**
 - Rate your confidence (0-100).
+- The "reason" must also be in Japanese.
 
 ## Output Format (JSON)
 {
   "results": [
     {
       "claim": "Claim text",
-      "thought": "First, checking Source 1... However, Source 2 states...",
+      "thought": "ソース1を確認したところ... しかしソース2では... (Japanese)",
       "status": "Verified" | "Partially Verified" | "Contradicted" | "Unverified",
       "confidence": 80,
-      "reason": "Brief summary of judgment",
+      "reason": "判定理由の要約 (Japanese)",
       "source_url": "Supporting URL from sources"
     }
   ]
