@@ -6,12 +6,13 @@ import { Textarea } from "@/components/ui/textarea";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
 import { trpc } from "@/lib/trpc";
-import { ArrowLeft, Download, FileText, Lightbulb, TrendingUp, BarChart, Globe, Users, MessageSquare, Target, Sparkles, Copy, RefreshCw } from "lucide-react";
+import { ArrowLeft, Download, FileText, Lightbulb, TrendingUp, BarChart, Globe, Users, MessageSquare, Target, Sparkles, Copy, RefreshCw, Code, Eye } from "lucide-react";
 import { useState, useEffect, useCallback } from "react";
 import { Link, useParams } from "wouter";
 import { toast } from "sonner";
 import { SEOScoreBar } from "@/components/SEOScoreBar";
 import { OutlineEditor, OutlineHeading } from "@/components/OutlineEditor";
+import TurndownService from "turndown";
 
 export default function QueryDetail() {
   const { id } = useParams();
@@ -28,6 +29,8 @@ export default function QueryDetail() {
   const [isGeneratingOutline, setIsGeneratingOutline] = useState(false);
   const [leadText, setLeadText] = useState("");
   const [isGeneratingLeadText, setIsGeneratingLeadText] = useState(false);
+  const [viewMode, setViewMode] = useState<'html' | 'preview' | 'markdown'>('html');
+  const turndownService = new TurndownService();
 
   const { data: query, isLoading: queryLoading } = trpc.neuronwriter.getQueryById.useQuery({ queryId });
 
@@ -357,10 +360,10 @@ export default function QueryDetail() {
     // 構成要素からHTMLを構築
     let parts: string[] = [];
 
-    // 1. タイトル
-    if (title) {
-      parts.push(`<h1>${title}</h1>`);
-    }
+    // 1. タイトル - 本文には含めない（CMS側でタイトルとして扱うため）
+    // if (title) {
+    //   parts.push(`<h1>${title}</h1>`);
+    // }
 
     // 2. リード文
     if (leadText) {
@@ -1269,17 +1272,78 @@ export default function QueryDetail() {
 
             {/* HTMLコンテンツ編集 */}
             <Card>
-              <CardHeader>
-                <CardTitle>本文コンテンツ</CardTitle>
-                <CardDescription>HTMLコンテンツを入力または貼り付け</CardDescription>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <div>
+                  <CardTitle>本文コンテンツ</CardTitle>
+                  <CardDescription>HTMLコンテンツを入力または貼り付け</CardDescription>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="flex bg-muted rounded-lg p-1">
+                    <Button
+                      variant={viewMode === 'html' ? 'secondary' : 'ghost'}
+                      size="sm"
+                      onClick={() => setViewMode('html')}
+                      className="h-8"
+                    >
+                      <Code className="h-4 w-4 mr-2" />
+                      HTML
+                    </Button>
+                    <Button
+                      variant={viewMode === 'markdown' ? 'secondary' : 'ghost'}
+                      size="sm"
+                      onClick={() => setViewMode('markdown')}
+                      className="h-8"
+                    >
+                      <FileText className="h-4 w-4 mr-2" />
+                      Markdown
+                    </Button>
+                    <Button
+                      variant={viewMode === 'preview' ? 'secondary' : 'ghost'}
+                      size="sm"
+                      onClick={() => setViewMode('preview')}
+                      className="h-8"
+                    >
+                      <Eye className="h-4 w-4 mr-2" />
+                      プレビュー
+                    </Button>
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="h-8"
+                    onClick={() => {
+                      const textToCopy = viewMode === 'markdown'
+                        ? turndownService.turndown(htmlContent)
+                        : (viewMode === 'preview' ? new DOMParser().parseFromString(htmlContent, 'text/html').body.innerText : htmlContent);
+                      navigator.clipboard.writeText(textToCopy);
+                      toast.success("クリップボードにコピーしました");
+                    }}
+                  >
+                    <Copy className="h-4 w-4 mr-2" />
+                    コピー
+                  </Button>
+                </div>
               </CardHeader>
               <CardContent className="space-y-4">
-                <Textarea
-                  value={htmlContent}
-                  onChange={(e) => setHtmlContent(e.target.value)}
-                  className="min-h-[300px] font-mono text-sm"
-                  placeholder="<h1>Your content here...</h1>"
-                />
+                {viewMode === 'html' ? (
+                  <Textarea
+                    value={htmlContent}
+                    onChange={(e) => setHtmlContent(e.target.value)}
+                    className="min-h-[300px] font-mono text-sm"
+                    placeholder="<h1>Your content here...</h1>"
+                  />
+                ) : viewMode === 'markdown' ? (
+                  <Textarea
+                    readOnly
+                    value={turndownService.turndown(htmlContent)}
+                    className="min-h-[300px] font-mono text-sm bg-muted text-muted-foreground"
+                  />
+                ) : (
+                  <div
+                    className="min-h-[300px] p-4 border rounded-md prose prose-sm max-w-none dark:prose-invert bg-white dark:bg-zinc-950"
+                    dangerouslySetInnerHTML={{ __html: htmlContent }}
+                  />
+                )}
                 <div className="flex gap-2">
                   <Button onClick={handleSaveContent} disabled={saveContentMutation.isPending}>
                     {saveContentMutation.isPending ? "保存中..." : "コンテンツ保存"}
@@ -1304,7 +1368,7 @@ export default function QueryDetail() {
             </Card>
           </TabsContent>
         </Tabs>
-      </div>
-    </div>
+      </div >
+    </div >
   );
 }
