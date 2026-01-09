@@ -30,7 +30,7 @@ export default function QueryDetail() {
   const [leadText, setLeadText] = useState("");
   const [isGeneratingLeadText, setIsGeneratingLeadText] = useState(false);
   const [viewMode, setViewMode] = useState<'html' | 'preview' | 'markdown'>('html');
-  const turndownService = new TurndownService();
+  const turndownService = new TurndownService({ headingStyle: 'atx' });
 
   const { data: query, isLoading: queryLoading } = trpc.neuronwriter.getQueryById.useQuery({ queryId });
 
@@ -1340,7 +1340,7 @@ export default function QueryDetail() {
                   />
                 ) : (
                   <div
-                    className="min-h-[300px] p-4 border rounded-md prose prose-sm max-w-none dark:prose-invert bg-white dark:bg-zinc-950"
+                    className="min-h-[300px] p-8 border rounded-md prose prose-sm max-w-none dark:prose-invert bg-white dark:bg-zinc-950 prose-headings:font-bold prose-h2:text-2xl prose-h2:bg-slate-100 dark:prose-h2:bg-slate-800 prose-h2:p-3 prose-h2:rounded prose-h2:mt-12 prose-h2:mb-6 prose-h3:text-xl prose-h3:border-l-4 prose-h3:border-blue-500 prose-h3:pl-3 prose-h3:mt-8 prose-h3:mb-4 prose-p:text-sm prose-p:leading-relaxed"
                     dangerouslySetInnerHTML={{ __html: htmlContent }}
                   />
                 )}
