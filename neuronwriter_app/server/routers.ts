@@ -1366,17 +1366,30 @@ ${searchContext}
         const { invokeLLM } = await import("./_core/llm");
 
         // 1. LLMで検証すべき事実（クレーム）を抽出
-        const extractionPrompt = `以下の記事セクションから、ファクトチェック（事実確認）が必要な具体的な主張、数値、固有名詞、日付などを抽出してください。
+        const extractionPrompt = `Information Extraction Specialist Role
+You are an expert in information extraction. Convert the following article section into structured claims that require fact-checking.
 
-## 記事セクション
-見出し: ${input.heading}
-本文: ${input.content}
+## Article Section
+Heading: ${input.heading}
+Content: ${input.content}
 
-## 抽出ルール
-- 検証可能な客観的な事実のみを抽出してください。
-- 一般常識や主観的な意見は除外してください。
-- 最大5つまで抽出してください。
-- JSON形式で出力してください: { "claims": ["主張1", "主張2", ...] }`;
+## Extraction Rules
+- Prioritize numerical data, proper nouns, service specifications (fees, transaction units, etc.), and dates.
+- Exclude subjective expressions (e.g., "easy to use", "highly recommended").
+- For each claim, suggest 1-2 optimal search keywords for verification.
+- Extract up to 5 items.
+- Output in JSON format.
+
+## Output Format (JSON)
+{
+  "claims": [
+    {
+      "claim": "Claim text",
+      "category": "Numeric/Spec/ProperNoun/Date",
+      "suggested_queries": ["Search Keyword 1", "Search Keyword 2"]
+    }
+  ]
+}`;
 
         const extractionResponse = await invokeLLM({
           messages: [{ role: "user", content: extractionPrompt }],
@@ -1384,65 +1397,85 @@ ${searchContext}
         });
 
         const extractionContent = extractionResponse.choices[0]?.message?.content;
-        let claims: string[] = [];
+        let claimsData: { claim: string; category: string; suggested_queries: string[] }[] = [];
         try {
           const parsed = JSON.parse(typeof extractionContent === "string" ? extractionContent : JSON.stringify(extractionContent));
-          claims = parsed.claims || [];
+          claimsData = parsed.claims || [];
         } catch (e) {
           console.error("Fact check extraction failed:", e);
           return { results: [] };
         }
 
-        if (claims.length === 0) {
+        if (claimsData.length === 0) {
           return { results: [] };
         }
 
         // 2. Tavilyで裏取り検索
-        const searchQuery = `${input.heading} ${claims.join(" ")}`;
+        // 検索クエリの構築: 見出し + 各クレームの推奨キーワード（上位のもの）
+        const allKeywords = claimsData.flatMap((c: any) => c.suggested_queries).slice(0, 5); // キーワード過多を防ぐ
+        // 重複を除去
+        const uniqueKeywords = Array.from(new Set(allKeywords));
+        const searchQuery = `${input.heading} ${uniqueKeywords.join(" ")}`.trim();
+
         console.log(`Fact Check Search: ${searchQuery}`);
 
         let searchContext = "";
         try {
-          const searchResults = await searchTavily(searchQuery, 5);
+          const searchResults = await searchTavily(searchQuery, 7); // 少し多めに取得
           searchContext = searchResults.results
-            .map((r, i) => `【出典${i + 1}】${r.title} (${r.url})\n${r.content}`)
+            .map((r, i) => `[Source ${i + 1}] Title: ${r.title} (URL: ${r.url})\nContent: ${r.content}`)
             .join("\n\n");
         } catch (e) {
           console.error("Fact check search failed:", e);
           // 検索失敗時は検証不能として返す
-          return { results: claims.map(c => ({ claim: c, status: "unverified", reason: "検索に失敗しました" })) };
+          return {
+            results: claimsData.map((c: any) => ({
+              claim: c.claim,
+              status: "unverified",
+              reason: "Search failed",
+              thought: "Unable to verify due to search error.",
+              confidence: 0,
+              sourceUrl: ""
+            }))
+          };
         }
 
         // 3. LLMで事実検証
-        const verificationPrompt = `あなたは厳格なファクトチェッカーです。
-以下の「検証対象の主張」が、「検索結果」と整合しているか判定してください。
+        const verificationPrompt = `Role: Strict Fact Checker
+You are a strict fact checker who makes judgments based solely on evidence.
 
-## 検証対象の主張
-${claims.map((c, i) => `${i + 1}. ${c}`).join("\n")}
+## Verification Target
+${JSON.stringify(claimsData, null, 2)}
 
-## 検索結果（証拠）
+## Search Results (Evidence)
 ${searchContext}
 
-## 判定ルール
-- **Verified (検証OK)**: 検索結果に明確な証拠があり、主張が正しい。
-- **Contradicted (矛盾)**: 検索結果と矛盾している、または誤りである。
-- **Unverified (検証不能)**: 検索結果からは判断できない、情報が見つからない。
+## Judgment Criteria
+- **Verified**: Fully supported by evidence.
+- **Partially Verified**: Partially correct but needs context or minor correction.
+- **Contradicted**: Clearly incorrect or contradicts evidence.
+- **Unverified**: Insufficient evidence to judge.
 
-## 出力フォーマット（JSON）
+## Rules
+- Write a "thought" process analyzing which parts of the evidence support or contradict the claim.
+- Rate your confidence (0-100).
+
+## Output Format (JSON)
 {
   "results": [
     {
-      "claim": "主張テキスト",
-      "status": "verified" | "contradicted" | "unverified",
-      "reason": "判定理由（簡潔に）",
-      "sourceUrl": "根拠となる出典URL（あれば）"
-    },
-    ...
+      "claim": "Claim text",
+      "thought": "First, checking Source 1... However, Source 2 states...",
+      "status": "Verified" | "Partially Verified" | "Contradicted" | "Unverified",
+      "confidence": 80,
+      "reason": "Brief summary of judgment",
+      "source_url": "Supporting URL from sources"
+    }
   ]
 }`;
 
         const verificationResponse = await invokeLLM({
-          messages: [{ role: "system", content: "あなたは客観的なファクトチェッカーです。" }, { role: "user", content: verificationPrompt }],
+          messages: [{ role: "system", content: "You are a strict fact checker." }, { role: "user", content: verificationPrompt }],
           response_format: { type: "json_object" }
         });
 
@@ -1450,7 +1483,23 @@ ${searchContext}
         let results = [];
         try {
           const parsed = JSON.parse(typeof verificationContent === "string" ? verificationContent : JSON.stringify(verificationContent));
-          results = parsed.results || [];
+          // バックエンドのsnake_case等をフロントエンドに合わせて変換
+          results = (parsed.results || []).map((r: any) => {
+            let status = "unverified";
+            const s = (r.status || "").toLowerCase();
+            if (s.includes("partially")) status = "partially_verified";
+            else if (s.includes("verified")) status = "verified";
+            else if (s.includes("contradicted")) status = "contradicted";
+
+            return {
+              claim: r.claim,
+              status: status,
+              reason: r.reason,
+              thought: r.thought,
+              confidence: r.confidence,
+              sourceUrl: r.source_url || r.sourceUrl // 表記ゆれ対応
+            };
+          });
         } catch (e) {
           console.error("Fact check verification failed:", e);
           return { results: [] };

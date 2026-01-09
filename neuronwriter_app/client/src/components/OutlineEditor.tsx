@@ -20,8 +20,10 @@ export interface OutlineHeading {
   references?: string;  // 参照元
   factCheckResults?: {
     claim: string;
-    status: "verified" | "contradicted" | "unverified";
+    status: "verified" | "contradicted" | "unverified" | "partially_verified";
     reason: string;
+    thought?: string;
+    confidence?: number;
     sourceUrl?: string;
   }[];
 }
@@ -366,24 +368,55 @@ export function OutlineEditor({ headings, onChange, recommendedKeywords = [], on
                                     <CheckCircle2 className="h-4 w-4 text-green-600" />
                                   ) : res.status === "contradicted" ? (
                                     <AlertTriangle className="h-4 w-4 text-red-500" />
+                                  ) : res.status === "partially_verified" ? (
+                                    <AlertTriangle className="h-4 w-4 text-amber-500" />
                                   ) : (
-                                    <HelpCircle className="h-4 w-4 text-amber-500" />
+                                    <HelpCircle className="h-4 w-4 text-gray-400" />
                                   )}
                                 </div>
                                 <div className="flex-1">
                                   <p className="font-medium text-foreground/90">{res.claim}</p>
-                                  <p className={cn(
-                                    "text-xs mt-1",
-                                    res.status === "verified" ? "text-green-700" :
-                                      res.status === "contradicted" ? "text-red-600" : "text-amber-700"
-                                  )}>
-                                    判定: {res.reason}
-                                  </p>
-                                  {res.sourceUrl && (
-                                    <a href={res.sourceUrl} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-500 hover:underline block mt-1">
-                                      出典を確認
-                                    </a>
-                                  )}
+                                  <div className="mt-1 space-y-1">
+                                    <div className="flex items-center gap-2">
+                                      <Badge variant={
+                                        res.status === "verified" ? "default" :
+                                          res.status === "contradicted" ? "destructive" :
+                                            res.status === "partially_verified" ? "secondary" : "outline"
+                                      } className={cn(
+                                        "text-[10px] px-1 py-0 h-5",
+                                        res.status === "verified" && "bg-green-600 hover:bg-green-700",
+                                        res.status === "partially_verified" && "bg-amber-100 text-amber-800 hover:bg-amber-200"
+                                      )}>
+                                        {res.status === "verified" ? "正確" :
+                                          res.status === "contradicted" ? "誤り/矛盾" :
+                                            res.status === "partially_verified" ? "一部正確/要補足" : "検証不能"}
+                                      </Badge>
+                                      {res.confidence !== undefined && (
+                                        <span className="text-xs text-muted-foreground">自信度: {res.confidence}%</span>
+                                      )}
+                                    </div>
+
+                                    {res.thought && (
+                                      <div className="bg-muted/50 p-2 rounded text-xs text-muted-foreground mb-1">
+                                        <span className="font-semibold block mb-0.5">思考プロセス:</span>
+                                        {res.thought}
+                                      </div>
+                                    )}
+
+                                    <p className={cn(
+                                      "text-xs",
+                                      res.status === "verified" ? "text-green-700" :
+                                        res.status === "contradicted" ? "text-red-700" :
+                                          res.status === "partially_verified" ? "text-amber-800" : "text-gray-600"
+                                    )}>
+                                      <span className="font-semibold">判定理由:</span> {res.reason}
+                                    </p>
+                                    {res.sourceUrl && (
+                                      <a href={res.sourceUrl} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-500 hover:underline inline-flex items-center gap-1">
+                                        <BookOpen className="h-3 w-3" /> 出典を確認
+                                      </a>
+                                    )}
+                                  </div>
                                 </div>
                               </div>
                             </div>
