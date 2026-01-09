@@ -1340,7 +1340,7 @@ export default function QueryDetail() {
                   />
                 ) : (
                   <div
-                    className="min-h-[300px] p-8 border rounded-md prose prose-sm max-w-none dark:prose-invert bg-white dark:bg-zinc-950 prose-headings:font-bold prose-h2:text-2xl prose-h2:bg-slate-100 dark:prose-h2:bg-slate-800 prose-h2:p-3 prose-h2:rounded prose-h2:mt-12 prose-h2:mb-6 prose-h3:text-xl prose-h3:border-l-4 prose-h3:border-blue-500 prose-h3:pl-3 prose-h3:mt-8 prose-h3:mb-4 prose-p:text-sm prose-p:leading-relaxed"
+                    className="min-h-[300px] p-6 border rounded-md prose prose-sm max-w-none dark:prose-invert bg-white dark:bg-zinc-950 prose-headings:font-bold [&_h2]:text-lg [&_h2]:bg-slate-100 [&_h2]:dark:bg-slate-800 [&_h2]:p-2 [&_h2]:rounded [&_h2]:mt-8 [&_h2]:mb-4 [&_h2]:border-0 [&_h2]:pb-2 [&_h3]:text-base [&_h3]:border-l-4 [&_h3]:border-blue-500 [&_h3]:pl-2 [&_h3]:mt-6 [&_h3]:mb-3 [&_p]:text-sm [&_p]:leading-relaxed"
                     dangerouslySetInnerHTML={{ __html: htmlContent }}
                   />
                 )}
