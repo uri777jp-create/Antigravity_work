@@ -1395,8 +1395,10 @@ Content: ${input.content}
         console.log(`Fact Check Search: ${searchQuery}`);
 
         let searchContext = "";
+        let sources: { id: number; title: string; url: string }[] = [];
         try {
           const searchResults = await searchTavily(searchQuery, 7); // 少し多めに取得
+          sources = searchResults.results.map((r, i) => ({ id: i + 1, title: r.title, url: r.url }));
           searchContext = searchResults.results
             .map((r, i) => `[Source ${i + 1}] Title: ${r.title} (URL: ${r.url})\nContent: ${r.content}`)
             .join("\n\n");
@@ -1410,14 +1412,16 @@ Content: ${input.content}
               reason: "Search failed",
               thought: "Unable to verify due to search error.",
               confidence: 0,
-              sourceUrl: ""
-            }))
+              sourceUrl: "",
+              suggestion: ""
+            })),
+            sources: []
           };
         }
 
         // 3. LLMで事実検証
         const verificationPrompt = `Role: Strict Fact Checker
-You are a strict fact checker who makes judgments based solely on evidence.
+You are a strict fact checker who makes judgments based solely on the provided evidence.
 
 ## Verification Target
 ${JSON.stringify(claimsData, null, 2)}
@@ -1435,6 +1439,7 @@ ${searchContext}
 - Write a "thought" process analyzing which parts of the evidence support or contradict the claim. **(Must be in Japanese)**
 - Rate your confidence (0-100).
 - The "reason" must also be in Japanese.
+- **IMPORTANT**: If the status is "Contradicted" or "Partially Verified", provide a "suggestion" for how to correct the text based on the evidence. (In Japanese)
 
 ## Output Format (JSON)
 {
@@ -1445,7 +1450,8 @@ ${searchContext}
       "status": "Verified" | "Partially Verified" | "Contradicted" | "Unverified",
       "confidence": 80,
       "reason": "判定理由の要約 (Japanese)",
-      "source_url": "Supporting URL from sources"
+      "source_url": "Supporting URL from sources",
+      "suggestion": "修正案のテキスト (必要な場合のみ)"
     }
   ]
 }`;

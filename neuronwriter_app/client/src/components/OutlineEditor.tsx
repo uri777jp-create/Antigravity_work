@@ -25,7 +25,9 @@ export interface OutlineHeading {
     thought?: string;
     confidence?: number;
     sourceUrl?: string;
+    suggestion?: string;
   }[];
+  factCheckSources?: { id: number; title: string; url: string }[];
 }
 
 interface OutlineEditorProps {
@@ -39,6 +41,38 @@ export function OutlineEditor({ headings, onChange, recommendedKeywords = [], on
   const [draggedId, setDraggedId] = useState<string | null>(null);
   const [writingId, setWritingId] = useState<string | null>(null); // 現在執筆中のID
   const [checkingId, setCheckingId] = useState<string | null>(null); // ファクトチェック中のID
+
+  // Helper to render text with source links
+  const renderTextWithSources = (text: string, sources?: { id: number; url: string }[]) => {
+    if (!text || !sources) return text;
+
+    // Split by pattern "Source X" or "ソースX" or "出典X"
+    const parts = text.split(/(Source\s*\d+|ソース\s*\d+|出典\s*\d+)/gi);
+
+    return parts.map((part, i) => {
+      const match = part.match(/(?:Source|ソース|出典)\s*(\d+)/i);
+      if (match) {
+        const sourceId = parseInt(match[1]);
+        const source = sources.find(s => s.id === sourceId);
+        if (source) {
+          return (
+            <a
+              key={i}
+              href={source.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 hover:underline font-medium inline-flex items-center gap-0.5"
+              title={source.url}
+            >
+              {part}
+              <BookOpen className="h-3 w-3" />
+            </a>
+          );
+        }
+      }
+      return part;
+    });
+  };
 
   const writeSectionMutation = trpc.neuronwriter.writeSectionWithSearch.useMutation({
     onSuccess: () => {
@@ -68,7 +102,7 @@ export function OutlineEditor({ headings, onChange, recommendedKeywords = [], on
       content: heading.content
     }).then((res) => {
       const updated = headings.map((h) =>
-        h.id === heading.id ? { ...h, factCheckResults: res.results } : h
+        h.id === heading.id ? { ...h, factCheckResults: res.results, factCheckSources: res.sources } : h
       );
       onChange(updated);
       setCheckingId(null);
@@ -399,7 +433,7 @@ export function OutlineEditor({ headings, onChange, recommendedKeywords = [], on
                                     {res.thought && (
                                       <div className="bg-muted/50 p-2 rounded text-xs text-muted-foreground mb-1">
                                         <span className="font-semibold block mb-0.5">思考プロセス:</span>
-                                        {res.thought}
+                                        {renderTextWithSources(res.thought, heading.factCheckSources)}
                                       </div>
                                     )}
 
@@ -409,10 +443,22 @@ export function OutlineEditor({ headings, onChange, recommendedKeywords = [], on
                                         res.status === "contradicted" ? "text-red-700" :
                                           res.status === "partially_verified" ? "text-amber-800" : "text-gray-600"
                                     )}>
-                                      <span className="font-semibold">判定理由:</span> {res.reason}
+                                      <span className="font-semibold">判定理由:</span> {renderTextWithSources(res.reason, heading.factCheckSources)}
                                     </p>
+
+                                    {/* Suggestion for contradictions */}
+                                    {res.suggestion && (res.status === "contradicted" || res.status === "partially_verified") && (
+                                      <div className="mt-2 p-2 bg-green-50 border border-green-100 rounded-md">
+                                        <div className="flex items-center gap-1 text-green-700 mb-1">
+                                          <Sparkles className="h-3 w-3" />
+                                          <span className="text-xs font-bold">修正案</span>
+                                        </div>
+                                        <p className="text-xs text-green-800">{res.suggestion}</p>
+                                      </div>
+                                    )}
+
                                     {res.sourceUrl && (
-                                      <a href={res.sourceUrl} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-500 hover:underline inline-flex items-center gap-1">
+                                      <a href={res.sourceUrl} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-500 hover:underline inline-flex items-center gap-1 mt-1">
                                         <BookOpen className="h-3 w-3" /> 出典を確認
                                       </a>
                                     )}
@@ -421,6 +467,28 @@ export function OutlineEditor({ headings, onChange, recommendedKeywords = [], on
                               </div>
                             </div>
                           ))}
+                        </div>
+                      )}
+
+                      {/* Source List Footer */}
+                      {heading.factCheckSources && heading.factCheckSources.length > 0 && (
+                        <div className="mt-4 pt-3 border-t">
+                          <p className="text-xs font-semibold text-muted-foreground mb-1">使用したソース一覧:</p>
+                          <ul className="space-y-1">
+                            {heading.factCheckSources.map((source) => (
+                              <li key={source.id} className="text-xs">
+                                <span className="font-mono text-muted-foreground mr-1">[Source {source.id}]</span>
+                                <a
+                                  href={source.url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-blue-600 hover:underline truncate inline-block max-w-[90%] align-bottom"
+                                >
+                                  {source.title || source.url}
+                                </a>
+                              </li>
+                            ))}
+                          </ul>
                         </div>
                       )}
                     </div>
