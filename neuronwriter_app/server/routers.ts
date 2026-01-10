@@ -1487,7 +1487,7 @@ ${searchContext}
           return { results: [] };
         }
 
-        return { results };
+        return { results, sources };
       }),
   }),
 });

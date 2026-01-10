@@ -46,13 +46,17 @@ export function OutlineEditor({ headings, onChange, recommendedKeywords = [], on
   const renderTextWithSources = (text: string, sources?: { id: number; url: string }[]) => {
     if (!text || !sources) return text;
 
-    // Split by pattern "Source X" or "ソースX" or "出典X"
-    const parts = text.split(/(Source\s*\d+|ソース\s*\d+|出典\s*\d+)/gi);
+    // Split by pattern "Source X" or "ソースX" or "出典X" including possible list formats "Source 1, 2"
+    // Note: Simple split might be too complex for list logic, so we keep simple "Source X" highlighting for now,
+    // but allow full-width parsing.
+    const parts = text.split(/((?:Source|ソース|出典)[\s\u3000]*[0-9０-９]+)/gi);
 
     return parts.map((part, i) => {
-      const match = part.match(/(?:Source|ソース|出典)\s*(\d+)/i);
+      const match = part.match(/(?:Source|ソース|出典)[\s\u3000]*([0-9０-９]+)/i);
       if (match) {
-        const sourceId = parseInt(match[1]);
+        // 全角数字を半角に変換
+        const numStr = match[1].replace(/[０-９]/g, (s) => String.fromCharCode(s.charCodeAt(0) - 0xFEE0));
+        const sourceId = parseInt(numStr);
         const source = sources.find(s => s.id === sourceId);
         if (source) {
           return (
@@ -467,14 +471,32 @@ export function OutlineEditor({ headings, onChange, recommendedKeywords = [], on
                                       {/* Extract and display specific source links mentioned in thought/reason */}
                                       {(() => {
                                         const text = (res.thought || "") + (res.reason || "");
-                                        const matches = Array.from(text.matchAll(/(?:Source|ソース|出典)\s*(\d+)/gi));
-                                        const uniqueIds = Array.from(new Set(matches.map((m: any) => parseInt(m[1])))).sort((a, b) => a - b);
+                                        // Improved Regex to catch "Source 1", "Source 1, 2", "Source 1、2" etc.
+                                        // Matches "Source" followed by numbers separated by delimiters
+                                        // Uses [0-9０-９] for full-width digit support
+                                        const matches = Array.from(text.matchAll(/(?:Source|ソース|出典)[\s\u3000]*([0-9０-９]+(?:[\s\u3000]*[,\u3001\uff0c\u30fb]\s*[0-9０-９]+)*)/gim));
 
-                                        if (uniqueIds.length === 0) return null;
+                                        const uniqueIds = new Set<number>();
+                                        matches.forEach((m: any) => {
+                                          const idGroup = m[1];
+                                          // Split by common delimiters: comma, ideographic comma, etc.
+                                          const ids = idGroup.split(/[\s\u3000]*[,\u3001\uff0c\u30fb][\s\u3000]*/).map((s: string) => {
+                                            // Full-width to half-width
+                                            const normalized = s.trim().replace(/[０-９]/g, (c) => String.fromCharCode(c.charCodeAt(0) - 0xFEE0));
+                                            return parseInt(normalized);
+                                          });
+                                          ids.forEach((id: number) => {
+                                            if (!isNaN(id)) uniqueIds.add(id);
+                                          });
+                                        });
+
+                                        const sortedIds = Array.from(uniqueIds).sort((a, b) => a - b);
+
+                                        if (sortedIds.length === 0) return null;
 
                                         return (
                                           <div className="flex items-center gap-2">
-                                            {uniqueIds.map(id => {
+                                            {sortedIds.map(id => {
                                               const source = heading.factCheckSources?.find(s => s.id === id);
                                               if (!source) return null;
                                               return (
