@@ -457,11 +457,43 @@ export function OutlineEditor({ headings, onChange, recommendedKeywords = [], on
                                       </div>
                                     )}
 
-                                    {res.sourceUrl && (
-                                      <a href={res.sourceUrl} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-500 hover:underline inline-flex items-center gap-1 mt-1">
-                                        <BookOpen className="h-3 w-3" /> 出典を確認
-                                      </a>
-                                    )}
+                                    <div className="flex flex-wrap items-center gap-2 mt-1">
+                                      {res.sourceUrl && (
+                                        <a href={res.sourceUrl} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-500 hover:underline inline-flex items-center gap-1">
+                                          <BookOpen className="h-3 w-3" /> 出典を確認
+                                        </a>
+                                      )}
+
+                                      {/* Extract and display specific source links mentioned in thought/reason */}
+                                      {(() => {
+                                        const text = (res.thought || "") + (res.reason || "");
+                                        const matches = Array.from(text.matchAll(/(?:Source|ソース|出典)\s*(\d+)/gi));
+                                        const uniqueIds = Array.from(new Set(matches.map((m: any) => parseInt(m[1])))).sort((a, b) => a - b);
+
+                                        if (uniqueIds.length === 0) return null;
+
+                                        return (
+                                          <div className="flex items-center gap-2">
+                                            {uniqueIds.map(id => {
+                                              const source = heading.factCheckSources?.find(s => s.id === id);
+                                              if (!source) return null;
+                                              return (
+                                                <a
+                                                  key={id}
+                                                  href={source.url}
+                                                  target="_blank"
+                                                  rel="noopener noreferrer"
+                                                  className="text-xs text-red-500 hover:underline font-medium hover:text-red-600 transition-colors"
+                                                  title={source.title}
+                                                >
+                                                  ソース{id}
+                                                </a>
+                                              );
+                                            })}
+                                          </div>
+                                        );
+                                      })()}
+                                    </div>
                                   </div>
                                 </div>
                               </div>
