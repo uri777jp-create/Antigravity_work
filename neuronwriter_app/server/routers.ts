@@ -1439,7 +1439,7 @@ ${searchContext}
 - Write a "thought" process analyzing which parts of the evidence support or contradict the claim. **(Must be in Japanese)**
 - Rate your confidence (0-100).
 - The "reason" must also be in Japanese.
-- **IMPORTANT**: If the status is "Contradicted" or "Partially Verified", provide a "suggestion" for how to correct the text based on the evidence. (In Japanese)
+- **IMPORTANT**: If the status is "Contradicted" or "Partially Verified", you **MUST** provide a "suggestion" field with a corrected version of the claim/text based on the evidence. (In Japanese)
 
 ## Output Format (JSON)
 {
@@ -1451,7 +1451,7 @@ ${searchContext}
       "confidence": 80,
       "reason": "判定理由の要約 (Japanese)",
       "source_url": "Supporting URL from sources",
-      "suggestion": "修正案のテキスト (必要な場合のみ)"
+      "suggestion": "Corrected text proposal (REQUIRED if Contradicted/Partially Verified, empty string otherwise)"
     }
   ]
 }`;
