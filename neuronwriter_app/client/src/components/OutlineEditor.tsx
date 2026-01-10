@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { GripVertical, Plus, Trash2, Sparkles, BookOpen, Loader2, ShieldCheck, CheckCircle2, AlertTriangle, HelpCircle } from "lucide-react";
+import { GripVertical, Plus, Trash2, Sparkles, BookOpen, Loader2, ShieldCheck, CheckCircle2, AlertTriangle, HelpCircle, Copy } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
@@ -41,6 +41,11 @@ export function OutlineEditor({ headings, onChange, recommendedKeywords = [], on
   const [draggedId, setDraggedId] = useState<string | null>(null);
   const [writingId, setWritingId] = useState<string | null>(null); // 現在執筆中のID
   const [checkingId, setCheckingId] = useState<string | null>(null); // ファクトチェック中のID
+
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text);
+    toast.success("修正案をコピーしました");
+  };
 
   // Helper to render text with source links
   const renderTextWithSources = (text: string, sources?: { id: number; url: string }[]) => {
@@ -140,6 +145,7 @@ export function OutlineEditor({ headings, onChange, recommendedKeywords = [], on
       writeSectionMutation.mutateAsync({
         heading: heading.text,
         keywords: heading.keywords,
+        currentContent: heading.content, // 既存の本文を改善のために送信
       }).then((result) => {
         const updated = headings.map((h) =>
           h.id === heading.id ? { ...h, content: result.content, references: result.references } : h
@@ -452,12 +458,21 @@ export function OutlineEditor({ headings, onChange, recommendedKeywords = [], on
 
                                     {/* Suggestion for contradictions */}
                                     {res.suggestion && (res.status === "contradicted" || res.status === "partially_verified") && (
-                                      <div className="mt-2 p-2 bg-green-50 border border-green-100 rounded-md">
+                                      <div className="mt-2 p-2 bg-green-50 border border-green-100 rounded-md relative group">
                                         <div className="flex items-center gap-1 text-green-700 mb-1">
                                           <Sparkles className="h-3 w-3" />
                                           <span className="text-xs font-bold">修正案</span>
                                         </div>
-                                        <p className="text-xs text-green-800">{res.suggestion}</p>
+                                        <p className="text-xs text-green-800 pr-6">{res.suggestion}</p>
+                                        <Button
+                                          variant="ghost"
+                                          size="icon"
+                                          className="absolute top-1 right-1 h-6 w-6 opacity-80 hover:opacity-100 bg-white/50 hover:bg-white text-green-700"
+                                          onClick={() => copyToClipboard(res.suggestion)}
+                                          title="修正案をコピー"
+                                        >
+                                          <Copy className="h-3 w-3" />
+                                        </Button>
                                       </div>
                                     )}
 

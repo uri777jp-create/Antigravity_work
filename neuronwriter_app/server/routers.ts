@@ -1155,6 +1155,7 @@ ${headingsHtml}
         z.object({
           heading: z.string(),
           keywords: z.array(z.string()).optional(),
+          currentContent: z.string().optional(),
         })
       )
       .mutation(async ({ ctx, input }) => {
@@ -1178,7 +1179,34 @@ ${headingsHtml}
         }
 
         // 2. LLMで執筆
-        const prompt = `あなたはプロのWebライターです。
+        let prompt = "";
+        if (input.currentContent) {
+          // 既存の記事がある場合は、それをベースに修正・改善するモード
+          prompt = `あなたはプロのWebライター兼編集者です。
+以下の「既存のドラフト」を、提供された「Web検索結果」を用いて事実確認し、より正確で充実した記事にリライト（再生成）してください。
+
+## 執筆対象の見出し
+${input.heading}
+
+## 推奨キーワード
+${input.keywords?.join(", ") || "特になし"}
+
+## 既存のドラフト（ユーザーが作成した元の文章）
+${input.currentContent}
+
+## Web検索結果（最新の事実情報）
+${searchContext}
+
+## 執筆ルール
+1. **文脈の維持**: 「既存のドラフト」で言及されている特定のトピックや固有名詞（企業名や数値など）は、可能な限り維持してください（勝手に削除して一般的な内容にしないでください）。
+2. **事実の更新**: 検索結果に基づいて、ドラフト内の古い情報や誤った情報を修正・追記してください。
+3. **正確性**: 検索結果と矛盾する内容は削除または修正してください。
+4. **トーン**: 丁寧かつ読みやすい、専門性のある文体（です・ます調）で整えてください。
+5. **構造化**: 読みやすくするために<p>, <ul>, <li>, <strong>タグを適切に使用してください。
+6. 出力はHTML形式の本文のみを返してください。`;
+        } else {
+          // 新規作成モード
+          prompt = `あなたはプロのWebライターです。
 以下の「見出し」について、提供された「Web検索結果」**のみ**を情報源として、事実に即した記事セクションを執筆してください。
 
 ## 執筆対象の見出し
@@ -1199,6 +1227,7 @@ ${searchContext}
 6. 出典への言及（例：「出典1によると〜」）は文脈上自然であれば含めても良いですが、必須ではありません。
 
 出力はHTML形式の本文のみを返してください。`;
+        }
 
         const response = await invokeLLM({
           messages: [
@@ -1479,7 +1508,8 @@ ${searchContext}
               reason: r.reason,
               thought: r.thought,
               confidence: r.confidence,
-              sourceUrl: r.source_url || r.sourceUrl // 表記ゆれ対応
+              sourceUrl: r.source_url || r.sourceUrl, // 表記ゆれ対応
+              suggestion: r.suggestion
             };
           });
         } catch (e) {
