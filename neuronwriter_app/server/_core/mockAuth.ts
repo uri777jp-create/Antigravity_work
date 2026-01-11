@@ -67,4 +67,101 @@ export function registerMockAuthRoutes(app: Express) {
             res.status(500).json({ error: "Mock login failed" });
         }
     });
+
+    // POST Login
+    app.post("/api/auth/login", async (req: Request, res: Response) => {
+        const { email, password } = req.body;
+        if (!email || !password) {
+            return res.status(400).json({ error: "メールアドレスとパスワードを入力してください" });
+        }
+
+        try {
+            // Check if user exists (Mock simple check: strictly match email)
+            // Ideally we should use db.getUserByEmail if available, for now matching all users
+            const users = await db.getAllUsers();
+            const user = users.find(u => u.email === email);
+
+            if (!user) {
+                return res.status(401).json({ error: "メールアドレスまたはパスワードが間違っています" });
+            }
+
+            // Create session
+            const sessionToken = await sdk.createSessionToken(user.openId, {
+                name: user.name || "User",
+                expiresInMs: ONE_YEAR_MS,
+            });
+
+            const cookieOptions = getSessionCookieOptions(req);
+            res.cookie(COOKIE_NAME, sessionToken, {
+                ...cookieOptions,
+                maxAge: ONE_YEAR_MS
+            });
+
+            return res.json({ success: true, user });
+        } catch (error) {
+            console.error("[MockAuth] Login failed", error);
+            res.status(500).json({ error: "ログイン処理に失敗しました" });
+        }
+    });
+
+    // POST Register
+    app.post("/api/auth/register", async (req: Request, res: Response) => {
+        const { name, email, password } = req.body;
+        if (!name || !email || !password) {
+            return res.status(400).json({ error: "プロジェクト名、メールアドレス、パスワードは必須です" });
+        }
+
+        try {
+            const users = await db.getAllUsers();
+            const existingEmail = users.find(u => u.email === email);
+            if (existingEmail) {
+                return res.status(400).json({ error: "このメールアドレスは既に登録されています" });
+            }
+
+            // Check if project name/id already exists
+            const existingProject = await db.getProjectByNeuronId(name);
+            if (existingProject) {
+                return res.status(400).json({ error: "このプロジェクトIDは既に使用されています。別の名前を指定してください" });
+            }
+
+            // Use email as OpenID for simplicity
+            const newOpenId = email;
+
+            await db.upsertUser({
+                openId: newOpenId,
+                name: name,
+                email: email,
+                loginMethod: "mock",
+                role: name === "admin_sarami" ? "admin" : "user",
+                lastSignedIn: new Date(),
+            });
+
+            // Auto-create project
+            const user = await db.getUserByOpenId(newOpenId);
+            if (user) {
+                await db.createProject({
+                    userId: user.id,
+                    neuronProjectId: name,
+                    name: name,
+                });
+            }
+
+            // Login
+            const sessionToken = await sdk.createSessionToken(newOpenId, {
+                name: name,
+                expiresInMs: ONE_YEAR_MS,
+            });
+
+            const cookieOptions = getSessionCookieOptions(req);
+            res.cookie(COOKIE_NAME, sessionToken, {
+                ...cookieOptions,
+                maxAge: ONE_YEAR_MS
+            });
+
+            return res.json({ success: true, user });
+        } catch (error) {
+            console.error("[MockAuth] Register failed", error);
+            res.status(500).json({ error: "Registration failed" });
+        }
+    });
 }
