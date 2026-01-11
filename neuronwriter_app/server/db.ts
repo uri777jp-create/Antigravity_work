@@ -96,6 +96,30 @@ export async function getAllUsers() {
   return await db.select().from(users).orderBy(users.createdAt);
 }
 
+export async function getAllUsersWithProjects() {
+  const db = await getDb();
+  if (!db) return [];
+
+  const rows = await db.select().from(users).leftJoin(projects, eq(users.id, projects.userId)).orderBy(users.createdAt);
+
+  const result = rows.reduce<Record<number, any>>((acc, row) => {
+    const user = row.users;
+    const project = row.projects;
+
+    if (!acc[user.id]) {
+      acc[user.id] = { ...user, projects: [] };
+    }
+
+    if (project) {
+      acc[user.id].projects.push(project);
+    }
+
+    return acc;
+  }, {});
+
+  return Object.values(result).sort((a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+}
+
 // NeuronWriter feature queries
 
 export async function createProject(project: InsertProject) {

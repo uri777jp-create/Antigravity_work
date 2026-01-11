@@ -10,6 +10,13 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, Dialog
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { useLocation } from "wouter";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
 
 export default function AdminDashboard() {
     const { user } = useAuth();
@@ -22,6 +29,7 @@ export default function AdminDashboard() {
     }
 
     const { data: users, isLoading, refetch } = trpc.admin.listUsers.useQuery();
+    const { data: neuronProjects } = trpc.neuronwriter.listProjects.useQuery();
     const [selectedUser, setSelectedUser] = useState<{ id: number; name: string } | null>(null);
     const [projectId, setProjectId] = useState("");
     const [projectName, setProjectName] = useState("");
@@ -50,6 +58,14 @@ export default function AdminDashboard() {
         });
     };
 
+    const handleProjectSelect = (value: string) => {
+        const project = neuronProjects?.projects?.find((p: any) => p.id === value);
+        if (project) {
+            setProjectId(project.id);
+            setProjectName(project.name || project.id);
+        }
+    };
+
     return (
         <div className="container mx-auto py-10">
             <div className="flex justify-between items-center mb-8">
@@ -74,6 +90,7 @@ export default function AdminDashboard() {
                                 <TableHead>ID</TableHead>
                                 <TableHead>名前</TableHead>
                                 <TableHead>Email</TableHead>
+                                <TableHead>現在のプロジェクト</TableHead>
                                 <TableHead>最終ログイン</TableHead>
                                 <TableHead>権限</TableHead>
                                 <TableHead className="text-right">アクション</TableHead>
@@ -90,6 +107,7 @@ export default function AdminDashboard() {
                                     <TableCell>{u.id}</TableCell>
                                     <TableCell>{u.name || "未設定"}</TableCell>
                                     <TableCell>{u.email || "未設定"}</TableCell>
+                                    <TableCell>{u.projects?.[0]?.name || "-"}</TableCell>
                                     <TableCell>{new Date(u.lastSignedIn).toLocaleString()}</TableCell>
                                     <TableCell>
                                         <Badge variant={u.role === 'admin' ? "default" : "secondary"}>
@@ -99,7 +117,16 @@ export default function AdminDashboard() {
                                     <TableCell className="text-right">
                                         <Dialog open={isOpen && selectedUser?.id === u.id} onOpenChange={(open) => {
                                             setIsOpen(open);
-                                            if (open) setSelectedUser({ id: u.id, name: u.name || u.email || "User" });
+                                            if (open) {
+                                                setSelectedUser({ id: u.id, name: u.name || u.email || "User" });
+                                                if (u.projects && u.projects.length > 0) {
+                                                    setProjectId(u.projects[0].neuronProjectId);
+                                                    setProjectName(u.projects[0].name);
+                                                } else {
+                                                    setProjectId("");
+                                                    setProjectName("");
+                                                }
+                                            }
                                         }}>
                                             <DialogTrigger asChild>
                                                 <Button size="sm" variant="outline">プロジェクト割当</Button>
@@ -109,6 +136,29 @@ export default function AdminDashboard() {
                                                     <DialogTitle>{selectedUser?.name} にプロジェクトを割り当て</DialogTitle>
                                                 </DialogHeader>
                                                 <div className="grid gap-4 py-4">
+                                                    <div className="space-y-2">
+                                                        <Label>プロジェクトを選択</Label>
+                                                        <Select onValueChange={handleProjectSelect}>
+                                                            <SelectTrigger>
+                                                                <SelectValue placeholder="既存のプロジェクトから選択" />
+                                                            </SelectTrigger>
+                                                            <SelectContent>
+                                                                {neuronProjects?.projects?.map((project: any) => (
+                                                                    <SelectItem key={project.id} value={project.id}>
+                                                                        {project.name || project.id}
+                                                                    </SelectItem>
+                                                                ))}
+                                                            </SelectContent>
+                                                        </Select>
+                                                    </div>
+                                                    <div className="relative">
+                                                        <div className="absolute inset-0 flex items-center">
+                                                            <span className="w-full border-t" />
+                                                        </div>
+                                                        <div className="relative flex justify-center text-xs uppercase">
+                                                            <span className="bg-background px-2 text-muted-foreground">Or enter manually</span>
+                                                        </div>
+                                                    </div>
                                                     <div className="grid gap-2">
                                                         <Label htmlFor="pid">プロジェクト名 / ニックネーム</Label>
                                                         <Input id="pid" value={projectId} onChange={(e) => setProjectId(e.target.value)} placeholder="例: my-project-01" />

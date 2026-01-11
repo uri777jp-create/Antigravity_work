@@ -1607,8 +1607,8 @@ ${searchContext}
 
   admin: router({
     listUsers: adminProcedure.query(async () => {
-      const { getAllUsers } = await import("./db");
-      return await getAllUsers();
+      const { getAllUsersWithProjects } = await import("./db");
+      return await getAllUsersWithProjects();
     }),
 
     assignProject: adminProcedure
