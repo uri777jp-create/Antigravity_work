@@ -90,6 +90,13 @@ export default function Dashboard() {
                   View All Queries
                 </Button>
               </Link>
+              {user?.role === 'admin' && (
+                <Link href="/admin">
+                  <Button variant="secondary" className="w-full justify-start text-red-700 bg-red-50 hover:bg-red-100" size="lg">
+                    管理者ダッシュボード
+                  </Button>
+                </Link>
+              )}
             </CardContent>
           </Card>
 
@@ -110,13 +117,12 @@ export default function Dashboard() {
                         <div className="flex items-center justify-between">
                           <div className="font-medium truncate">{query.keyword}</div>
                           <div
-                            className={`text-xs px-2 py-1 rounded-full ${
-                              query.status === "ready"
+                            className={`text-xs px-2 py-1 rounded-full ${query.status === "ready"
                                 ? "bg-green-100 text-green-700"
                                 : query.status === "pending"
                                   ? "bg-amber-100 text-amber-700"
                                   : "bg-red-100 text-red-700"
-                            }`}
+                              }`}
                           >
                             {query.status}
                           </div>

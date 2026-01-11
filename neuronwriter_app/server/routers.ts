@@ -1604,6 +1604,29 @@ ${searchContext}
         return { results, sources };
       }),
   }),
+
+  admin: router({
+    listUsers: adminProcedure.query(async () => {
+      const { getAllUsers } = await import("./db");
+      return await getAllUsers();
+    }),
+
+    assignProject: adminProcedure
+      .input(z.object({
+        targetUserId: z.number(),
+        neuronProjectId: z.string(),
+        projectName: z.string()
+      }))
+      .mutation(async ({ input }) => {
+        const { createProject } = await import("./db");
+        await createProject({
+          userId: input.targetUserId,
+          neuronProjectId: input.neuronProjectId,
+          name: input.projectName
+        });
+        return { success: true };
+      }),
+  }),
 });
 
 export type AppRouter = typeof appRouter;

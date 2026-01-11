@@ -9,6 +9,7 @@ import Dashboard from "./pages/Dashboard";
 import NewQuery from "./pages/NewQuery";
 import QueriesList from "./pages/QueriesList";
 import QueryDetail from "./pages/QueryDetail";
+import AdminDashboard from "./pages/AdminDashboard";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -16,6 +17,7 @@ function Router() {
     <Switch>
       <Route path={"/"} component={Home} />
       <Route path={"/dashboard"} component={Dashboard} />
+      <Route path={"/admin"} component={AdminDashboard} />
       <Route path="/new-query" component={NewQuery} />
       <Route path="/queries" component={QueriesList} />
       <Route path="/query/:id" component={QueryDetail} />
@@ -36,7 +38,7 @@ function App() {
     <ErrorBoundary>
       <ThemeProvider
         defaultTheme="light"
-        // switchable
+      // switchable
       >
         <TooltipProvider>
           <Toaster />

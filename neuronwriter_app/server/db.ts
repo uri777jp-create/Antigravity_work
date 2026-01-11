@@ -89,6 +89,13 @@ export async function getUserByOpenId(openId: string) {
   return result.length > 0 ? result[0] : undefined;
 }
 
+export async function getAllUsers() {
+  const db = await getDb();
+  if (!db) return [];
+  // 最新のユーザー順に取得
+  return await db.select().from(users).orderBy(users.createdAt);
+}
+
 // NeuronWriter feature queries
 
 export async function createProject(project: InsertProject) {
