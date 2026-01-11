@@ -2,11 +2,12 @@ import { useAuth } from "@/_core/hooks/useAuth";
 import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Loader2, Plus, FileText, BarChart3 } from "lucide-react";
-import { Link } from "wouter";
+import { Loader2, Plus, FileText, BarChart3, LogOut } from "lucide-react";
+import { Link, useLocation } from "wouter";
 
 export default function Dashboard() {
-  const { user, loading: authLoading } = useAuth();
+  const { user, loading: authLoading, logout } = useAuth();
+  const [, setLocation] = useLocation();
   const { data: queries, isLoading: queriesLoading } = trpc.neuronwriter.getUserQueries.useQuery(
     undefined,
     { enabled: !!user }
@@ -27,16 +28,27 @@ export default function Dashboard() {
   const readyQueries = queries?.filter((q) => q.status === "ready") || [];
   const pendingQueries = queries?.filter((q) => q.status === "pending") || [];
 
+  const handleLogout = async () => {
+    await logout();
+    setLocation("/login");
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5">
       <div className="container py-12">
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-            SEO Content Dashboard
-          </h1>
-          <p className="text-muted-foreground text-lg">
-            Manage your Natural Language Processing Data content and SEO optimization
-          </p>
+        <div className="mb-8 flex items-center justify-between">
+          <div>
+            <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+              SEO Content Dashboard
+            </h1>
+            <p className="text-muted-foreground text-lg">
+              Manage your Natural Language Processing Data content and SEO optimization
+            </p>
+          </div>
+          <Button variant="outline" size="sm" onClick={handleLogout}>
+            <LogOut className="w-4 h-4 mr-2" />
+            ログアウト
+          </Button>
         </div>
 
         <div className="grid gap-6 md:grid-cols-3 mb-8">
@@ -118,10 +130,10 @@ export default function Dashboard() {
                           <div className="font-medium truncate">{query.keyword}</div>
                           <div
                             className={`text-xs px-2 py-1 rounded-full ${query.status === "ready"
-                                ? "bg-green-100 text-green-700"
-                                : query.status === "pending"
-                                  ? "bg-amber-100 text-amber-700"
-                                  : "bg-red-100 text-red-700"
+                              ? "bg-green-100 text-green-700"
+                              : query.status === "pending"
+                                ? "bg-amber-100 text-amber-700"
+                                : "bg-red-100 text-red-700"
                               }`}
                           >
                             {query.status}

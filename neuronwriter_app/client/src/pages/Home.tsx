@@ -2,10 +2,17 @@ import { useAuth } from "@/_core/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Loader2, Sparkles, FileText, BarChart3, Zap } from "lucide-react";
 import { getLoginUrl } from "@/const";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 
 export default function Home() {
-  const { user, loading, isAuthenticated } = useAuth();
+  const { user, loading, isAuthenticated, logout } = useAuth();
+  const [, setLocation] = useLocation();
+
+  const handleLogout = async () => {
+    await logout();
+    // ログアウト後はトップページ（未ログイン状態）を再表示するか、ログインページへ
+    setLocation("/");
+  };
 
   if (loading) {
     return (
@@ -18,7 +25,13 @@ export default function Home() {
   if (isAuthenticated && user) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5">
-        <div className="container py-16">
+        <div className="container py-6 flex justify-end gap-4">
+          <Link href="/dashboard">
+            <Button variant="outline">ダッシュボードへ</Button>
+          </Link>
+          <Button variant="ghost" onClick={handleLogout}>ログアウト</Button>
+        </div>
+        <div className="container py-10">
           <div className="text-center mb-12">
             <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent">
               おかえりなさい、{user.name || "ユーザー"}様！
@@ -76,7 +89,12 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5">
-      <div className="container py-20">
+      <div className="container py-6 flex justify-end">
+        <Link href="/login">
+          <Button variant="default">ログイン</Button>
+        </Link>
+      </div>
+      <div className="container py-20 pt-10">
         <div className="max-w-4xl mx-auto text-center">
           <div className="mb-8">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary mb-6">
@@ -92,13 +110,12 @@ export default function Home() {
           </div>
 
           <div className="mb-12">
-            {/* Direct link to mock login for reliability in dev mode */}
-            <a href="/api/auth/mock-login" className="inline-block">
+            <Link href="/login">
               <Button size="lg" className="text-lg px-8 py-6 h-auto">
                 <Sparkles className="w-5 h-5 mr-2" />
-                今すぐ始める (Dev)
+                今すぐ始める
               </Button>
-            </a>
+            </Link>
           </div>
 
           <div className="grid gap-8 md:grid-cols-3 mt-16">

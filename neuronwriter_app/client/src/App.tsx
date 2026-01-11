@@ -10,12 +10,14 @@ import NewQuery from "./pages/NewQuery";
 import QueriesList from "./pages/QueriesList";
 import QueryDetail from "./pages/QueryDetail";
 import AdminDashboard from "./pages/AdminDashboard";
+import Login from "./pages/Login";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
   return (
     <Switch>
       <Route path={"/"} component={Home} />
+      <Route path={"/login"} component={Login} />
       <Route path={"/dashboard"} component={Dashboard} />
       <Route path={"/admin"} component={AdminDashboard} />
       <Route path="/new-query" component={NewQuery} />
