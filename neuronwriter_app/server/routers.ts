@@ -296,7 +296,12 @@ export const appRouter = router({
         const topContentType = contentTypes.length > 0 ? contentTypes[0] : { type: 'article', percentage: 0 };
         const contentTypeInfo = contentTypes.map((c: any) => `${c.type || c.name}(${c.percentage || c.pc}%)`).join(", ") || "記事";
 
-        const prompt = `以下のSERP分析データと推奨キーワードを元に、検索上位表示を狙えるタイトルとメタディスクリプションを生成してください。
+        const currentYear = new Date().getFullYear();
+        const prompt = `あなたはSEOに強く、読者の意図を深く汲み取った記事を書くプロのWebライターです。
+
+## 実行時の時間情報
+- 現在の年号: ${currentYear}年
+- 本日は ${currentYear}年${new Date().getMonth() + 1}月${new Date().getDate()}日 です。
 
 ## ターゲットキーワード
 ${query.keyword}
@@ -318,6 +323,11 @@ ${titleKeywords}
 ${descKeywords}
 
 ## 生成ルール
+
+### 【最重要】年号・日付の取り扱い
+- タイトルやディスクリプションに年号を入れる場合は、必ず **${currentYear}** （または最新）を使用してください。
+- **${currentYear - 1}年や${currentYear - 2}年といった過去の年号は、SERP分析データに含まれていても絶対に反映しないでください。**
+- ユーザーは「今現在の最新情報」を求めています。
 
 ### タイトルの要件
 - 30-60文字
@@ -833,11 +843,27 @@ ${articleKeywords}
           return "";
         }).filter(Boolean).join("\n") || "データなし";
 
+        // 最新トレンド調査（Tavily検索）
+        const { searchTavily } = await import("./_core/tavily");
+        let trendSummary = "トレンド取得に失敗しました";
+        try {
+          const trendQuery = `${query.keyword} トレンド 最新 ${new Date().getFullYear()}`;
+          const trendResults = await searchTavily(trendQuery, 3);
+          trendSummary = trendResults.results.map(r => r.title).join(", ");
+          console.log(`Trend Search Result: ${trendSummary}`);
+        } catch (e) {
+          console.error("Trend search failed:", e);
+        }
+
         const prompt = `あなたは検索上位を独占する戦略を立てる、プロのSEOコンサルタントです。
 提供されたSERP分析データと競合の構成を徹底的に分析し、検索意図を完璧に満たす網羅的な目次構成を作成してください。
 
 ## ターゲットキーワード
 ${query.keyword}
+
+## 【重要】最新トレンド（これらを考慮した見出しを含めてください）
+検索結果から検出されたトレンド: ${trendSummary}
+これらのトレンド技術や新しい動きについて触れるH2またはH3を作成し、「最新情報に詳しい記事」という印象を与えてください。
 
 ## SERP分析・キーワードデータ
 - **検索意図**: ${intentInfo}（${topIntent.type || topIntent.name}）
@@ -1270,29 +1296,63 @@ ${searchContext}
         const { searchTavily } = await import("./_core/tavily");
         const { invokeLLM } = await import("./_core/llm");
 
-        // 1. TavilyでWeb検索（章全体を網羅する検索）
-        // H2とH3のキーワードを組み合わせて検索クエリを作成
+        const currentYear = new Date().getFullYear();
+        const currentMonth = new Date().getMonth() + 1;
+
+        // 1. 文脈判定と検索戦略の構築
+        const headingText = input.h2.heading;
+
+        // 商用文脈（キャンペーン・価格・ランキング等）
+        const isCommercialContext = /価格|料金|費用|キャンペーン|おすすめ|ランキング|比較|最安値/.test(headingText);
+
+        // 批判・検証文脈（デメリット・失敗・注意点等）
+        // 「比較」「ランキング」「評判」は批判的な視点も重要なのでこちらにも該当させる
+        const isCriticalContext = /比較|ランキング|選び方|注意点|デメリット|評判|口コミ|失敗|後悔/.test(headingText);
+
+        // 基本検索クエリの構築
         const mainKeywords = input.h2.keywords?.join(" ") || "";
-        const subKeywords = input.h3s.map(h => h.heading).join(" "); // H3の見出し自体をキーワードとして扱う
-        const searchQuery = `${input.h2.heading} ${mainKeywords} ${subKeywords} 解説`;
-        console.log(`Searching Web for Chapter: ${searchQuery}`);
+        const subKeywords = input.h3s.map(h => h.heading).join(" ");
+        const baseQuery = `${headingText} ${mainKeywords} ${subKeywords} 解説`;
+
+        // 実行する検索クエリのリストを作成
+        const searchQueries = [baseQuery];
+
+        if (isCommercialContext) {
+          // 最新のキャンペーンや価格情報を狙うクエリを追加
+          searchQueries.push(`${headingText} キャンペーン お得情報 ${currentYear}年${currentMonth}月`);
+        }
+
+        if (isCriticalContext) {
+          // デメリットや失敗談を狙うクエリを追加
+          const coreKeyword = input.h2.keywords?.[0] || headingText;
+          searchQueries.push(`${coreKeyword} デメリット 失敗 苦情 注意点`);
+        }
+
+        console.log(`Searching Web for Chapter with adaptive queries:`, searchQueries);
 
         let searchContext = "";
         let referenceLinks: { title: string; url: string }[] = [];
 
         try {
-          // 章単位なので少し多めに取得
-          const searchResults = await searchTavily(searchQuery, 7);
-          referenceLinks = searchResults.results.map(r => ({ title: r.title, url: r.url }));
-          searchContext = searchResults.results
+          // 複数のクエリを並列実行して情報を収集（Tavilyのレート制限を考慮しつつ）
+          const searchPromises = searchQueries.map(q => searchTavily(q, isCommercialContext || isCriticalContext ? 5 : 7));
+          const results = await Promise.all(searchPromises);
+
+          // 結果の統合と重複除去（URLでユニーク化）
+          const allResults = results.flatMap(r => r.results);
+          const uniqueResults = Array.from(new Map(allResults.map(item => [item.url, item])).values());
+
+          referenceLinks = uniqueResults.map(r => ({ title: r.title, url: r.url }));
+          searchContext = uniqueResults
             .map((r, i) => `【出典${i + 1}】${r.title} (${r.url})\n${r.content}`)
             .join("\n\n");
+
         } catch (e) {
           console.error("Tavily search failed:", e);
           throw new Error("Web検索に失敗しました。APIキー設定を確認してください。");
         }
 
-        // 2. LLMで執筆
+        // 2. LLMで執筆プロンプト作成
         const h3Structure = input.h3s.map(h => `- ${h.heading} (キーワード: ${h.keywords?.join(", ") || "なし"})`).join("\n");
 
         const prompt = `あなたはSEOに強く、読者の意図を深く汲み取った記事を書くプロのWebライターです。
@@ -1307,8 +1367,12 @@ ${input.h2.heading}
 ${h3Structure}
 
 ## 取材メモ（Web検索結果）
-※現在は2026年です。情報の鮮度を重視し、過去の年号（2024年など）が混入しないよう徹底してください。
+※現在は${currentYear}年です。情報の鮮度を重視し、過去の年号（${currentYear - 2}年など）が混入しないよう徹底してください。
 ${searchContext}
+
+## 執筆モード設定
+- **商用情報モード**: ${isCommercialContext ? "ON" : "OFF"}
+- **辛口レビューモード**: ${isCriticalContext ? "ON" : "OFF"}
 
 ## 執筆指示
 1. **専門家としての視点**: 執筆対象のトピックにおける権威ある専門家として、信頼感のあるトーンで執筆してください。
@@ -1316,8 +1380,23 @@ ${searchContext}
 3. **視覚的強調**: 重要な箇所は<strong>タグで囲んで強調してください。
 4. **情報の構造化**: <ul><li>タグ等を用いて、読者が直感的に理解できるよう整理してください。
 
-5. **【重要】H2の性質に応じた書き分け指示**:
+${isCommercialContext ? `
+5. **【重要】キャンペーン・価格情報の強調**:
+   - 検索結果に「期間限定」「キャッシュバック」「割引」などの情報が含まれている場合は、必ず「【${currentYear}年${currentMonth}月現在】」という表記と共に、具体的な特典内容を目立つように記載してください。
+   - 読者が損をしないための「お得な申し込みタイミング」等のアドバイスがあれば盛り込んでください。
+` : ""}
+
+${isCriticalContext ? `
+6. **【重要】中立・批判的な視点の導入**:
+   - あなたは提灯記事を書くライターではありません。読者の利益を守る「辛口の専門家」です。
+   - 検索結果に含まれる「デメリット」「失敗談」「注意点」を積極的に拾い上げ、「メリットだけでなく、○○という点には注意が必要です」と、公平な観点から記述してください。
+   - 悪い点を隠さずに書くことで、記事の信頼性を高めてください。
+` : ""}
+
+7. **H2の性質に応じた書き分け指示**:
    - **通常の章の場合**: \`h2_intro\`は、その章で解説する内容の提示や読者の悩みへの共感を中心に記述してください。
+   - **「まとめ・結論」系の章の場合**: H2見出しに「まとめ」「結論」「さいごに」「終わりに」等の文言が含まれる場合、\`h2_intro\`は導入文ではなく**「記事全体の総括（結論）」**として執筆してください。
+   - **まとめ時の構成**: 単なる紹介ではなく「結局どうすればいいのか」という読者の問いに対する答えを簡潔にまとめ、最後に読者のアクションを促す前向きな言葉で締めくくってください。
    - **「まとめ・結論」系の章の場合**: H2見出しに「まとめ」「結論」「さいごに」「終わりに」等の文言が含まれる場合、\`h2_intro\`は導入文ではなく**「記事全体の総括（結論）」**として執筆してください。
    - **まとめ時の構成**: 単なる紹介ではなく「結局どうすればいいのか」という読者の問いに対する答えを簡潔にまとめ、最後に読者のアクションを促す前向きな言葉で締めくくってください。
 
