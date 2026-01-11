@@ -67,7 +67,7 @@ export default function QueryDetail() {
         setSeoScore(data.seoScore);
       }
       toast.success("タイトルとディスクリプションを保存しました！", {
-        description: data.saved ? `NeuronWriterに保存しました。SEOスコア: ${data.seoScore}/100` : "ローカルに保存しました",
+        description: data.saved ? `Natural Language Processing Dataに保存しました。SEOスコア: ${data.seoScore}/100` : "ローカルに保存しました",
         duration: 5000,
       });
     },
@@ -177,7 +177,7 @@ export default function QueryDetail() {
         setSeoScore(data.seoScore);
       }
       toast.success(`リード文を生成しました！`, {
-        description: data.saved ? `NeuronWriterに保存しました。SEOスコア: ${data.seoScore}/100` : "ローカルに保存しました",
+        description: data.saved ? `Natural Language Processing Dataに保存しました。SEOスコア: ${data.seoScore}/100` : "ローカルに保存しました",
         duration: 5000,
       });
     },
@@ -194,7 +194,7 @@ export default function QueryDetail() {
         setSeoScore(data.seoScore);
       }
       toast.success(`リード文を保存しました！`, {
-        description: data.saved ? `NeuronWriterに保存しました。SEOスコア: ${data.seoScore}/100` : "ローカルに保存しました",
+        description: data.saved ? `Natural Language Processing Dataに保存しました。SEOスコア: ${data.seoScore}/100` : "ローカルに保存しました",
         duration: 5000,
       });
     },
@@ -208,11 +208,11 @@ export default function QueryDetail() {
       setTitle(data.title);
       setDescription(data.description);
 
-      // NeuronWriterに保存されたスコアを表示
+      // Natural Language Processing Dataに保存されたスコアを表示
       if (data.saved && data.seoScore !== undefined) {
         setSeoScore(data.seoScore);
         toast.success(`タイトルとディスクリプションを生成しました！`, {
-          description: `NeuronWriterに保存しました。現在のSEOスコア: ${data.seoScore}/100`,
+          description: `Natural Language Processing Dataに保存しました。現在のSEOスコア: ${data.seoScore}/100`,
           duration: 5000,
         });
       } else {
@@ -748,7 +748,7 @@ export default function QueryDetail() {
                     <div>
                       <CardTitle>SEO 推薦データ</CardTitle>
                       <CardDescription>
-                        NeuronWriter APIからのデータ - {new Date(query.createdAt).toLocaleDateString()}
+                        Natural Language Processing Dataからのデータ - {new Date(query.createdAt).toLocaleDateString()}
                       </CardDescription>
                     </div>
                     <Button variant="outline" size="sm" onClick={handleDownloadJSON}>

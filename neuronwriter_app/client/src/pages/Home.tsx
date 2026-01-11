@@ -81,7 +81,7 @@ export default function Home() {
           <div className="mb-8">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary mb-6">
               <Zap className="w-4 h-4" />
-              <span className="text-sm font-medium">NeuronWriter API搭載</span>
+              <span className="text-sm font-medium">Natural Language Processing Data 連携</span>
             </div>
             <h1 className="text-6xl font-bold mb-6 bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent">
               SEOコンテンツ管理

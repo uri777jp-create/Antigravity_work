@@ -35,7 +35,7 @@ export default function Dashboard() {
             SEO Content Dashboard
           </h1>
           <p className="text-muted-foreground text-lg">
-            Manage your NeuronWriter content and SEO optimization
+            Manage your Natural Language Processing Data content and SEO optimization
           </p>
         </div>
 

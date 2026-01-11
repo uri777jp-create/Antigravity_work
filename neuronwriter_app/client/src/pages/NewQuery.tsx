@@ -150,7 +150,7 @@ export default function NewQuery() {
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-2">
-                <Label htmlFor="project">NeuronWriterプロジェクト</Label>
+                <Label htmlFor="project">Natural Language Processing Data プロジェクト</Label>
                 <Select value={selectedNeuronProjectId} onValueChange={handleProjectSelect}>
                   <SelectTrigger id="project">
                     <SelectValue placeholder="プロジェクトを選択" />

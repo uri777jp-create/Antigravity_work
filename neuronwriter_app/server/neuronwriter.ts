@@ -3,8 +3,8 @@ import axios from "axios";
 const API_KEY = process.env.X_API_KEY;
 const BASE_URL = "https://app.neuronwriter.com/neuron-api/0.5/writer";
 
-if (!API_KEY) {
-  console.warn("[NeuronWriter] X_API_KEY not found in environment variables");
+if (!process.env.NEURON_API_KEY) {
+  console.warn("[NLP Data] X_API_KEY not found in environment variables");
 }
 
 const apiClient = axios.create({

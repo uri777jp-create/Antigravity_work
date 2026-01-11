@@ -137,7 +137,7 @@ export const appRouter = router({
           throw new Error("Query not found or unauthorized");
         }
 
-        // Use the neuronQueryId which is the actual query ID from NeuronWriter API
+        // Use the neuronQueryId which is the actual query ID from NLP Data API
         const result = await getQuery(query.neuronQueryId);
 
         // Update status if ready
@@ -187,7 +187,7 @@ export const appRouter = router({
           throw new Error("Query not found or unauthorized");
         }
 
-        // Save to NeuronWriter
+        // Save to Natural Language Processing Data
         const neuronResult = await importContent({
           project: input.neuronProjectId,
           query: query.neuronQueryId,
@@ -370,7 +370,7 @@ ${descKeywords}
           throw new Error(`LLMレスポンスのJSON解析に失敗しました: ${contentString.substring(0, 100)}`);
         }
 
-        // タイトルとディ        // NeuronWriterに保存（titleとdescriptionは別パラメータで送信）
+        // タイトルとディ        // Natural Language Processing Dataに保存（titleとdescriptionは別パラメータで送信）
         const { getProjectById } = await import("./db");
         const project = await getProjectById(query.projectId);
         if (!project) {
@@ -1307,19 +1307,24 @@ ${input.h2.heading}
 ${h3Structure}
 
 ## 取材メモ（Web検索結果）
+※現在は2026年です。情報の鮮度を重視し、過去の年号（2024年など）が混入しないよう徹底してください。
 ${searchContext}
 
 ## 執筆指示
-1. **専門家としての視点**: 執筆対象のトピック（${input.h2.heading}）における権威ある専門家として、信頼感のあるトーンで執筆してください。
-2. **結論優先（PREP法）**: 各H3の本文は、読者の知りたい結論をまず述べ、その後に具体的な理由や証拠（取材メモの数値や事実）を提示してください。
-3. **視覚的強調**: 読者が流し読みしても重要なポイントが伝わるよう、**重要な箇所は<strong>タグ**で囲んで強調してください。
-4. **情報の構造化**: メリット・デメリット、具体的な手順、比較項目などは、**<ul><li>タグを用いて箇条書き**で整理してください。
-5. **独自価値の提供**: 単なる取材メモの要約ではなく、読者が次に取るべきアクションや、注意すべき点を含めたアドバイスを盛り込んでください。
+1. **専門家としての視点**: 執筆対象のトピックにおける権威ある専門家として、信頼感のあるトーンで執筆してください。
+2. **結論優先（PREP法）**: 各H3の本文は、読者の知りたい結論をまず述べ、その後に具体的な理由や証拠を提示してください。
+3. **視覚的強調**: 重要な箇所は<strong>タグで囲んで強調してください。
+4. **情報の構造化**: <ul><li>タグ等を用いて、読者が直感的に理解できるよう整理してください。
+
+5. **【重要】H2の性質に応じた書き分け指示**:
+   - **通常の章の場合**: \`h2_intro\`は、その章で解説する内容の提示や読者の悩みへの共感を中心に記述してください。
+   - **「まとめ・結論」系の章の場合**: H2見出しに「まとめ」「結論」「さいごに」「終わりに」等の文言が含まれる場合、\`h2_intro\`は導入文ではなく**「記事全体の総括（結論）」**として執筆してください。
+   - **まとめ時の構成**: 単なる紹介ではなく「結局どうすればいいのか」という読者の問いに対する答えを簡潔にまとめ、最後に読者のアクションを促す前向きな言葉で締めくくってください。
 
 ## 出力フォーマット（JSON）
 必ず以下のJSON形式で、純粋なJSONデータのみを返答してください（HTMLタグはh2_introとcontentの中に含める）：
 {
-  "h2_intro": "H2直下の導入文（HTML形式。<p>タグを使用。読者の悩みに共感し、この章で得られるメリットを提示してください）",
+  "h2_intro": "H2直下の文章。まとめ章なら総括、通常章なら導入文（HTML形式。<p>タグを使用）",
   "h3_contents": [
     {
       "heading": "H3の見出しテキスト",
