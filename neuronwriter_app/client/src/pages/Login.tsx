@@ -11,7 +11,11 @@ export default function Login() {
 
     useEffect(() => {
         if (isAuthenticated && user) {
-            setLocation("/dashboard");
+            if (user.role === "admin") {
+                setLocation("/admin");
+            } else {
+                setLocation("/dashboard");
+            }
         }
     }, [isAuthenticated, user, setLocation]);
 
@@ -42,9 +46,14 @@ export default function Login() {
                         </CardDescription>
                     </CardHeader>
                     <CardContent className="grid gap-4">
-                        <a href="/api/auth/mock-login">
+                        <a href="/api/auth/mock-login?role=admin">
+                            <Button className="w-full mb-3" size="lg" variant="destructive">
+                                Admin (管理者) としてログイン (Dev)
+                            </Button>
+                        </a>
+                        <a href="/api/auth/mock-login?role=user">
                             <Button className="w-full" size="lg">
-                                開発用アカウントでログイン (Dev)
+                                Test User (一般) としてログイン (Dev)
                             </Button>
                         </a>
                         {/* 
