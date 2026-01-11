@@ -31,19 +31,18 @@ export default function NewQuery() {
   });
   const { data: neuronProjects } = trpc.neuronwriter.listProjects.useQuery();
 
-  // Auto-select first project if available and nothing selected
-  if (!selectedNeuronProjectId && neuronProjects && neuronProjects.projects && neuronProjects.projects.length > 0) {
-    const firstProject = neuronProjects.projects[0];
-    // We settle the state in a way to avoid infinite loops, but here we can just set it if null
-    // However, doing this in render is bad practice. Proper way is useEffect.
-  }
-
-  // Use an effect for auto-selection
+  // Auto-select user's assigned project
   const [hasAutoSelected, setHasAutoSelected] = useState(false);
 
-  if (neuronProjects?.projects?.length && !selectedNeuronProjectId && !hasAutoSelected) {
-    const firstId = neuronProjects.projects[0].id;
+  if (projects?.length && !selectedNeuronProjectId && !hasAutoSelected) {
+    // Prefer the user's assigned project
+    const userProject = projects[0];
     // We defer this call to avoid side-effects during render
+    setTimeout(() => handleProjectSelect(userProject.neuronProjectId), 0);
+    setHasAutoSelected(true);
+  } else if (neuronProjects?.projects?.length && !selectedNeuronProjectId && !hasAutoSelected && !projects?.length) {
+    // Fallback only if user has no project (shouldn't happen for valid users)
+    const firstId = neuronProjects.projects[0].id;
     setTimeout(() => handleProjectSelect(firstId), 0);
     setHasAutoSelected(true);
   }

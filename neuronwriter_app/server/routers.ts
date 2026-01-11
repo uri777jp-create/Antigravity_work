@@ -1618,7 +1618,16 @@ ${searchContext}
         projectName: z.string()
       }))
       .mutation(async ({ input }) => {
-        const { createProject } = await import("./db");
+        const { createProject, getDb } = await import("./db");
+        const { projects } = await import("../drizzle/schema");
+        const { eq } = await import("drizzle-orm");
+
+        const db = await getDb();
+        if (db) {
+          // Enforce single project per user: Delete existing projects first
+          await db.delete(projects).where(eq(projects.userId, input.targetUserId));
+        }
+
         await createProject({
           userId: input.targetUserId,
           neuronProjectId: input.neuronProjectId,
