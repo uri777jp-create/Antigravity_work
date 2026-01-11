@@ -35,7 +35,7 @@ export default function AdminDashboard() {
             setProjectName("");
             refetch();
         },
-        onError: (e) => {
+        onError: (e: any) => {
             toast.error(`割り当て失敗: ${e.message}`);
         }
     });
@@ -84,7 +84,7 @@ export default function AdminDashboard() {
                                 <TableRow>
                                     <TableCell colSpan={6} className="text-center py-10">読み込み中...</TableCell>
                                 </TableRow>
-                            ) : users?.map((u) => (
+                            ) : users?.map((u: any) => (
                                 <TableRow key={u.id}>
                                     <TableCell>{u.id}</TableCell>
                                     <TableCell>{u.name || "未設定"}</TableCell>
@@ -119,8 +119,8 @@ export default function AdminDashboard() {
                                                 </div>
                                                 <DialogFooter>
                                                     <Button variant="outline" onClick={() => setIsOpen(false)}>キャンセル</Button>
-                                                    <Button onClick={handleAssign} disabled={assignMutation.isLoading}>
-                                                        {assignMutation.isLoading ? "処理中..." : "割り当て"}
+                                                    <Button onClick={handleAssign} disabled={assignMutation.isPending}>
+                                                        {assignMutation.isPending ? "処理中..." : "割り当て"}
                                                     </Button>
                                                 </DialogFooter>
                                             </DialogContent>
