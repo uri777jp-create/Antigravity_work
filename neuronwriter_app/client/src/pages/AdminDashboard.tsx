@@ -80,11 +80,12 @@ export default function AdminDashboard() {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {isLoading ? (
+                            {isLoading && (
                                 <TableRow>
                                     <TableCell colSpan={6} className="text-center py-10">読み込み中...</TableCell>
                                 </TableRow>
-                            ) : users?.filter((u: any) => u.name !== 'admin_sarami').map((u: any) => (
+                            )}
+                            {!isLoading && users?.filter((u: any) => u.name !== 'admin_sarami').map((u: any) => (
                                 <TableRow key={u.id}>
                                     <TableCell>{u.id}</TableCell>
                                     <TableCell>{u.name || "未設定"}</TableCell>
