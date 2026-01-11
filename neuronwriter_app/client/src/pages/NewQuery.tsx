@@ -150,19 +150,16 @@ export default function NewQuery() {
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-2">
-                <Label htmlFor="project">Natural Language Processing Data プロジェクト</Label>
-                <Select value={selectedNeuronProjectId} onValueChange={handleProjectSelect}>
-                  <SelectTrigger id="project">
-                    <SelectValue placeholder="プロジェクトを選択" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {neuronProjects?.projects?.map((project: any) => (
-                      <SelectItem key={project.id} value={project.id}>
-                        {project.name || project.id}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <Label>ワークスペース</Label>
+                <div className="p-3 bg-slate-50 border border-slate-200 rounded-md text-slate-700 font-medium">
+                  {selectedNeuronProjectId ? (
+                    neuronProjects?.projects?.find((p: any) => p.id === selectedNeuronProjectId)?.name || selectedNeuronProjectId
+                  ) : (
+                    <span className="text-slate-400 flex items-center gap-2">
+                      <Loader2 className="w-4 h-4 animate-spin" /> 読み込み中...
+                    </span>
+                  )}
+                </div>
               </div>
 
               <div className="space-y-2">
