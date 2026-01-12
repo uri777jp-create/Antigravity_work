@@ -159,7 +159,7 @@ export default function Home() {
               </div>
               <h3 className="text-xl font-bold mb-3 text-slate-900">高精度ファクトチェック</h3>
               <p className="text-slate-600 leading-relaxed">
-                Tavily APIを用いてリアルタイムにWebを検索。AIの記述内容を事実に基づいて検証し、ハルシネーションを防ぎます。
+                リアルタイムのWeb検索技術を活用。AIの記述内容を最新の事実情報に基づいて検証し、ハルシネーションを防ぎます。
               </p>
             </div>
 

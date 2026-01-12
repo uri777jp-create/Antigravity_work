@@ -6,7 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
 import { trpc } from "@/lib/trpc";
-import { ArrowLeft, Download, FileText, Lightbulb, TrendingUp, BarChart, Globe, Users, MessageSquare, Target, Sparkles, Copy, RefreshCw, Code, Eye, CheckCircle2, Loader2 } from "lucide-react";
+import { ArrowLeft, ArrowUp, Download, FileText, Lightbulb, TrendingUp, BarChart, Globe, Users, MessageSquare, Target, Sparkles, Copy, RefreshCw, Code, Eye, CheckCircle2, Loader2 } from "lucide-react";
 import { useState, useEffect, useCallback } from "react";
 import { Link, useParams, useSearch } from "wouter";
 import { toast } from "sonner";
@@ -39,6 +39,21 @@ export default function QueryDetail() {
 
   // Deep comparison for outline dirty state
   const isOutlineDirty = JSON.stringify(outlineHeadings) !== JSON.stringify(lastSavedOutlineHeadings);
+
+  // Scroll to top button state
+  const [showScrollTop, setShowScrollTop] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 300);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   const [viewMode, setViewMode] = useState<'html' | 'preview' | 'markdown'>('html');
   const turndownService = new TurndownService({ headingStyle: 'atx' });
@@ -1355,9 +1370,14 @@ export default function QueryDetail() {
             {/* HTMLコンテンツ編集 */}
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <div>
-                  <CardTitle>⑤ 本文コンテンツ</CardTitle>
-                  <CardDescription>HTMLコンテンツを入力または貼り付け</CardDescription>
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-lg">
+                    <Eye className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <CardTitle className="flex items-center gap-2">⑤ 本文コンテンツ プレビュー</CardTitle>
+                    <CardDescription>表示中の形式（HTML・Markdown・テキスト）でコピー可能</CardDescription>
+                  </div>
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="flex bg-muted rounded-lg p-1">
@@ -1426,14 +1446,7 @@ export default function QueryDetail() {
                     dangerouslySetInnerHTML={{ __html: htmlContent }}
                   />
                 )}
-                <div className="flex gap-2">
-                  <Button onClick={handleSaveContent} disabled={saveContentMutation.isPending}>
-                    {saveContentMutation.isPending ? "保存中..." : "コンテンツ保存"}
-                  </Button>
-                  <Button variant="outline" onClick={handleEvaluate} disabled={evaluateMutation.isPending}>
-                    {evaluateMutation.isPending ? "評価中..." : "SEO評価"}
-                  </Button>
-                </div>
+
               </CardContent>
             </Card>
           </TabsContent>
@@ -1450,7 +1463,18 @@ export default function QueryDetail() {
             </Card>
           </TabsContent>
         </Tabs>
-      </div >
-    </div >
+      </div>
+
+      {/* Scroll to Top Button */}
+      {showScrollTop && (
+        <Button
+          onClick={scrollToTop}
+          className="fixed bottom-6 right-6 rounded-full w-12 h-12 shadow-lg bg-indigo-600 hover:bg-indigo-700 text-white z-50"
+          size="icon"
+        >
+          <ArrowUp className="w-5 h-5" />
+        </Button>
+      )}
+    </div>
   );
 }
