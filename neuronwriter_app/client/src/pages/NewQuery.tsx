@@ -28,6 +28,8 @@ export default function NewQuery() {
   // Loading state management
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [currentStep, setCurrentStep] = useState(0);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [createdQueryId, setCreatedQueryId] = useState<number | null>(null);
 
   const steps = [
     { label: "Google検索上位サイトをクロール中...", icon: <Sparkles className="w-6 h-6 animate-pulse text-blue-500" /> },
@@ -41,6 +43,31 @@ export default function NewQuery() {
     enabled: !!user,
   });
   const { data: neuronProjects } = trpc.neuronwriter.listProjects.useQuery();
+
+  // Polling for completion
+  const { data: pollingData } = trpc.neuronwriter.getQueryRecommendations.useQuery(
+    { queryId: createdQueryId! },
+    {
+      enabled: !!createdQueryId && isGenerating,
+      refetchInterval: 3000, // Poll every 3s
+    }
+  );
+
+  // Monitor polling result
+  useEffect(() => {
+    if (pollingData?.status === "ready" && createdQueryId) {
+      // Analysis complete!
+      setLoadingProgress(100);
+      setCurrentStep(steps.length - 1);
+
+      setTimeout(() => {
+        toast.success("AI分析が完了しました！");
+        setLocation(`/query/${createdQueryId}`);
+        // setIsGenerating(false); // No need to set false as we navigate away
+      }, 800);
+    }
+  }, [pollingData, createdQueryId, setLocation, steps.length]);
+
 
   // Auto-select user's assigned project
   const [hasAutoSelected, setHasAutoSelected] = useState(false);
@@ -60,23 +87,22 @@ export default function NewQuery() {
 
   const createQueryMutation = trpc.neuronwriter.createQuery.useMutation({
     onSuccess: (data) => {
-      setLoadingProgress(100);
-      setCurrentStep(steps.length - 1);
-      setTimeout(() => {
-        toast.success("クエリを作成しました！");
-        setLocation(`/query/${data.queryId}`);
-      }, 500);
+      // Just start polling, don't navigate yet
+      setCreatedQueryId(data.queryId);
+      // Progress keeps running via isGenerating
     },
     onError: (error) => {
       toast.error(`クエリの作成に失敗しました： ${error.message}`);
       setLoadingProgress(0);
       setCurrentStep(0);
+      setIsGenerating(false);
+      setCreatedQueryId(null);
     },
   });
 
   // Simulated progress effect
   useEffect(() => {
-    if (createQueryMutation.isPending) {
+    if (isGenerating) {
       setLoadingProgress(0);
       setCurrentStep(0);
 
@@ -89,20 +115,26 @@ export default function NewQuery() {
 
       const timer = setInterval(() => {
         elapsed += intervalTime;
-        const progress = Math.min((elapsed / totalDuration) * 100, 95); // Cap at 95% until done
-        setLoadingProgress(progress);
+        // Cap at 95% until polling confirms ready
+        const progress = Math.min((elapsed / totalDuration) * 100, 95);
+
+        // If polling finishes early (e.g. at 30s), jump to 100 is handled in polling effect
+        // We only update if we are NOT yet at 100 (managed by other effect)
+        setLoadingProgress(prev => (prev === 100 ? 100 : progress));
 
         const stepIndex = Math.min(Math.floor(elapsed / stepDuration), stepsCount - 1);
         setCurrentStep(stepIndex);
 
         if (elapsed >= totalDuration) {
+          // Determine what to do after 60s if still not ready?
+          // Just keep waiting at 95%
           clearInterval(timer);
         }
       }, intervalTime);
 
       return () => clearInterval(timer);
     }
-  }, [createQueryMutation.isPending]);
+  }, [isGenerating, steps.length]);
 
 
   const syncProjectMutation = trpc.neuronwriter.syncProject.useMutation({
@@ -132,6 +164,7 @@ export default function NewQuery() {
       return;
     }
 
+    setIsGenerating(true); // Start loading UI
     createQueryMutation.mutate({
       projectId: selectedProjectId,
       neuronProjectId: selectedNeuronProjectId,
@@ -174,7 +207,7 @@ export default function NewQuery() {
     }
   };
 
-  if (createQueryMutation.isPending) {
+  if (isGenerating) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5 flex items-center justify-center">
         <div className="container max-w-lg p-6">
