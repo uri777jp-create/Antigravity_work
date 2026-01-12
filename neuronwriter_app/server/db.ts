@@ -120,6 +120,19 @@ export async function getAllUsersWithProjects() {
   return Object.values(result).sort((a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 }
 
+export async function deleteUser(userId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  // Manual cascade delete
+  await db.delete(outlines).where(eq(outlines.userId, userId));
+  await db.delete(contents).where(eq(contents.userId, userId));
+  await db.delete(queries).where(eq(queries.userId, userId));
+  await db.delete(projects).where(eq(projects.userId, userId));
+
+  await db.delete(users).where(eq(users.id, userId));
+}
+
 // NeuronWriter feature queries
 
 export async function createProject(project: InsertProject) {

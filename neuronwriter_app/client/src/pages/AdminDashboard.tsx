@@ -17,6 +17,17 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { Trash2 } from "lucide-react";
 
 export default function AdminDashboard() {
     const { user } = useAuth();
@@ -45,6 +56,21 @@ export default function AdminDashboard() {
         },
         onError: (e: any) => {
             toast.error(`割り当て失敗: ${e.message}`);
+        }
+    });
+
+    const [userToDelete, setUserToDelete] = useState<{ id: number; name: string } | null>(null);
+    const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+
+    const deleteMutation = trpc.admin.deleteUser.useMutation({
+        onSuccess: () => {
+            toast.success("ユーザーを削除しました");
+            setIsDeleteOpen(false);
+            setUserToDelete(null);
+            refetch();
+        },
+        onError: (e: any) => {
+            toast.error(`削除失敗: ${e.message}`);
         }
     });
 
@@ -178,6 +204,19 @@ export default function AdminDashboard() {
                                                 </DialogFooter>
                                             </DialogContent>
                                         </Dialog>
+
+                                        <Button
+                                            size="sm"
+                                            variant="ghost"
+                                            className="text-destructive hover:text-destructive hover:bg-destructive/10 ml-2"
+                                            onClick={() => {
+                                                setUserToDelete({ id: u.id, name: u.name || "User" });
+                                                setIsDeleteOpen(true);
+                                            }}
+                                            disabled={u.role === 'admin'} // Prevent admin from deleting themselves or other admins accidentally
+                                        >
+                                            <Trash2 className="h-4 w-4" />
+                                        </Button>
                                     </TableCell>
                                 </TableRow>
                             ))}
@@ -185,6 +224,31 @@ export default function AdminDashboard() {
                     </Table>
                 </CardContent>
             </Card>
-        </div>
+
+            <AlertDialog open={isDeleteOpen} onOpenChange={setIsDeleteOpen}>
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                        <AlertDialogTitle>本当にユーザーを削除しますか？</AlertDialogTitle>
+                        <AlertDialogDescription>
+                            ユーザー「{userToDelete?.name}」を削除しようとしています。<br />
+                            この操作は取り消せません。ユーザーに関連するすべてのプロジェクト、コンテンツ、履歴が完全に削除されます。
+                        </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                        <AlertDialogCancel>キャンセル</AlertDialogCancel>
+                        <AlertDialogAction
+                            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                            onClick={() => {
+                                if (userToDelete) {
+                                    deleteMutation.mutate({ userId: userToDelete.id });
+                                }
+                            }}
+                        >
+                            {deleteMutation.isPending ? "削除中..." : "削除する"}
+                        </AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
+        </div >
     );
 }

@@ -1635,6 +1635,16 @@ ${searchContext}
         });
         return { success: true };
       }),
+
+    deleteUser: adminProcedure
+      .input(z.object({
+        userId: z.number(),
+      }))
+      .mutation(async ({ input }) => {
+        const { deleteUser } = await import("./db");
+        await deleteUser(input.userId);
+        return { success: true };
+      }),
   }),
 });
 
