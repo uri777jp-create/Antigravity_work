@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { trpc } from "@/lib/trpc";
 import { ArrowLeft, Download, FileText, Lightbulb, TrendingUp, BarChart, Globe, Users, MessageSquare, Target, Sparkles, Copy, RefreshCw, Code, Eye } from "lucide-react";
 import { useState, useEffect, useCallback } from "react";
-import { Link, useParams } from "wouter";
+import { Link, useParams, useSearch } from "wouter";
 import { toast } from "sonner";
 import { SEOScoreBar } from "@/components/SEOScoreBar";
 import { OutlineEditor, OutlineHeading } from "@/components/OutlineEditor";
@@ -31,6 +31,13 @@ export default function QueryDetail() {
   const [isGeneratingLeadText, setIsGeneratingLeadText] = useState(false);
   const [viewMode, setViewMode] = useState<'html' | 'preview' | 'markdown'>('html');
   const turndownService = new TurndownService({ headingStyle: 'atx' });
+
+  const searchString = useSearch();
+  const searchParams = new URLSearchParams(searchString);
+  const initialTab = searchParams.get("tab");
+
+  const isAdmin = user?.role === 'admin';
+  const defaultTab = isAdmin ? (initialTab || "recommendations") : "editor";
 
   const { data: query, isLoading: queryLoading } = trpc.neuronwriter.getQueryById.useQuery({ queryId });
 
@@ -722,12 +729,19 @@ export default function QueryDetail() {
           </div>
         </div>
 
-        <Tabs defaultValue="recommendations" className="space-y-6">
+        <Tabs defaultValue={defaultTab} className="space-y-6">
           <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="recommendations">
-              <Lightbulb className="mr-2 h-4 w-4" />
-              推薦データ
-            </TabsTrigger>
+            {isAdmin ? (
+              <TabsTrigger value="recommendations">
+                <Lightbulb className="mr-2 h-4 w-4" />
+                推薦データ
+              </TabsTrigger>
+            ) : (
+              <TabsTrigger value="recommendations" disabled className="opacity-50 cursor-not-allowed">
+                <Lightbulb className="mr-2 h-4 w-4" />
+                （管理者のみ）
+              </TabsTrigger>
+            )}
             <TabsTrigger value="editor">
               <FileText className="mr-2 h-4 w-4" />
               コンテンツ作成
@@ -958,8 +972,8 @@ export default function QueryDetail() {
                   />
                 </div>
 
-                {/* 推奨キーワード */}
-                {recommendations?.terms?.title && recommendations.terms.title.length > 0 && (
+                {/* 推奨キーワード (Admin Only) */}
+                {isAdmin && recommendations?.terms?.title && recommendations.terms.title.length > 0 && (
                   <div>
                     <p className="text-sm font-medium mb-2">推奨キーワード ({recommendations.terms.title.length}件) - クリックで挿入</p>
                     <div className="flex flex-wrap gap-2 max-h-[200px] overflow-y-auto p-1">
@@ -1027,8 +1041,8 @@ export default function QueryDetail() {
                   />
                 </div>
 
-                {/* 推奨キーワード */}
-                {recommendations?.terms?.desc && recommendations.terms.desc.length > 0 && (
+                {/* 推奨キーワード (Admin Only) */}
+                {isAdmin && recommendations?.terms?.desc && recommendations.terms.desc.length > 0 && (
                   <div>
                     <p className="text-sm font-medium mb-2">推奨キーワード ({recommendations.terms.desc.length}件) - クリックで挿入</p>
                     <div className="flex flex-wrap gap-2 max-h-[200px] overflow-y-auto p-1">
@@ -1150,8 +1164,8 @@ export default function QueryDetail() {
                       />
                     </div>
 
-                    {/* 推奨キーワード（本文用） */}
-                    {recommendations?.terms?.h && (
+                    {/* 推奨キーワード（本文用） (Admin Only) */}
+                    {isAdmin && recommendations?.terms?.h && (
                       <div>
                         <label className="text-sm font-medium mb-2 block">推奨キーワード ({recommendations.terms.h.length}件) - クリックで挿入</label>
                         <div className="flex flex-wrap gap-2 max-h-[200px] overflow-y-auto p-1">

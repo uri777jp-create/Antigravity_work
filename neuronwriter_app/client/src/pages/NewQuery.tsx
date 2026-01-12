@@ -62,7 +62,8 @@ export default function NewQuery() {
 
       setTimeout(() => {
         toast.success("AI分析が完了しました！");
-        setLocation(`/query/${createdQueryId}`);
+        // Redirect to editor tab by default
+        setLocation(`/query/${createdQueryId}?tab=editor`);
         // setIsGenerating(false); // No need to set false as we navigate away
       }, 800);
     }
