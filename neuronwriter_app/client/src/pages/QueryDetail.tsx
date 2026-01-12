@@ -730,22 +730,22 @@ export default function QueryDetail() {
         </div>
 
         <Tabs defaultValue={defaultTab} className="space-y-6">
-          <TabsList className={`grid w-full ${isAdmin ? 'grid-cols-3' : 'grid-cols-2'}`}>
-            {isAdmin && (
+          {isAdmin && (
+            <TabsList className="grid w-full grid-cols-3">
               <TabsTrigger value="recommendations">
                 <Lightbulb className="mr-2 h-4 w-4" />
                 推薦データ
               </TabsTrigger>
-            )}
-            <TabsTrigger value="editor">
-              <FileText className="mr-2 h-4 w-4" />
-              コンテンツ作成
-            </TabsTrigger>
-            <TabsTrigger value="seo">
-              <TrendingUp className="mr-2 h-4 w-4" />
-              SEO評価
-            </TabsTrigger>
-          </TabsList>
+              <TabsTrigger value="editor">
+                <FileText className="mr-2 h-4 w-4" />
+                コンテンツ作成
+              </TabsTrigger>
+              <TabsTrigger value="seo">
+                <TrendingUp className="mr-2 h-4 w-4" />
+                SEO評価
+              </TabsTrigger>
+            </TabsList>
+          )}
 
           <TabsContent value="recommendations" className="space-y-4">
             {recsLoading ? (
