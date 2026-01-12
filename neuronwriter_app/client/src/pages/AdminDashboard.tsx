@@ -66,6 +66,8 @@ export default function AdminDashboard() {
         }
     };
 
+    const filteredUsers = users?.filter((u: any) => u.name !== 'admin_sarami') || [];
+
     return (
         <div className="container mx-auto py-10">
             <div className="flex justify-between items-center mb-8">
@@ -80,7 +82,7 @@ export default function AdminDashboard() {
                 <CardHeader>
                     <CardTitle>ユーザー一覧</CardTitle>
                     <CardDescription>
-                        全ユーザー数: {users?.length || 0}人
+                        全ユーザー数: {filteredUsers.length}人
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -102,7 +104,7 @@ export default function AdminDashboard() {
                                     <TableCell colSpan={6} className="text-center py-10">読み込み中...</TableCell>
                                 </TableRow>
                             )}
-                            {!isLoading && users?.filter((u: any) => u.name !== 'admin_sarami').map((u: any) => (
+                            {!isLoading && filteredUsers.map((u: any) => (
                                 <TableRow key={u.id}>
                                     <TableCell>{u.id}</TableCell>
                                     <TableCell>{u.name || "未設定"}</TableCell>
