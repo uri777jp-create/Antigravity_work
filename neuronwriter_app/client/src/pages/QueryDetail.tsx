@@ -963,7 +963,7 @@ export default function QueryDetail() {
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                     className="min-h-[80px]"
-                    placeholder="例: FX口座おすすめ比較ランキング【最新版】初心者向けに選び方も詳しく解説"
+                    placeholder={isAdmin ? "例: FX口座おすすめ比較ランキング【最新版】初心者向けに選び方も詳しく解説" : ""}
                   />
                 </div>
 
@@ -1032,7 +1032,7 @@ export default function QueryDetail() {
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                     className="min-h-[100px]"
-                    placeholder="例: FX初心者におすすめのFX口座を比較しランキングにまとめました。トレードスタイルごとに比較したFX口座ランキングも公開しているため、自分に合ったFX口座を比較検討できます。"
+                    placeholder={isAdmin ? "例: FX初心者におすすめのFX口座を比較しランキングにまとめました。トレードスタイルごとに比較したFX口座ランキングも公開しているため、自分に合ったFX口座を比較検討できます。" : ""}
                   />
                 </div>
 
@@ -1152,7 +1152,7 @@ export default function QueryDetail() {
                         </span>
                       </div>
                       <Textarea
-                        placeholder="例: FX口座選びで失敗したくない方へ。この記事では、主要なFX会社を役底比較し、初心者の方におすすめの口座をランキング形式で紹介します..."
+                        placeholder={isAdmin ? "例: FX口座選びで失敗したくない方へ。この記事では、主要なFX会社を役底比較し、初心者の方におすすめの口座をランキング形式で紹介します..." : ""}
                         value={leadText}
                         onChange={(e) => setLeadText(e.target.value)}
                         className="min-h-[120px]"

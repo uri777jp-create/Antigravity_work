@@ -264,7 +264,7 @@ export default function NewQuery() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5">
       <div className="container py-12">
-        <Link href="/">
+        <Link href="/dashboard">
           <Button variant="ghost" className="mb-6">
             <ArrowLeft className="w-4 h-4 mr-2" />
             ダッシュボードに戻る

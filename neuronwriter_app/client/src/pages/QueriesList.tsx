@@ -2,7 +2,7 @@ import { useAuth } from "@/_core/hooks/useAuth";
 import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Loader2, ArrowLeft, FileText, Clock, CheckCircle2, XCircle } from "lucide-react";
+import { Loader2, ArrowLeft, FileText, Clock, CheckCircle2, XCircle, LayoutList } from "lucide-react";
 import { Link } from "wouter";
 
 export default function QueriesList() {
@@ -46,22 +46,31 @@ export default function QueriesList() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5">
-      <div className="container py-12">
-        <Link href="/">
-          <Button variant="ghost" className="mb-6">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-primary/5">
+      <div className="container py-16 px-4 md:px-8 max-w-5xl mx-auto">
+        <Link href="/dashboard">
+          <Button variant="ghost" className="mb-8 text-muted-foreground hover:text-primary pl-0 hover:bg-transparent">
             <ArrowLeft className="w-4 h-4 mr-2" />
-            ダッシュボードに戻る
+            ダッシュボード
           </Button>
         </Link>
 
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-            全てのクエリ
-          </h1>
-          <p className="text-muted-foreground text-lg">
-            コンテンツクエリを表示・管理
-          </p>
+        <div className="relative mb-10 border-b pb-8">
+          <div className="absolute top-0 right-0 -mt-4 opacity-10 pointer-events-none">
+            <LayoutList className="w-32 h-32 text-blue-500" />
+          </div>
+
+          <div className="relative z-10">
+            <div className="mb-4 inline-flex items-center justify-center rounded-lg bg-blue-50 p-3 text-blue-600">
+              <FileText className="h-8 w-8" />
+            </div>
+            <h1 className="text-3xl md:text-4xl font-bold mb-3 tracking-tight text-gray-900">
+              作成済みリスト
+            </h1>
+            <p className="text-muted-foreground text-lg">
+              過去に作成した構成案の確認、編集、ステータス管理を行います。
+            </p>
+          </div>
         </div>
 
         {queries && queries.length > 0 ? (
@@ -74,9 +83,7 @@ export default function QueriesList() {
                       <div className="flex-1">
                         <CardTitle className="text-xl mb-2">{query.keyword}</CardTitle>
                         <CardDescription className="flex items-center gap-4">
-                          <span>言語： {query.language.toUpperCase()}</span>
-                          <span>エンジン： {query.searchEngine}</span>
-                          <span>{new Date(query.createdAt).toLocaleDateString()}</span>
+                          <span>作成日時：{new Date(query.createdAt).toLocaleString()}</span>
                         </CardDescription>
                       </div>
                       <div className="flex items-center gap-2">
