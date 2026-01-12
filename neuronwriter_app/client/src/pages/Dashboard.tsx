@@ -1,23 +1,14 @@
 import { useAuth } from "@/_core/hooks/useAuth";
-import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Loader2, Plus, FileText, BarChart3, LogOut } from "lucide-react";
+import { Loader2, Plus, FileText, LogOut, Sparkles, LayoutList, Settings } from "lucide-react";
 import { Link, useLocation } from "wouter";
 
 export default function Dashboard() {
   const { user, loading: authLoading, logout } = useAuth();
   const [, setLocation] = useLocation();
-  const { data: queries, isLoading: queriesLoading } = trpc.neuronwriter.getUserQueries.useQuery(
-    undefined,
-    { enabled: !!user }
-  );
-  const { data: projects, isLoading: projectsLoading } = trpc.neuronwriter.getUserProjects.useQuery(
-    undefined,
-    { enabled: !!user }
-  );
 
-  if (authLoading || queriesLoading || projectsLoading) {
+  if (authLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <Loader2 className="w-8 h-8 animate-spin text-primary" />
@@ -25,136 +16,96 @@ export default function Dashboard() {
     );
   }
 
-  const readyQueries = queries?.filter((q) => q.status === "ready") || [];
-  const pendingQueries = queries?.filter((q) => q.status === "pending") || [];
-
   const handleLogout = async () => {
     await logout();
     setLocation("/login");
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5">
-      <div className="container py-12">
-        <div className="mb-8 flex items-center justify-between">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-primary/5">
+      <div className="container py-16 px-4 md:px-8 max-w-5xl mx-auto">
+        {/* Header Section */}
+        <div className="mb-12 flex items-center justify-between">
           <div>
-            <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-              SEO Content Dashboard
+            <h1 className="text-3xl md:text-4xl font-bold mb-3 tracking-tight text-gray-900">
+              おかえりなさい、<span className="text-primary">{user?.name || "ユーザー"}</span> さん
             </h1>
             <p className="text-muted-foreground text-lg">
-              Manage your Natural Language Processing Data content and SEO optimization
+              AIを活用して、高品質なSEO記事構成を素早く作成・管理しましょう。
             </p>
           </div>
-          <Button variant="outline" size="sm" onClick={handleLogout}>
+          <Button variant="ghost" size="sm" onClick={handleLogout} className="text-muted-foreground hover:text-primary">
             <LogOut className="w-4 h-4 mr-2" />
             ログアウト
           </Button>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-3 mb-8">
-          <Card className="border-primary/20 shadow-lg hover:shadow-xl transition-shadow">
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Total Projects</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold text-primary">{projects?.length || 0}</div>
-            </CardContent>
-          </Card>
+        {/* Action Cards Grid */}
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-2">
 
-          <Card className="border-primary/20 shadow-lg hover:shadow-xl transition-shadow">
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Ready Queries</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold text-green-600">{readyQueries.length}</div>
-            </CardContent>
-          </Card>
+          {/* Create New Query Card */}
+          <Link href="/new-query">
+            <div className="group relative overflow-hidden rounded-xl border border-gray-200 bg-white p-8 shadow-sm transition-all hover:border-primary/50 hover:shadow-lg cursor-pointer h-full">
+              <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                <Sparkles className="w-24 h-24 text-primary" />
+              </div>
+              <div className="relative z-10 flex flex-col h-full justify-between">
+                <div>
+                  <div className="mb-4 inline-flex items-center justify-center rounded-lg bg-primary/10 p-3 text-primary">
+                    <Plus className="h-8 w-8" />
+                  </div>
+                  <h3 className="mb-2 text-2xl font-bold text-gray-900">新しい記事を作る</h3>
+                  <p className="text-muted-foreground mb-6">
+                    キーワードを入力して、AIによる詳細な記事構成案を新規作成します。
+                  </p>
+                </div>
+                <Button className="w-full bg-primary hover:bg-primary/90 text-lg py-6 shadow-md group-hover:translate-y-[-2px] transition-transform">
+                  作成を開始する
+                </Button>
+              </div>
+            </div>
+          </Link>
 
-          <Card className="border-primary/20 shadow-lg hover:shadow-xl transition-shadow">
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Pending Queries</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold text-amber-600">{pendingQueries.length}</div>
-            </CardContent>
-          </Card>
+          {/* View Projects Card */}
+          <Link href="/queries">
+            <div className="group relative overflow-hidden rounded-xl border border-gray-200 bg-white p-8 shadow-sm transition-all hover:border-primary/50 hover:shadow-lg cursor-pointer h-full">
+              <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                <LayoutList className="w-24 h-24 text-blue-500" />
+              </div>
+              <div className="relative z-10 flex flex-col h-full justify-between">
+                <div>
+                  <div className="mb-4 inline-flex items-center justify-center rounded-lg bg-blue-50 p-3 text-blue-600">
+                    <FileText className="h-8 w-8" />
+                  </div>
+                  <h3 className="mb-2 text-2xl font-bold text-gray-900">作成済みリスト</h3>
+                  <p className="text-muted-foreground mb-6">
+                    過去に作成した構成案の確認、編集、ステータス管理を行います。
+                  </p>
+                </div>
+                <Button variant="outline" className="w-full text-lg py-6 border-2 group-hover:bg-gray-50 group-hover:translate-y-[-2px] transition-transform">
+                  一覧を見る
+                </Button>
+              </div>
+            </div>
+          </Link>
+
         </div>
 
-        <div className="grid gap-6 md:grid-cols-2">
-          <Card className="border-primary/20 shadow-lg">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <FileText className="w-5 h-5 text-primary" />
-                Quick Actions
-              </CardTitle>
-              <CardDescription>Create and manage your SEO content</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <Link href="/new-query">
-                <Button className="w-full justify-start" size="lg">
-                  <Plus className="w-4 h-4 mr-2" />
-                  Create New Query
-                </Button>
-              </Link>
-              <Link href="/queries">
-                <Button variant="outline" className="w-full justify-start" size="lg">
-                  <FileText className="w-4 h-4 mr-2" />
-                  View All Queries
-                </Button>
-              </Link>
-              {user?.role === 'admin' && (
-                <Link href="/admin">
-                  <Button variant="secondary" className="w-full justify-start text-red-700 bg-red-50 hover:bg-red-100" size="lg">
-                    管理者ダッシュボード
-                  </Button>
-                </Link>
-              )}
-            </CardContent>
-          </Card>
-
-          <Card className="border-primary/20 shadow-lg">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <BarChart3 className="w-5 h-5 text-primary" />
-                Recent Activity
-              </CardTitle>
-              <CardDescription>Your latest queries and content</CardDescription>
-            </CardHeader>
-            <CardContent>
-              {queries && queries.length > 0 ? (
-                <div className="space-y-3">
-                  {queries.slice(0, 5).map((query) => (
-                    <Link key={query.id} href={`/query/${query.id}`}>
-                      <div className="p-3 rounded-lg border border-border hover:border-primary/50 transition-colors cursor-pointer">
-                        <div className="flex items-center justify-between">
-                          <div className="font-medium truncate">{query.keyword}</div>
-                          <div
-                            className={`text-xs px-2 py-1 rounded-full ${query.status === "ready"
-                              ? "bg-green-100 text-green-700"
-                              : query.status === "pending"
-                                ? "bg-amber-100 text-amber-700"
-                                : "bg-red-100 text-red-700"
-                              }`}
-                          >
-                            {query.status}
-                          </div>
-                        </div>
-                        <div className="text-xs text-muted-foreground mt-1">
-                          {new Date(query.createdAt).toLocaleDateString()}
-                        </div>
-                      </div>
-                    </Link>
-                  ))}
+        {/* Admin Section (Optional) */}
+        {user?.role === 'admin' && (
+          <div className="mt-12 pt-8 border-t border-dashed">
+            <h4 className="text-sm font-semibold text-muted-foreground mb-4 uppercase tracking-wider">管理者メニュー</h4>
+            <Link href="/admin">
+              <div className="flex items-center p-4 rounded-lg border border-red-100 bg-red-50/50 hover:bg-red-50 transition-colors cursor-pointer max-w-md">
+                <Settings className="w-5 h-5 text-red-600 mr-3" />
+                <div>
+                  <div className="font-semibold text-red-900">管理者ダッシュボード</div>
+                  <div className="text-sm text-red-700/80">ユーザー管理とプロジェクト割り当て</div>
                 </div>
-              ) : (
-                <div className="text-center py-8 text-muted-foreground">
-                  <FileText className="w-12 h-12 mx-auto mb-3 opacity-50" />
-                  <p>No queries yet. Create your first query to get started.</p>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        </div>
+              </div>
+            </Link>
+          </div>
+        )}
       </div>
     </div>
   );

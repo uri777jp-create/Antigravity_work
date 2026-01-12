@@ -160,11 +160,11 @@ export default function AdminDashboard() {
                                                         </div>
                                                     </div>
                                                     <div className="grid gap-2">
-                                                        <Label htmlFor="pid">プロジェクト名 / ニックネーム</Label>
-                                                        <Input id="pid" value={projectId} onChange={(e) => setProjectId(e.target.value)} placeholder="例: my-project-01" />
+                                                        <Label htmlFor="pid">分析プロジェクト (ID)</Label>
+                                                        <Input id="pid" value={projectId} onChange={(e) => setProjectId(e.target.value)} placeholder="例: p_12345" />
                                                     </div>
                                                     <div className="grid gap-2">
-                                                        <Label htmlFor="pname">個人のドメイン名</Label>
+                                                        <Label htmlFor="pname">プロジェクト表示名</Label>
                                                         <Input id="pname" value={projectName} onChange={(e) => setProjectName(e.target.value)} placeholder="例: mysite.com" />
                                                     </div>
                                                 </div>

@@ -164,20 +164,20 @@ export default function Login() {
                             <CardContent>
                                 <form onSubmit={handleRegister} className="space-y-4">
                                     <div className="space-y-2">
-                                        <Label htmlFor="name">プロジェクト名 / ニックネーム (英数字推奨)</Label>
+                                        <Label htmlFor="name">お名前 / ニックネーム</Label>
                                         <div className="relative">
                                             <UserIcon className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
                                             <Input
                                                 id="name"
                                                 type="text"
-                                                placeholder="例: my-project-01"
+                                                placeholder="例: Taro Yamada"
                                                 className="pl-9"
                                                 value={name}
                                                 onChange={(e) => setName(e.target.value)}
                                                 required
                                             />
                                         </div>
-                                        <p className="text-xs text-slate-500 mt-1">※ 半角英数字(my-project等)の使用を推奨</p>
+                                        <p className="text-xs text-slate-500 mt-1">※ ダッシュボードでの表示名になります</p>
                                     </div>
                                     <div className="space-y-2">
                                         <Label htmlFor="reg-email">メールアドレス</Label>

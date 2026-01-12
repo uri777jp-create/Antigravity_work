@@ -67,7 +67,7 @@ export default function QueryDetail() {
         setSeoScore(data.seoScore);
       }
       toast.success("タイトルとディスクリプションを保存しました！", {
-        description: data.saved ? `Natural Language Processing Dataに保存しました。SEOスコア: ${data.seoScore}/100` : "ローカルに保存しました",
+        description: data.saved ? `クラウドに保存しました。SEOスコア: ${data.seoScore}/100` : "ローカルに保存しました",
         duration: 5000,
       });
     },
@@ -177,7 +177,7 @@ export default function QueryDetail() {
         setSeoScore(data.seoScore);
       }
       toast.success(`リード文を生成しました！`, {
-        description: data.saved ? `Natural Language Processing Dataに保存しました。SEOスコア: ${data.seoScore}/100` : "ローカルに保存しました",
+        description: data.saved ? `クラウドに保存しました。SEOスコア: ${data.seoScore}/100` : "ローカルに保存しました",
         duration: 5000,
       });
     },
@@ -194,7 +194,7 @@ export default function QueryDetail() {
         setSeoScore(data.seoScore);
       }
       toast.success(`リード文を保存しました！`, {
-        description: data.saved ? `Natural Language Processing Dataに保存しました。SEOスコア: ${data.seoScore}/100` : "ローカルに保存しました",
+        description: data.saved ? `クラウドに保存しました。SEOスコア: ${data.seoScore}/100` : "ローカルに保存しました",
         duration: 5000,
       });
     },
@@ -208,11 +208,11 @@ export default function QueryDetail() {
       setTitle(data.title);
       setDescription(data.description);
 
-      // Natural Language Processing Dataに保存されたスコアを表示
+      // クラウドに保存されたスコアを表示
       if (data.saved && data.seoScore !== undefined) {
         setSeoScore(data.seoScore);
         toast.success(`タイトルとディスクリプションを生成しました！`, {
-          description: `Natural Language Processing Dataに保存しました。現在のSEOスコア: ${data.seoScore}/100`,
+          description: `クラウドに保存しました。現在のSEOスコア: ${data.seoScore}/100`,
           duration: 5000,
         });
       } else {
@@ -418,7 +418,7 @@ export default function QueryDetail() {
     const url = URL.createObjectURL(dataBlob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = `query-${query?.neuronQueryId}-${new Date().toISOString().split("T")[0]}.json`;
+    link.download = `analysis-${queryId}-${new Date().toISOString().split("T")[0]}.json`;
     link.click();
     URL.revokeObjectURL(url);
     toast.success("JSONをダウンロードしました！");
@@ -748,7 +748,7 @@ export default function QueryDetail() {
                     <div>
                       <CardTitle>SEO 推薦データ</CardTitle>
                       <CardDescription>
-                        Natural Language Processing Dataからのデータ - {new Date(query.createdAt).toLocaleDateString()}
+                        SEO最適化分析データ - {new Date(query.createdAt).toLocaleDateString()}
                       </CardDescription>
                     </div>
                     <Button variant="outline" size="sm" onClick={handleDownloadJSON}>
@@ -772,8 +772,8 @@ export default function QueryDetail() {
                             <div><span className="font-medium">言語:</span> {recommendations.language}</div>
                             <div><span className="font-medium">検索エンジン:</span> {recommendations.engine}</div>
                             <div><span className="font-medium">ステータス:</span> <Badge>{recommendations.status}</Badge></div>
-                            <div><span className="font-medium">プロジェクトID:</span> <code className="text-xs bg-muted px-1 py-0.5 rounded">{project?.neuronProjectId || '-'}</code></div>
-                            <div><span className="font-medium">クエリID:</span> <code className="text-xs bg-muted px-1 py-0.5 rounded">{query?.neuronQueryId || '-'}</code></div>
+                            <div><span className="font-medium">参照ID:</span> <code className="text-xs bg-muted px-1 py-0.5 rounded">{project?.neuronProjectId || '-'}</code></div>
+                            <div><span className="font-medium">分析ID:</span> <code className="text-xs bg-muted px-1 py-0.5 rounded">{query?.neuronQueryId || '-'}</code></div>
                           </div>
                         </AccordionContent>
                       </AccordionItem>

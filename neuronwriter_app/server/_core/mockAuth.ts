@@ -29,21 +29,17 @@ export function registerMockAuthRoutes(app: Express) {
                 lastSignedIn: new Date(),
             });
 
-            // 1.5. Check if user needs a default project (1-to-1 User-Project ID)
+            // 1.5. Check if user needs a default project (Logic Removed: Admin assigns projects)
+            /*
             // Fetch user to get ID
             const user = await db.getUserByOpenId(mockOpenId);
             if (user) {
                 const projects = await db.getUserProjects(user.id);
                 if (projects.length === 0) {
-                    console.log(`[MockAuth] Creating default project for ${mockName}`);
-                    // Use openId or name as project ID. Using name as requested.
-                    await db.createProject({
-                        userId: user.id,
-                        neuronProjectId: mockName, // User name as Project ID
-                        name: mockName,
-                    });
+                     // Auto-create logic removed
                 }
             }
+            */
 
             // 2. Create session token (JWT)
             const sessionToken = await sdk.createSessionToken(mockOpenId, {
@@ -118,11 +114,14 @@ export function registerMockAuthRoutes(app: Express) {
                 return res.status(400).json({ error: "このメールアドレスは既に登録されています" });
             }
 
+            // Project ID check removed since we are not autocreating projects.
+            /*
             // Check if project name/id already exists
             const existingProject = await db.getProjectByNeuronId(name);
             if (existingProject) {
                 return res.status(400).json({ error: "このプロジェクトIDは既に使用されています。別の名前を指定してください" });
             }
+            */
 
             // Use email as OpenID for simplicity
             const newOpenId = email;
@@ -136,8 +135,11 @@ export function registerMockAuthRoutes(app: Express) {
                 lastSignedIn: new Date(),
             });
 
-            // Auto-create project
+            // Fetch user to return in response (and for future potential logic)
             const user = await db.getUserByOpenId(newOpenId);
+
+            // Auto-create project logic removed. Admin must assign project manually.
+            /*
             if (user) {
                 await db.createProject({
                     userId: user.id,
@@ -145,6 +147,7 @@ export function registerMockAuthRoutes(app: Express) {
                     name: name,
                 });
             }
+            */
 
             // Login
             const sessionToken = await sdk.createSessionToken(newOpenId, {
