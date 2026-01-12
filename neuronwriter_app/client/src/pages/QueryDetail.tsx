@@ -730,16 +730,11 @@ export default function QueryDetail() {
         </div>
 
         <Tabs defaultValue={defaultTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3">
-            {isAdmin ? (
+          <TabsList className={`grid w-full ${isAdmin ? 'grid-cols-3' : 'grid-cols-2'}`}>
+            {isAdmin && (
               <TabsTrigger value="recommendations">
                 <Lightbulb className="mr-2 h-4 w-4" />
                 推薦データ
-              </TabsTrigger>
-            ) : (
-              <TabsTrigger value="recommendations" disabled className="opacity-50 cursor-not-allowed">
-                <Lightbulb className="mr-2 h-4 w-4" />
-                （管理者のみ）
               </TabsTrigger>
             )}
             <TabsTrigger value="editor">
