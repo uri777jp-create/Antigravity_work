@@ -33,8 +33,12 @@ export default function QueryDetail() {
   const [targetScore, setTargetScore] = useState<number>(70);
   const [isEvaluating, setIsEvaluating] = useState(false);
   const [outlineHeadings, setOutlineHeadings] = useState<OutlineHeading[]>([]);
+  const [lastSavedOutlineHeadings, setLastSavedOutlineHeadings] = useState<OutlineHeading[]>([]);
   const [outlineScore, setOutlineScore] = useState<number | null>(null);
   const [isGeneratingOutline, setIsGeneratingOutline] = useState(false);
+
+  // Deep comparison for outline dirty state
+  const isOutlineDirty = JSON.stringify(outlineHeadings) !== JSON.stringify(lastSavedOutlineHeadings);
 
   const [viewMode, setViewMode] = useState<'html' | 'preview' | 'markdown'>('html');
   const turndownService = new TurndownService({ headingStyle: 'atx' });
@@ -93,7 +97,7 @@ export default function QueryDetail() {
         setSeoScore(data.seoScore);
       }
       toast.success("タイトルとディスクリプションを保存しました！", {
-        description: data.saved ? `クラウドに保存しました。SEOスコア: ${data.seoScore}/100` : "ローカルに保存しました",
+        description: data.saved ? "クラウドに保存しました。" : "ローカルに保存しました",
         duration: 5000,
       });
     },
@@ -104,7 +108,7 @@ export default function QueryDetail() {
 
   const evaluateMutation = trpc.neuronwriter.evaluateContent.useMutation({
     onSuccess: (data: { score?: number }) => {
-      toast.success(`SEOスコア： ${data.score || "N/A"}`);
+      toast.success("コンテンツの分析が完了しました");
     },
     onError: (error) => {
       toast.error(`評価に失敗しました： ${error.message}`);
@@ -126,6 +130,7 @@ export default function QueryDetail() {
         const parsed = JSON.parse(latestOutline.structure);
         if (parsed.headings && Array.isArray(parsed.headings)) {
           setOutlineHeadings(parsed.headings);
+          setLastSavedOutlineHeadings(parsed.headings);
           if (latestOutline.seoScore) {
             setOutlineScore(latestOutline.seoScore);
           }
@@ -139,6 +144,7 @@ export default function QueryDetail() {
   const generateOutlineMutation = trpc.neuronwriter.generateOutline.useMutation({
     onSuccess: (data) => {
       setOutlineHeadings(data.structure);
+      setLastSavedOutlineHeadings(data.structure);
       setOutlineScore(data.seoScore);
       setIsGeneratingOutline(false);
 
@@ -147,8 +153,8 @@ export default function QueryDetail() {
 
       const scoreIncrease = data.seoScore - (data.currentScore || 0);
       toast.success(`目次を生成・保存しました！`, {
-        description: `現在のスコア: ${data.currentScore || 0} → ${data.seoScore} (+${scoreIncrease}ポイント) | ${data.attempts}回の試行`,
-        duration: 6000,
+        description: "上位サイトの分析に基づき目次を生成しました。",
+        duration: 5000,
       });
     },
     onError: (error) => {
@@ -160,7 +166,7 @@ export default function QueryDetail() {
   const evaluateOutlineMutation = trpc.neuronwriter.evaluateOutline.useMutation({
     onSuccess: (data) => {
       setOutlineScore(Math.round(data.content_score || 0));
-      toast.success(`SEOスコア: ${Math.round(data.content_score || 0)}/100`);
+      toast.success("目次の分析が完了しました");
     },
     onError: (error) => {
       toast.error(`評価に失敗しました： ${error.message}`);
@@ -170,6 +176,7 @@ export default function QueryDetail() {
   // 目次保存mutation
   const updateOutlineMutation = trpc.neuronwriter.updateOutline.useMutation({
     onSuccess: () => {
+      setLastSavedOutlineHeadings(outlineHeadings);
       refetchOutlines();
       toast.success(`目次を保存しました！`);
     },
@@ -183,7 +190,7 @@ export default function QueryDetail() {
       // SEOスコアを表示
       if (data && data.content_score !== undefined) {
         const score = Math.round(data.content_score);
-        toast.success(`SEOスコア： ${score}/100`, {
+        toast.success("分析が完了しました", {
           description: `文字数：${data.word_count || 0}文字`,
           duration: 5000,
         });
@@ -204,7 +211,7 @@ export default function QueryDetail() {
         setSeoScore(data.seoScore);
       }
       toast.success(`リード文を生成しました！`, {
-        description: data.saved ? `クラウドに保存しました。SEOスコア: ${data.seoScore}/100` : "ローカルに保存しました",
+        description: data.saved ? "クラウドに保存しました。" : "ローカルに保存しました",
         duration: 5000,
       });
     },
@@ -222,7 +229,7 @@ export default function QueryDetail() {
         setSeoScore(data.seoScore);
       }
       toast.success(`リード文を保存しました！`, {
-        description: data.saved ? `クラウドに保存しました。SEOスコア: ${data.seoScore}/100` : "ローカルに保存しました",
+        description: data.saved ? "クラウドに保存しました。" : "ローカルに保存しました",
         duration: 5000,
       });
     },
@@ -242,7 +249,7 @@ export default function QueryDetail() {
       if (data.saved && data.seoScore !== undefined) {
         setSeoScore(data.seoScore);
         toast.success(`タイトルとディスクリプションを生成しました！`, {
-          description: `クラウドに保存しました。現在のSEOスコア: ${data.seoScore}/100`,
+          description: "クラウドに保存しました。",
           duration: 5000,
         });
       } else {
@@ -1293,49 +1300,53 @@ export default function QueryDetail() {
                     <p className="text-sm">これには数分かかる場合があります。</p>
                   </div>
                 ) : (
-                  <OutlineEditor
-                    headings={outlineHeadings}
-                    onChange={handleOutlineChange}
-                    recommendedKeywords={recommendations?.terms?.h?.map((t: any) => t.t) || []}
-                    onAutoSave={handleSaveOutline}
-                  />
-                )}
-
-                {/* 目次のSEOスコア表示 */}
-                {outlineHeadings.length > 0 && (
-                  <div className="space-y-4 mt-6">
-                    <div className="flex items-center justify-between">
-                      <h3 className="text-lg font-semibold">目次のSEOスコア</h3>
-                      <div className="flex gap-2">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={handleCheckOutlineScore}
-                          disabled={evaluateOutlineMutation.isPending}
-                        >
-                          <RefreshCw className={`mr-2 h-4 w-4 ${evaluateOutlineMutation.isPending ? 'animate-spin' : ''}`} />
-                          {evaluateOutlineMutation.isPending ? "評価中..." : "スコア確認"}
-                        </Button>
-                        <Button
-                          size="sm"
-                          onClick={handleSaveOutline}
-                          disabled={updateOutlineMutation.isPending || !outlines || outlines.length === 0}
-                        >
-                          {updateOutlineMutation.isPending ? "保存中..." : "目次を保存"}
-                        </Button>
+                  <>
+                    <div className="bg-muted/30 p-3 rounded-md mb-4 text-xs text-muted-foreground border border-border/50">
+                      <div className="flex flex-wrap gap-x-6 gap-y-2">
+                        <span className="flex items-center gap-1.5"><span className="bg-background border rounded px-1 min-w-[20px] text-center">✋</span> ドラッグで移動</span>
+                        <span className="flex items-center gap-1.5"><span className="bg-background border rounded px-1">H2/H3</span> で階層切替</span>
+                        <span className="flex items-center gap-1.5"><span className="bg-background border rounded px-1 min-w-[20px] text-center">＋</span> で見出し追加</span>
                       </div>
                     </div>
+                    <OutlineEditor
+                      headings={outlineHeadings}
+                      onChange={handleOutlineChange}
+                      recommendedKeywords={recommendations?.terms?.h?.map((t: any) => t.t) || []}
+                      onAutoSave={handleSaveOutline}
+                      isDirty={isOutlineDirty}
+                    />
+                  </>
+                )}
 
-                    {outlineScore !== null && (
-                      <SEOScoreBar
-                        currentScore={outlineScore}
-                        targetScore={targetScore}
-                        wordCount={outlineHeadings.reduce((sum, h) => sum + h.text.length, 0)}
-                        keywordUsage={0}
-                      />
-                    )}
+                {/* 目次保存ボタンのみ表示 */}
+                {outlineHeadings.length > 0 && (
+                  <div className="flex justify-end mt-4">
+                    <Button
+                      onClick={handleSaveOutline}
+                      disabled={updateOutlineMutation.isPending || !outlines || outlines.length === 0}
+                      variant={isOutlineDirty ? "default" : "outline"}
+                      className={isOutlineDirty ? "bg-indigo-600 hover:bg-indigo-700 text-white shadow-md transition-all" : ""}
+                    >
+                      {updateOutlineMutation.isPending ? (
+                        <>
+                          <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                          保存中...
+                        </>
+                      ) : isOutlineDirty ? (
+                        <>
+                          <CheckCircle2 className="w-4 h-4 mr-2" />
+                          変更を保存（未保存）
+                        </>
+                      ) : (
+                        <>
+                          <CheckCircle2 className="w-4 h-4 mr-2 text-green-500" />
+                          保存済み
+                        </>
+                      )}
+                    </Button>
                   </div>
                 )}
+
               </CardContent>
             </Card>
 

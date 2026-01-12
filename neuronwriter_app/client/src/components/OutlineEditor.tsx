@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { GripVertical, Plus, Trash2, Sparkles, BookOpen, Loader2, ShieldCheck, CheckCircle2, AlertTriangle, HelpCircle, Copy } from "lucide-react";
+import React from "react";
 import { cn } from "@/lib/utils";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
@@ -35,9 +36,10 @@ interface OutlineEditorProps {
   onChange: (headings: OutlineHeading[]) => void;
   recommendedKeywords?: string[];
   onAutoSave?: (headings: OutlineHeading[]) => void;
+  isDirty?: boolean;
 }
 
-export function OutlineEditor({ headings, onChange, recommendedKeywords = [], onAutoSave }: OutlineEditorProps) {
+export function OutlineEditor({ headings, onChange, recommendedKeywords = [], onAutoSave, isDirty = false }: OutlineEditorProps) {
   const [draggedId, setDraggedId] = useState<string | null>(null);
   const [writingId, setWritingId] = useState<string | null>(null); // 現在執筆中のID
   const [checkingId, setCheckingId] = useState<string | null>(null); // ファクトチェック中のID
@@ -293,367 +295,369 @@ export function OutlineEditor({ headings, onChange, recommendedKeywords = [], on
         </Card>
       ) : (
         <>
-          {headings.map((heading) => (
-            <div
-              key={heading.id}
-              className={cn(
-                "group relative border rounded-lg bg-card transition-all",
-                draggedId === heading.id && "opacity-50",
-                "hover:bg-accent/50"
-              )}
-            >
-              {/* ヘッダー部分 */}
+          {headings.map((heading, idx) => (
+            <React.Fragment key={heading.id}>
               <div
-                className="p-4 flex items-start gap-3 cursor-move"
-                draggable
-                onDragStart={() => handleDragStart(heading.id)}
-                onDragOver={(e) => handleDragOver(e, heading.id)}
-                onDragEnd={handleDragEnd}
+                className={cn(
+                  "group relative border rounded-lg bg-card transition-all",
+                  draggedId === heading.id && "opacity-50",
+                  "hover:bg-accent/50"
+                )}
               >
-                {/* ドラッグハンドル */}
-                <div className="mt-2 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity">
-                  <GripVertical className="h-5 w-5" />
-                </div>
-
-                {/* レベルインジケーター */}
-                <div className="flex items-center gap-2 mt-2">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => handleLevelToggle(heading.id)}
-                    className="h-8 px-2"
-                  >
-                    {heading.level === 2 ? (
-                      <span className="font-bold text-lg">H2</span>
-                    ) : (
-                      <span className="font-medium text-sm text-muted-foreground">H3</span>
-                    )}
-                  </Button>
-                </div>
-
-                {/* メイン入力エリア */}
-                <div className="flex-1 space-y-2">
-                  <div className="flex gap-2">
-                    <Input
-                      value={heading.text}
-                      onChange={(e) => handleTextChange(heading.id, e.target.value)}
-                      placeholder={heading.level === 2 ? "H2見出しを入力..." : "H3小見出しを入力..."}
-                      className={cn(
-                        "font-medium flex-1",
-                        heading.level === 2 ? "text-lg" : "text-base"
-                      )}
-                    />
-
-                    {/* 執筆ボタン（H2のみ、または既にコンテンツがあるH3） */}
-                    {(heading.level === 2 || heading.content || heading.level === 3) && (
-                      <Button
-                        variant={heading.content ? "secondary" : "outline"}
-                        size="sm"
-                        onClick={() => handleWrite(heading)}
-                        disabled={writingId === heading.id}
-                        className={cn(
-                          "whitespace-nowrap",
-                          heading.level === 3 && !heading.content && "hidden" // コンテンツがないH3はWeb執筆ボタンを隠す（H2から一括生成するため）
-                        )}
-                      >
-                        {writingId === heading.id ? (
-                          <>
-                            <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                            執筆中...
-                          </>
-                        ) : (
-                          <>
-                            <Sparkles className={cn("h-4 w-4 mr-2", heading.content ? "text-primary" : "text-yellow-500")} />
-                            {heading.content ? "AI再生成" : "Web執筆"}
-                          </>
-                        )}
-                      </Button>
-                    )}
-                    {/* Fact Check Button */}
-                    {heading.content && (
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handleFactCheck(heading)}
-                        disabled={checkingId === heading.id}
-                        className="whitespace-nowrap ml-1 text-blue-600 hover:text-blue-700 hover:bg-blue-50"
-                      >
-                        {checkingId === heading.id ? (
-                          <>
-                            <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                            検証中...
-                          </>
-                        ) : (
-                          <>
-                            <ShieldCheck className="h-4 w-4 mr-2" />
-                            ファクトチェック
-                          </>
-                        )}
-                      </Button>
-                    )}
+                {/* ヘッダー部分 */}
+                <div
+                  className="p-4 flex items-start gap-3 cursor-move"
+                  draggable
+                  onDragStart={() => handleDragStart(heading.id)}
+                  onDragOver={(e) => handleDragOver(e, heading.id)}
+                  onDragEnd={handleDragEnd}
+                >
+                  {/* ドラッグハンドル */}
+                  <div className="mt-2 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity">
+                    <GripVertical className="h-5 w-5" />
                   </div>
 
-                  {/* Fact Check Results */}
-                  {heading.factCheckResults && (
-                    <div className="mt-3 border rounded-md p-3 bg-white">
-                      <div className="flex items-center gap-2 mb-2 pb-2 border-b">
-                        <ShieldCheck className="h-4 w-4 text-blue-600" />
-                        <span className="font-semibold text-sm">ファクトチェック結果</span>
-                      </div>
-                      {heading.factCheckResults.length === 0 ? (
-                        <p className="text-sm text-muted-foreground">検証に必要な具体的な主張が見つかりませんでした。</p>
+                  {/* レベルインジケーター */}
+                  <div className="flex items-center gap-2 mt-2">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => handleLevelToggle(heading.id)}
+                      className="h-8 px-2"
+                    >
+                      {heading.level === 2 ? (
+                        <span className="font-bold text-lg">H2</span>
                       ) : (
-                        <div className="space-y-3">
-                          {heading.factCheckResults.map((res: any, idx: number) => (
-                            <div key={idx} className="text-sm">
-                              <div className="flex items-start gap-2">
-                                <div className="mt-0.5">
-                                  {res.status === "verified" ? (
-                                    <CheckCircle2 className="h-4 w-4 text-green-600" />
-                                  ) : res.status === "contradicted" ? (
-                                    <AlertTriangle className="h-4 w-4 text-red-500" />
-                                  ) : res.status === "partially_verified" ? (
-                                    <AlertTriangle className="h-4 w-4 text-amber-500" />
-                                  ) : (
-                                    <HelpCircle className="h-4 w-4 text-gray-400" />
-                                  )}
-                                </div>
-                                <div className="flex-1">
-                                  <p className="font-medium text-foreground/90">{res.claim}</p>
-                                  <div className="mt-1 space-y-1">
-                                    <div className="flex items-center gap-2">
-                                      <Badge variant={
-                                        res.status === "verified" ? "default" :
-                                          res.status === "contradicted" ? "destructive" :
-                                            res.status === "partially_verified" ? "secondary" : "outline"
-                                      } className={cn(
-                                        "text-[10px] px-1 py-0 h-5",
-                                        res.status === "verified" && "bg-green-600 hover:bg-green-700",
-                                        res.status === "partially_verified" && "bg-amber-100 text-amber-800 hover:bg-amber-200"
-                                      )}>
-                                        {res.status === "verified" ? "正確" :
-                                          res.status === "contradicted" ? "誤り/矛盾" :
-                                            res.status === "partially_verified" ? "一部正確/要補足" : "検証不能"}
-                                      </Badge>
-                                      {res.confidence !== undefined && (
-                                        <span className="text-xs text-muted-foreground">自信度: {res.confidence}%</span>
-                                      )}
-                                    </div>
+                        <span className="font-medium text-sm text-muted-foreground">H3</span>
+                      )}
+                    </Button>
+                  </div>
 
-                                    {res.thought && (
-                                      <div className="bg-muted/50 p-2 rounded text-xs text-muted-foreground mb-1">
-                                        <span className="font-semibold block mb-0.5">思考プロセス:</span>
-                                        {renderTextWithSources(res.thought, heading.factCheckSources)}
-                                      </div>
+                  {/* メイン入力エリア */}
+                  <div className="flex-1 space-y-2">
+                    <div className="flex gap-2">
+                      <Input
+                        value={heading.text}
+                        onChange={(e) => handleTextChange(heading.id, e.target.value)}
+                        placeholder={heading.level === 2 ? "H2見出しを入力..." : "H3小見出しを入力..."}
+                        className={cn(
+                          "font-medium flex-1",
+                          heading.level === 2 ? "text-lg" : "text-base"
+                        )}
+                      />
+
+                      {/* 執筆ボタン（H2のみ、または既にコンテンツがあるH3） */}
+                      {(heading.level === 2 || heading.content || heading.level === 3) && (
+                        <Button
+                          variant={heading.content ? "secondary" : "default"}
+                          size="sm"
+                          onClick={() => handleWrite(heading)}
+                          disabled={writingId === heading.id}
+                          className={cn(
+                            "whitespace-nowrap shadow-sm",
+                            !heading.content && "bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white border-0",
+                            heading.level === 3 && !heading.content && "hidden" // コンテンツがないH3はWeb執筆ボタンを隠す（H2から一括生成するため）
+                          )}
+                        >
+                          {writingId === heading.id ? (
+                            <>
+                              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                              執筆中...
+                            </>
+                          ) : (
+                            <>
+                              <Sparkles className={cn("h-4 w-4 mr-2", heading.content ? "text-primary" : "text-white")} />
+                              {heading.content ? "AI再生成" : "本文をAI執筆"}
+                            </>
+                          )}
+                        </Button>
+                      )}
+                      {/* Fact Check Button */}
+                      {heading.content && (
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleFactCheck(heading)}
+                          disabled={checkingId === heading.id}
+                          className="whitespace-nowrap ml-1 text-blue-600 hover:text-blue-700 hover:bg-blue-50"
+                        >
+                          {checkingId === heading.id ? (
+                            <>
+                              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                              検証中...
+                            </>
+                          ) : (
+                            <>
+                              <ShieldCheck className="h-4 w-4 mr-2" />
+                              ファクトチェック
+                            </>
+                          )}
+                        </Button>
+                      )}
+                    </div>
+
+                    {/* Fact Check Results */}
+                    {heading.factCheckResults && (
+                      <div className="mt-3 border rounded-md p-3 bg-white">
+                        <div className="flex items-center gap-2 mb-2 pb-2 border-b">
+                          <ShieldCheck className="h-4 w-4 text-blue-600" />
+                          <span className="font-semibold text-sm">ファクトチェック結果</span>
+                        </div>
+                        {heading.factCheckResults.length === 0 ? (
+                          <p className="text-sm text-muted-foreground">検証に必要な具体的な主張が見つかりませんでした。</p>
+                        ) : (
+                          <div className="space-y-3">
+                            {heading.factCheckResults.map((res: any, idx: number) => (
+                              <div key={idx} className="text-sm">
+                                <div className="flex items-start gap-2">
+                                  <div className="mt-0.5">
+                                    {res.status === "verified" ? (
+                                      <CheckCircle2 className="h-4 w-4 text-green-600" />
+                                    ) : res.status === "contradicted" ? (
+                                      <AlertTriangle className="h-4 w-4 text-red-500" />
+                                    ) : res.status === "partially_verified" ? (
+                                      <AlertTriangle className="h-4 w-4 text-amber-500" />
+                                    ) : (
+                                      <HelpCircle className="h-4 w-4 text-gray-400" />
                                     )}
+                                  </div>
+                                  <div className="flex-1">
+                                    <p className="font-medium text-foreground/90">{res.claim}</p>
+                                    <div className="mt-1 space-y-1">
+                                      <div className="flex items-center gap-2">
+                                        <Badge variant={
+                                          res.status === "verified" ? "default" :
+                                            res.status === "contradicted" ? "destructive" :
+                                              res.status === "partially_verified" ? "secondary" : "outline"
+                                        } className={cn(
+                                          "text-[10px] px-1 py-0 h-5",
+                                          res.status === "verified" && "bg-green-600 hover:bg-green-700",
+                                          res.status === "partially_verified" && "bg-amber-100 text-amber-800 hover:bg-amber-200"
+                                        )}>
+                                          {res.status === "verified" ? "正確" :
+                                            res.status === "contradicted" ? "誤り/矛盾" :
+                                              res.status === "partially_verified" ? "一部正確/要補足" : "検証不能"}
+                                        </Badge>
+                                        {res.confidence !== undefined && (
+                                          <span className="text-xs text-muted-foreground">自信度: {res.confidence}%</span>
+                                        )}
+                                      </div>
 
-                                    <p className={cn(
-                                      "text-xs",
-                                      res.status === "verified" ? "text-green-700" :
-                                        res.status === "contradicted" ? "text-red-700" :
-                                          res.status === "partially_verified" ? "text-amber-800" : "text-gray-600"
-                                    )}>
-                                      <span className="font-semibold">判定理由:</span> {renderTextWithSources(res.reason, heading.factCheckSources)}
-                                    </p>
-
-                                    {/* Suggestion for contradictions */}
-                                    {res.suggestion && (res.status === "contradicted" || res.status === "partially_verified") && (
-                                      <div className="mt-2 p-2 bg-green-50 border border-green-100 rounded-md relative group">
-                                        <div className="flex items-center gap-1 text-green-700 mb-1">
-                                          <Sparkles className="h-3 w-3" />
-                                          <span className="text-xs font-bold">修正案</span>
+                                      {res.thought && (
+                                        <div className="bg-muted/50 p-2 rounded text-xs text-muted-foreground mb-1">
+                                          <span className="font-semibold block mb-0.5">思考プロセス:</span>
+                                          {renderTextWithSources(res.thought, heading.factCheckSources)}
                                         </div>
-                                        <p className="text-xs text-green-800 pr-6">{res.suggestion}</p>
-                                        <Button
-                                          variant="ghost"
-                                          size="icon"
-                                          className="absolute top-1 right-1 h-6 w-6 opacity-80 hover:opacity-100 bg-white/50 hover:bg-white text-green-700"
-                                          onClick={() => copyToClipboard(res.suggestion)}
-                                          title="修正案をコピー"
-                                        >
-                                          <Copy className="h-3 w-3" />
-                                        </Button>
-                                      </div>
-                                    )}
-
-                                    <div className="flex flex-wrap items-center gap-2 mt-1">
-                                      {res.sourceUrl && (
-                                        <a href={res.sourceUrl} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-500 hover:underline inline-flex items-center gap-1">
-                                          <BookOpen className="h-3 w-3" /> 出典を確認
-                                        </a>
                                       )}
 
-                                      {/* Extract and display specific source links mentioned in thought/reason */}
-                                      {(() => {
-                                        const text = (res.thought || "") + (res.reason || "");
-                                        // Improved Regex to catch "Source 1", "Source 1, 2", "Source 1、2" etc.
-                                        // Matches "Source" followed by numbers separated by delimiters
-                                        // Uses [0-9０-９] for full-width digit support
-                                        const matches = Array.from(text.matchAll(/(?:Source|ソース|出典)[\s\u3000]*([0-9０-９]+(?:[\s\u3000]*[,\u3001\uff0c\u30fb]\s*[0-9０-９]+)*)/gim));
+                                      <p className={cn(
+                                        "text-xs",
+                                        res.status === "verified" ? "text-green-700" :
+                                          res.status === "contradicted" ? "text-red-700" :
+                                            res.status === "partially_verified" ? "text-amber-800" : "text-gray-600"
+                                      )}>
+                                        <span className="font-semibold">判定理由:</span> {renderTextWithSources(res.reason, heading.factCheckSources)}
+                                      </p>
 
-                                        const uniqueIds = new Set<number>();
-                                        matches.forEach((m: any) => {
-                                          const idGroup = m[1];
-                                          // Split by common delimiters: comma, ideographic comma, etc.
-                                          const ids = idGroup.split(/[\s\u3000]*[,\u3001\uff0c\u30fb][\s\u3000]*/).map((s: string) => {
-                                            // Full-width to half-width
-                                            const normalized = s.trim().replace(/[０-９]/g, (c) => String.fromCharCode(c.charCodeAt(0) - 0xFEE0));
-                                            return parseInt(normalized);
-                                          });
-                                          ids.forEach((id: number) => {
-                                            if (!isNaN(id)) uniqueIds.add(id);
-                                          });
-                                        });
-
-                                        const sortedIds = Array.from(uniqueIds).sort((a, b) => a - b);
-
-                                        if (sortedIds.length === 0) return null;
-
-                                        return (
-                                          <div className="flex items-center gap-2">
-                                            {sortedIds.map(id => {
-                                              const source = heading.factCheckSources?.find(s => s.id === id);
-                                              if (!source) return null;
-                                              return (
-                                                <a
-                                                  key={id}
-                                                  href={source.url}
-                                                  target="_blank"
-                                                  rel="noopener noreferrer"
-                                                  className="text-xs text-red-500 hover:underline font-medium hover:text-red-600 transition-colors"
-                                                  title={source.title}
-                                                >
-                                                  ソース{id}
-                                                </a>
-                                              );
-                                            })}
+                                      {/* Suggestion for contradictions */}
+                                      {res.suggestion && (res.status === "contradicted" || res.status === "partially_verified") && (
+                                        <div className="mt-2 p-2 bg-green-50 border border-green-100 rounded-md relative group">
+                                          <div className="flex items-center gap-1 text-green-700 mb-1">
+                                            <Sparkles className="h-3 w-3" />
+                                            <span className="text-xs font-bold">修正案</span>
                                           </div>
-                                        );
-                                      })()}
+                                          <p className="text-xs text-green-800 pr-6">{res.suggestion}</p>
+                                          <Button
+                                            variant="ghost"
+                                            size="icon"
+                                            className="absolute top-1 right-1 h-6 w-6 opacity-80 hover:opacity-100 bg-white/50 hover:bg-white text-green-700"
+                                            onClick={() => copyToClipboard(res.suggestion)}
+                                            title="修正案をコピー"
+                                          >
+                                            <Copy className="h-3 w-3" />
+                                          </Button>
+                                        </div>
+                                      )}
+
+                                      <div className="flex flex-wrap items-center gap-2 mt-1">
+                                        {res.sourceUrl && (
+                                          <a href={res.sourceUrl} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-500 hover:underline inline-flex items-center gap-1">
+                                            <BookOpen className="h-3 w-3" /> 出典を確認
+                                          </a>
+                                        )}
+
+                                        {/* Extract and display specific source links mentioned in thought/reason */}
+                                        {(() => {
+                                          const text = (res.thought || "") + (res.reason || "");
+                                          // Improved Regex to catch "Source 1", "Source 1, 2", "Source 1、2" etc.
+                                          // Matches "Source" followed by numbers separated by delimiters
+                                          // Uses [0-9０-９] for full-width digit support
+                                          const matches = Array.from(text.matchAll(/(?:Source|ソース|出典)[\s\u3000]*([0-9０-９]+(?:[\s\u3000]*[,\u3001\uff0c\u30fb]\s*[0-9０-９]+)*)/gim));
+
+                                          const uniqueIds = new Set<number>();
+                                          matches.forEach((m: any) => {
+                                            const idGroup = m[1];
+                                            // Split by common delimiters: comma, ideographic comma, etc.
+                                            const ids = idGroup.split(/[\s\u3000]*[,\u3001\uff0c\u30fb][\s\u3000]*/).map((s: string) => {
+                                              // Full-width to half-width
+                                              const normalized = s.trim().replace(/[０-９]/g, (c) => String.fromCharCode(c.charCodeAt(0) - 0xFEE0));
+                                              return parseInt(normalized);
+                                            });
+                                            ids.forEach((id: number) => {
+                                              if (!isNaN(id)) uniqueIds.add(id);
+                                            });
+                                          });
+
+                                          const sortedIds = Array.from(uniqueIds).sort((a, b) => a - b);
+
+                                          if (sortedIds.length === 0) return null;
+
+                                          return (
+                                            <div className="flex items-center gap-2">
+                                              {sortedIds.map(id => {
+                                                const source = heading.factCheckSources?.find(s => s.id === id);
+                                                if (!source) return null;
+                                                return (
+                                                  <a
+                                                    key={id}
+                                                    href={source.url}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="text-xs text-red-500 hover:underline font-medium hover:text-red-600 transition-colors"
+                                                    title={source.title}
+                                                  >
+                                                    ソース{id}
+                                                  </a>
+                                                );
+                                              })}
+                                            </div>
+                                          );
+                                        })()}
+                                      </div>
                                     </div>
                                   </div>
                                 </div>
                               </div>
-                            </div>
-                          ))}
-                        </div>
-                      )}
-
-                      {/* Source List Footer */}
-                      {heading.factCheckSources && heading.factCheckSources.length > 0 && (
-                        <div className="mt-4 pt-3 border-t">
-                          <p className="text-xs font-semibold text-muted-foreground mb-1">使用したソース一覧:</p>
-                          <ul className="space-y-1">
-                            {heading.factCheckSources.map((source) => (
-                              <li key={source.id} className="text-xs">
-                                <span className="font-mono text-muted-foreground mr-1">[Source {source.id}]</span>
-                                <a
-                                  href={source.url}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="text-blue-600 hover:underline truncate inline-block max-w-[90%] align-bottom"
-                                >
-                                  {source.title || source.url}
-                                </a>
-                              </li>
                             ))}
-                          </ul>
-                        </div>
-                      )}
-                    </div>
-                  )}
+                          </div>
+                        )}
 
-                  {/* キーワードバッジ */}
-                  {heading.keywords.length > 0 && (
-                    <div className="flex flex-wrap gap-1">
-                      {heading.keywords.map((kw, idx) => (
-                        <Badge key={idx} variant="secondary" className="text-xs">
-                          {kw}
-                        </Badge>
-                      ))}
-                    </div>
-                  )}
+                        {/* Source List Footer */}
+                        {heading.factCheckSources && heading.factCheckSources.length > 0 && (
+                          <div className="mt-4 pt-3 border-t">
+                            <p className="text-xs font-semibold text-muted-foreground mb-1">使用したソース一覧:</p>
+                            <ul className="space-y-1">
+                              {heading.factCheckSources.map((source) => (
+                                <li key={source.id} className="text-xs">
+                                  <span className="font-mono text-muted-foreground mr-1">[Source {source.id}]</span>
+                                  <a
+                                    href={source.url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-blue-600 hover:underline truncate inline-block max-w-[90%] align-bottom"
+                                  >
+                                    {source.title || source.url}
+                                  </a>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+                      </div>
+                    )}
 
-                  {/* 推奨キーワード挿入 */}
-                  {recommendedKeywords.length > 0 && (
-                    <div className="flex flex-wrap gap-1 mt-2 max-h-[100px] overflow-y-auto hidden group-focus-within:flex">
-                      <span className="text-xs text-muted-foreground mr-2">推奨キーワード:</span>
-                      {recommendedKeywords.map((kw, idx) => (
-                        <Badge
-                          key={idx}
-                          variant="outline"
-                          className="text-xs cursor-pointer hover:bg-primary/10"
-                          onClick={() => insertKeyword(heading.id, kw)}
-                        >
-                          + {kw}
-                        </Badge>
-                      ))}
-                    </div>
-                  )}
-                </div>
 
-                {/* 削除ボタン */}
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => handleDelete(heading.id)}
-                  className="mt-2 opacity-0 group-hover:opacity-100 transition-opacity"
-                >
-                  <Trash2 className="h-4 w-4 text-destructive" />
-                </Button>
-              </div>
-
-              {/* 本文エディタエリア (常時表示) */}
-              <div className="px-4 pb-4 pl-12">
-                <Tabs defaultValue="preview" className="w-full">
-                  <div className="flex items-center justify-between mb-2">
-                    <TabsList className="grid w-[200px] grid-cols-2 h-8">
-                      <TabsTrigger value="preview" className="text-xs">プレビュー</TabsTrigger>
-                      <TabsTrigger value="edit" className="text-xs">HTML編集</TabsTrigger>
-                    </TabsList>
                   </div>
 
-                  <TabsContent value="preview" className="mt-0">
-                    <div className="min-h-[150px] p-4 border rounded-md bg-white/50 text-sm overflow-hidden">
-                      {heading.content ? (
-                        <div
-                          className="prose prose-sm max-w-none dark:prose-invert prose-p:my-2 prose-ul:my-2 prose-li:my-0.5"
-                          dangerouslySetInnerHTML={{ __html: heading.content }}
+                  {/* 削除ボタン */}
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => handleDelete(heading.id)}
+                    className="mt-2 opacity-0 group-hover:opacity-100 transition-opacity"
+                  >
+                    <Trash2 className="h-4 w-4 text-destructive" />
+                  </Button>
+                </div>
+
+                {/* 本文エディタエリア (常時表示) */}
+                <div className="px-4 pb-4 pl-12">
+                  <Tabs defaultValue="preview" className="w-full">
+                    <div className="flex items-center justify-between mb-2">
+                      <TabsList className="grid w-[200px] grid-cols-2 h-8">
+                        <TabsTrigger value="preview" className="text-xs">プレビュー</TabsTrigger>
+                        <TabsTrigger value="edit" className="text-xs">HTML編集</TabsTrigger>
+                      </TabsList>
+                    </div>
+
+                    <TabsContent value="preview" className="mt-0">
+                      <div className="min-h-[150px] p-4 border rounded-md bg-white/50 text-sm overflow-hidden">
+                        {heading.content ? (
+                          <div
+                            className="prose prose-sm max-w-none dark:prose-invert prose-p:my-2 prose-ul:my-2 prose-li:my-0.5"
+                            dangerouslySetInnerHTML={{ __html: heading.content }}
+                          />
+                        ) : (
+                          <p className="text-muted-foreground text-center py-8">
+                            コンテンツはまだ生成されていません
+                          </p>
+                        )}
+                      </div>
+                    </TabsContent>
+
+                    <TabsContent value="edit" className="mt-0">
+                      <div className="relative">
+                        <Textarea
+                          value={heading.content || ""}
+                          onChange={(e) => handleContentChange(heading.id, e.target.value)}
+                          className="min-h-[150px] font-mono text-sm bg-muted/30"
+                          placeholder="ここにこのセクションの本文が生成されます。手動で編集も可能です。"
                         />
-                      ) : (
-                        <p className="text-muted-foreground text-center py-8">
-                          コンテンツはまだ生成されていません
-                        </p>
-                      )}
-                    </div>
-                  </TabsContent>
+                      </div>
+                    </TabsContent>
+                  </Tabs>
+                </div>
 
-                  <TabsContent value="edit" className="mt-0">
-                    <div className="relative">
-                      <Textarea
-                        value={heading.content || ""}
-                        onChange={(e) => handleContentChange(heading.id, e.target.value)}
-                        className="min-h-[150px] font-mono text-sm bg-muted/30"
-                        placeholder="ここにこのセクションの本文が生成されます。手動で編集も可能です。"
-                      />
-                    </div>
-                  </TabsContent>
-                </Tabs>
+                {/* 見出し追加ボタン（ホバー時表示） */}
+                <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity z-10">
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    onClick={() => handleAdd(heading.id)}
+                    className="h-6 px-2 text-xs shadow-md border"
+                  >
+                    <Plus className="h-3 w-3 mr-1" />
+                    見出し追加
+                  </Button>
+                </div>
               </div>
-
-              {/* 見出し追加ボタン（ホバー時表示） */}
-              <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity z-10">
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  onClick={() => handleAdd(heading.id)}
-                  className="h-6 px-2 text-xs shadow-md border"
-                >
-                  <Plus className="h-3 w-3 mr-1" />
-                  見出し追加
-                </Button>
-              </div>
-            </div>
+              {(headings[idx + 1]?.level === 2) && (
+                <div className="flex justify-end mt-2 mb-6">
+                  <Button
+                    onClick={() => onAutoSave && onAutoSave(headings)}
+                    disabled={!onAutoSave}
+                    variant={isDirty ? "default" : "outline"}
+                    size="sm"
+                    className={cn(
+                      "transition-all",
+                      isDirty ? "bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm" : "text-muted-foreground"
+                    )}
+                  >
+                    {isDirty ? (
+                      <>
+                        <CheckCircle2 className="w-4 h-4 mr-2" />
+                        変更を保存（未保存）
+                      </>
+                    ) : (
+                      <>
+                        <CheckCircle2 className="w-4 h-4 mr-2 text-green-500" />
+                        保存済み
+                      </>
+                    )}
+                  </Button>
+                </div>
+              )}
+            </React.Fragment>
           ))}
 
           {/* 最後に見出し追加 */}
