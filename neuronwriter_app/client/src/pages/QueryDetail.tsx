@@ -6,7 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
 import { trpc } from "@/lib/trpc";
-import { ArrowLeft, Download, FileText, Lightbulb, TrendingUp, BarChart, Globe, Users, MessageSquare, Target, Sparkles, Copy, RefreshCw, Code, Eye } from "lucide-react";
+import { ArrowLeft, Download, FileText, Lightbulb, TrendingUp, BarChart, Globe, Users, MessageSquare, Target, Sparkles, Copy, RefreshCw, Code, Eye, CheckCircle2, Loader2 } from "lucide-react";
 import { useState, useEffect, useCallback } from "react";
 import { Link, useParams, useSearch } from "wouter";
 import { toast } from "sonner";
@@ -21,14 +21,21 @@ export default function QueryDetail() {
   const [htmlContent, setHtmlContent] = useState("<h1>Your content here...</h1>");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [lastSavedTitle, setLastSavedTitle] = useState("");
+  const [lastSavedDescription, setLastSavedDescription] = useState("");
+  const [lastSavedLeadText, setLastSavedLeadText] = useState("");
+  const [leadText, setLeadText] = useState("");
+  const [isGeneratingLeadText, setIsGeneratingLeadText] = useState(false);
+
+  const isTitleDescDirty = title !== lastSavedTitle || description !== lastSavedDescription;
+  const isLeadTextDirty = leadText !== lastSavedLeadText;
   const [seoScore, setSeoScore] = useState<number | null>(null);
   const [targetScore, setTargetScore] = useState<number>(70);
   const [isEvaluating, setIsEvaluating] = useState(false);
   const [outlineHeadings, setOutlineHeadings] = useState<OutlineHeading[]>([]);
   const [outlineScore, setOutlineScore] = useState<number | null>(null);
   const [isGeneratingOutline, setIsGeneratingOutline] = useState(false);
-  const [leadText, setLeadText] = useState("");
-  const [isGeneratingLeadText, setIsGeneratingLeadText] = useState(false);
+
   const [viewMode, setViewMode] = useState<'html' | 'preview' | 'markdown'>('html');
   const turndownService = new TurndownService({ headingStyle: 'atx' });
 
@@ -42,11 +49,21 @@ export default function QueryDetail() {
   const { data: query, isLoading: queryLoading } = trpc.neuronwriter.getQueryById.useQuery({ queryId });
 
   // クエリデータからタイトル・ディスクリプション・リード文を初期化
+  // クエリデータからタイトル・ディスクリプション・リード文を初期化
   useEffect(() => {
     if (query) {
-      if (query.title) setTitle(query.title);
-      if (query.description) setDescription(query.description);
-      if (query.leadText) setLeadText(query.leadText);
+      if (query.title) {
+        setTitle(query.title);
+        setLastSavedTitle(query.title);
+      }
+      if (query.description) {
+        setDescription(query.description);
+        setLastSavedDescription(query.description);
+      }
+      if (query.leadText) {
+        setLeadText(query.leadText);
+        setLastSavedLeadText(query.leadText);
+      }
       if (query.seoScore) setSeoScore(query.seoScore);
     }
   }, [query]);
@@ -70,6 +87,8 @@ export default function QueryDetail() {
 
   const saveTitleDescMutation = trpc.neuronwriter.saveTitleDescription.useMutation({
     onSuccess: (data) => {
+      setLastSavedTitle(title);
+      setLastSavedDescription(description);
       if (data.seoScore !== undefined) {
         setSeoScore(data.seoScore);
       }
@@ -179,6 +198,7 @@ export default function QueryDetail() {
   const generateLeadTextMutation = trpc.neuronwriter.generateLeadText.useMutation({
     onSuccess: (data) => {
       setLeadText(data.leadText);
+      setLastSavedLeadText(data.leadText);
       setIsGeneratingLeadText(false);
       if (data.seoScore !== undefined) {
         setSeoScore(data.seoScore);
@@ -197,6 +217,7 @@ export default function QueryDetail() {
   // リード文保存mutation
   const saveLeadTextMutation = trpc.neuronwriter.saveLeadText.useMutation({
     onSuccess: (data) => {
+      setLastSavedLeadText(leadText);
       if (data.seoScore !== undefined) {
         setSeoScore(data.seoScore);
       }
@@ -214,6 +235,8 @@ export default function QueryDetail() {
     onSuccess: (data) => {
       setTitle(data.title);
       setDescription(data.description);
+      setLastSavedTitle(data.title);
+      setLastSavedDescription(data.description);
 
       // クラウドに保存されたスコアを表示
       if (data.saved && data.seoScore !== undefined) {
@@ -933,19 +956,22 @@ export default function QueryDetail() {
                   <div>
                     <CardTitle className="flex items-center gap-2">
                       <FileText className="w-5 h-5" />
-                      タイトル
+                      ① タイトル
                     </CardTitle>
                     <CardDescription>検索結果に表示されるページタイトルを作成</CardDescription>
                   </div>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={handleGenerateTitleDesc}
-                    disabled={generateMutation.isPending}
-                  >
-                    <Sparkles className="mr-2 h-4 w-4" />
-                    {generateMutation.isPending ? "AI生成中..." : "AI生成"}
-                  </Button>
+                  <div className="flex flex-col items-end gap-1">
+                    <Button
+                      className="bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white border-0 shadow-sm transition-all"
+                      size="sm"
+                      onClick={handleGenerateTitleDesc}
+                      disabled={generateMutation.isPending}
+                    >
+                      <Sparkles className="mr-2 h-4 w-4" />
+                      {generateMutation.isPending ? "AI生成中..." : "タイトル・説明文をAI自動生成"}
+                    </Button>
+                    <span className="text-[10px] text-muted-foreground">上位サイトを分析して提案</span>
+                  </div>
                 </div>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -1002,19 +1028,22 @@ export default function QueryDetail() {
                   <div>
                     <CardTitle className="flex items-center gap-2">
                       <FileText className="w-5 h-5" />
-                      ディスクリプション
+                      ② ディスクリプション
                     </CardTitle>
                     <CardDescription>検索結果に表示されるページの説明文を作成</CardDescription>
                   </div>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={handleGenerateTitleDesc}
-                    disabled={generateMutation.isPending}
-                  >
-                    <Sparkles className="mr-2 h-4 w-4" />
-                    {generateMutation.isPending ? "AI生成中..." : "AI生成"}
-                  </Button>
+                  <div className="flex flex-col items-end gap-1">
+                    <Button
+                      className="bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white border-0 shadow-sm transition-all"
+                      size="sm"
+                      onClick={handleGenerateTitleDesc}
+                      disabled={generateMutation.isPending}
+                    >
+                      <Sparkles className="mr-2 h-4 w-4" />
+                      {generateMutation.isPending ? "AI生成中..." : "タイトル・説明文をAI自動生成"}
+                    </Button>
+                    <span className="text-[10px] text-muted-foreground">上位サイトを分析して提案</span>
+                  </div>
                 </div>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -1096,15 +1125,25 @@ export default function QueryDetail() {
                     <Button
                       onClick={handleSaveTitleDesc}
                       disabled={saveTitleDescMutation.isPending || (!title && !description)}
+                      variant={isTitleDescDirty ? "default" : "outline"}
+                      className={isTitleDescDirty ? "bg-indigo-600 hover:bg-indigo-700 text-white shadow-md transition-all" : ""}
                     >
-                      {saveTitleDescMutation.isPending ? "保存中..." : "タイトル・ディスクリプションを保存"}
-                    </Button>
-                    <Button
-                      variant="outline"
-                      onClick={handleCheckScore}
-                      disabled={isEvaluating || (!title && !description)}
-                    >
-                      {isEvaluating ? "評価中..." : "SEOスコア確認"}
+                      {saveTitleDescMutation.isPending ? (
+                        <>
+                          <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                          保存中...
+                        </>
+                      ) : isTitleDescDirty ? (
+                        <>
+                          <CheckCircle2 className="w-4 h-4 mr-2" />
+                          変更を保存（未保存）
+                        </>
+                      ) : (
+                        <>
+                          <CheckCircle2 className="w-4 h-4 mr-2 text-green-500" />
+                          保存済み
+                        </>
+                      )}
                     </Button>
                   </div>
                 </CardContent>
@@ -1118,19 +1157,22 @@ export default function QueryDetail() {
                   <div>
                     <CardTitle className="flex items-center gap-2">
                       <FileText className="w-5 h-5" />
-                      リード文
+                      ③ リード文
                     </CardTitle>
                     <CardDescription>記事の導入部分を作成（読者の興味を引きつける文章）</CardDescription>
                   </div>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={handleGenerateLeadText}
-                    disabled={isGeneratingLeadText || generateLeadTextMutation.isPending || !title || !description}
-                  >
-                    <Sparkles className="mr-2 h-4 w-4" />
-                    {isGeneratingLeadText ? "AI生成中..." : "AI生成"}
-                  </Button>
+                  <div className="flex flex-col items-end gap-1">
+                    <Button
+                      className="bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white border-0 shadow-sm transition-all"
+                      size="sm"
+                      onClick={handleGenerateLeadText}
+                      disabled={isGeneratingLeadText || generateLeadTextMutation.isPending || !title || !description}
+                    >
+                      <Sparkles className="mr-2 h-4 w-4" />
+                      {isGeneratingLeadText ? "AI生成中..." : "リード文をAI自動生成"}
+                    </Button>
+                    <span className="text-[10px] text-muted-foreground">タイトルを元に導入文を作成</span>
+                  </div>
                 </div>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -1191,8 +1233,25 @@ export default function QueryDetail() {
                       <Button
                         onClick={handleSaveLeadText}
                         disabled={saveLeadTextMutation.isPending || !leadText}
+                        variant={isLeadTextDirty ? "default" : "outline"}
+                        className={isLeadTextDirty ? "bg-indigo-600 hover:bg-indigo-700 text-white shadow-md transition-all" : ""}
                       >
-                        {saveLeadTextMutation.isPending ? "保存中..." : "リード文を保存"}
+                        {saveLeadTextMutation.isPending ? (
+                          <>
+                            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                            保存中...
+                          </>
+                        ) : isLeadTextDirty ? (
+                          <>
+                            <CheckCircle2 className="w-4 h-4 mr-2" />
+                            変更を保存（未保存）
+                          </>
+                        ) : (
+                          <>
+                            <CheckCircle2 className="w-4 h-4 mr-2 text-green-500" />
+                            保存済み
+                          </>
+                        )}
                       </Button>
                     </div>
                   </>
@@ -1207,28 +1266,31 @@ export default function QueryDetail() {
                   <div>
                     <CardTitle className="flex items-center gap-2">
                       <FileText className="w-5 h-5" />
-                      目次構成
+                      ④ 目次構成
                     </CardTitle>
                     <CardDescription>SEO最適化された記事の目次を作成</CardDescription>
                   </div>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={handleGenerateOutline}
-                    disabled={isGeneratingOutline || generateOutlineMutation.isPending}
-                  >
-                    <Sparkles className="mr-2 h-4 w-4" />
-                    {isGeneratingOutline ? "AI生成中..." : "AI生成"}
-                  </Button>
+                  <div className="flex flex-col items-end gap-1">
+                    <Button
+                      className="bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white border-0 shadow-sm transition-all"
+                      size="sm"
+                      onClick={handleGenerateOutline}
+                      disabled={isGeneratingOutline || generateOutlineMutation.isPending}
+                    >
+                      <Sparkles className="mr-2 h-4 w-4" />
+                      {isGeneratingOutline ? "AI生成中..." : "目次構成をAI自動生成"}
+                    </Button>
+                    <span className="text-[10px] text-muted-foreground">上位サイトの構造を分析して提案</span>
+                  </div>
                 </div>
               </CardHeader>
               <CardContent className="space-y-4">
                 {isGeneratingOutline ? (
                   <div className="text-center py-8 text-muted-foreground">
                     <RefreshCw className="w-8 h-8 animate-spin mx-auto mb-2" />
-                    <p>目次を生成中...</p>
-                    <p className="text-sm mt-2">現在のスコア: {seoScore || 0}ポイント</p>
-                    <p className="text-sm">目標: {targetScore}ポイント（あと{Math.max(0, targetScore - (seoScore || 0))}ポイント必要）</p>
+                    <p className="text-lg font-medium mb-1">目次をAI生成中...</p>
+                    <p className="text-sm">上位サイトの構造を分析しています。</p>
+                    <p className="text-sm">これには数分かかる場合があります。</p>
                   </div>
                 ) : (
                   <OutlineEditor
@@ -1283,7 +1345,7 @@ export default function QueryDetail() {
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <div>
-                  <CardTitle>本文コンテンツ</CardTitle>
+                  <CardTitle>⑤ 本文コンテンツ</CardTitle>
                   <CardDescription>HTMLコンテンツを入力または貼り付け</CardDescription>
                 </div>
                 <div className="flex items-center gap-2">
