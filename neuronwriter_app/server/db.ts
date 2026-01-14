@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { eq, desc } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
 import { InsertUser, users, projects, InsertProject, queries, InsertQuery, contents, InsertContent, outlines, InsertOutline } from "../drizzle/schema";
 import { ENV } from './_core/env';
@@ -220,7 +220,7 @@ export async function createOutline(outline: InsertOutline) {
 export async function getOutlinesByQueryId(queryId: number) {
   const db = await getDb();
   if (!db) return [];
-  return await db.select().from(outlines).where(eq(outlines.queryId, queryId));
+  return await db.select().from(outlines).where(eq(outlines.queryId, queryId)).orderBy(desc(outlines.id));
 }
 
 export async function getOutlineById(outlineId: number) {

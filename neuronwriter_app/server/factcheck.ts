@@ -31,9 +31,11 @@ JSON形式の文字列配列として出力してください。
 `;
 
     const response = await invokeLLM({
+        model: ENV.hallucinationLlmModel || undefined, // Use specific model if set, else default
         messages: [{ role: "user", content: prompt }],
         response_format: { type: "json_object" },
         maxTokens: 1024,
+        apiKey: ENV.hallucinationLlmApiKey,
     });
 
     const content = response.choices[0].message.content;
@@ -72,7 +74,7 @@ async function verifyClaimWithTavily(claim: string): Promise<{ searchResults: st
 async function reasonVerification(claim: string, searchResults: string): Promise<{ status: "verified" | "contradicted" | "unverified"; reasoning: string }> {
     // Use a reasoning-capable model if available, otherwise default
     // Ideally, use a model like "deepseek-r1" or similar if ENV allows, otherwise standard model
-    const reasoningModel = process.env.REASONING_MODEL || ENV.llmModel; // Fallback to standard model if not set
+    const reasoningModel = ENV.hallucinationLlmModel || ENV.llmModel; // Fallback to standard model if not set
 
     const prompt = `あなたは厳格なファクトチェッカーです。
 以下の「対象の主張」について、「検索結果」のみを根拠として真偽を判定してください。
@@ -99,6 +101,7 @@ ${searchResults}
         messages: [{ role: "user", content: prompt }],
         response_format: { type: "json_object" },
         maxTokens: 2048,
+        apiKey: ENV.hallucinationLlmApiKey,
         // Thinking parameter is handled inside invokeLLM if supported
     });
 

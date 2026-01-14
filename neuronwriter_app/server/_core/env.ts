@@ -9,5 +9,7 @@ export const ENV = {
   forgeApiKey: process.env.BUILT_IN_FORGE_API_KEY ?? "",
   llmModel: process.env.LLM_MODEL ?? "gemini-2.5-flash",
   tavilyApiKey: process.env.TAVILY_API_KEY ?? "",
+  hallucinationLlmApiKey: process.env.HALLUCINATION_LLM_API_KEY ?? "",
+  hallucinationLlmModel: process.env.HALLUCINATION_LLM_MODEL ?? "",
   enableMockAuth: process.env.NODE_ENV !== "production" || process.env.ENABLE_MOCK_AUTH === "true",
 };

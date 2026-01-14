@@ -67,6 +67,7 @@ export type InvokeParams = {
   output_schema?: OutputSchema;
   responseFormat?: ResponseFormat;
   response_format?: ResponseFormat;
+  apiKey?: string;
 };
 
 export type ToolCall = {
@@ -334,7 +335,7 @@ export async function invokeLLM(params: InvokeParams): Promise<InvokeResult> {
     method: "POST",
     headers: {
       "content-type": "application/json",
-      authorization: `Bearer ${ENV.forgeApiKey}`,
+      authorization: `Bearer ${params.apiKey || ENV.forgeApiKey}`,
     },
     body: JSON.stringify(payload),
   });

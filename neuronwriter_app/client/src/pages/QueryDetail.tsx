@@ -1,10 +1,12 @@
 import { useAuth } from "@/_core/hooks/useAuth";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
 import { trpc } from "@/lib/trpc";
 import { ArrowLeft, ArrowUp, Download, FileText, Lightbulb, TrendingUp, BarChart, Globe, Users, Target, Sparkles, Copy, RefreshCw, Code, Eye, CheckCircle2, Loader2, Link as LinkIcon, MessageSquare } from "lucide-react";
 import { useState, useEffect, useCallback } from "react";
@@ -411,28 +413,53 @@ export default function QueryDetail() {
     );
   };
 
-  const renderSerpSummary = (summary: any) => {
+  const renderSerpSummary = (summary: any, compact = false) => {
     if (!summary) return null;
+
+    // データ形式の正規化（配列またはオブジェクトに対応）
+    const intents = Array.isArray(summary.intents)
+      ? summary.intents
+      : summary.intent_stats
+        ? Object.entries(summary.intent_stats).map(([name, val]) => ({ name, percentage: val }))
+        : [];
+
+    const contentTypes = Array.isArray(summary.content_types)
+      ? summary.content_types
+      : summary.content_type_stats
+        ? Object.entries(summary.content_type_stats).map(([name, val]) => ({ name, percentage: val }))
+        : [];
+
+    const hasIntents = intents.length > 0;
+    const hasContentTypes = contentTypes.length > 0;
+
     return (
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className={cn("grid gap-4", compact ? "grid-cols-1" : "md:grid-cols-2")}>
         <div className="space-y-2">
-          <h4 className="font-medium text-sm">検索意図 (Intents)</h4>
+          {!compact && <h4 className="font-medium text-sm text-muted-foreground">検索意図 (Intents)</h4>}
           <div className="space-y-1">
-            {summary.intents?.map((intent: any, i: number) => (
-              <div key={i} className="flex justify-between text-sm items-center">
-                <span>{intent.type || intent.name}</span>
-                <Badge variant="outline">{intent.percentage || intent.pc}%</Badge>
+            {compact && <span className="text-xs font-semibold text-muted-foreground">検索意図</span>}
+            {!hasIntents && <p className="text-sm text-gray-400">データなし</p>}
+            {intents.map((intent: any, i: number) => (
+              <div key={i} className="flex justify-between text-sm items-center p-2 bg-slate-50 rounded">
+                <span className="font-medium">{intent.type || intent.name}</span>
+                <Badge variant="secondary" className="bg-white">
+                  {typeof intent.percentage === 'number' ? Math.round(intent.percentage) : intent.percentage}%
+                </Badge>
               </div>
             ))}
           </div>
         </div>
         <div className="space-y-2">
-          <h4 className="font-medium text-sm">コンテンツタイプ</h4>
+          {!compact && <h4 className="font-medium text-sm text-muted-foreground">コンテンツタイプ</h4>}
           <div className="space-y-1">
-            {summary.content_types?.map((type: any, i: number) => (
-              <div key={i} className="flex justify-between text-sm items-center">
-                <span>{type.type || type.name}</span>
-                <Badge variant="outline">{type.percentage || type.pc}%</Badge>
+            {compact && <span className="text-xs font-semibold text-muted-foreground border-t pt-2 mt-2 block">コンテンツタイプ</span>}
+            {!hasContentTypes && <p className="text-sm text-gray-400">データなし</p>}
+            {contentTypes.map((type: any, i: number) => (
+              <div key={i} className="flex justify-between text-sm items-center p-2 bg-slate-50 rounded">
+                <span className="font-medium">{type.type || type.name}</span>
+                <Badge variant="secondary" className="bg-white">
+                  {typeof type.percentage === 'number' ? Math.round(type.percentage) : type.percentage}%
+                </Badge>
               </div>
             ))}
           </div>
@@ -554,10 +581,7 @@ export default function QueryDetail() {
             <span>作成日： {query?.createdAt ? new Date(query.createdAt).toLocaleString() : '-'}</span>
           </div>
         </div>
-        <Button onClick={handleSaveContent} disabled={saveContentMutation.isPending}>
-          {saveContentMutation.isPending ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Download className="w-4 h-4 mr-2" />}
-          保存する
-        </Button>
+
       </div>
 
       <Tabs defaultValue="editor" className="space-y-6">
@@ -612,8 +636,7 @@ export default function QueryDetail() {
                           <div><span className="font-medium">言語:</span> {recommendations.language}</div>
                           <div><span className="font-medium">検索エンジン:</span> {recommendations.engine}</div>
                           <div><span className="font-medium">ステータス:</span> <Badge>{recommendations.status}</Badge></div>
-                          <div><span className="font-medium">参照ID:</span> <code className="text-xs bg-muted px-1 py-0.5 rounded">{project?.neuronProjectId || '-'}</code></div>
-                          <div><span className="font-medium">分析ID:</span> <code className="text-xs bg-muted px-1 py-0.5 rounded">{query?.neuronQueryId || '-'}</code></div>
+
                         </div>
                       </AccordionContent>
                     </AccordionItem>
@@ -720,21 +743,23 @@ export default function QueryDetail() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className={isAdmin ? "lg:col-span-2 space-y-6" : "lg:col-span-3 space-y-6"}>
               {/* Title & Description Editor */}
-              <Card>
+              <Card className="border-indigo-200 shadow-sm border-l-4 border-l-indigo-500">
                 <CardHeader>
-                  <div className="flex justify-between items-center">
-                    <CardTitle className="text-lg">記事設定</CardTitle>
+                  <div className="flex justify-between items-start">
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2">
+                        <Badge variant="default" className="bg-indigo-600 hover:bg-indigo-700">STEP 01</Badge>
+                        <CardTitle className="text-lg">タイトル・ディスクリプション</CardTitle>
+                      </div>
+                      <p className="text-sm text-muted-foreground">
+                        まずは記事の根幹となるタイトルとディスクリプションを作成・決定します。
+                      </p>
+                    </div>
                     <div className="flex gap-2">
-                      <Button variant="outline" size="sm" onClick={handleCheckScore} disabled={false}>
-                        <BarChart className="w-4 h-4 mr-1" />
-                        スコア確認
-                      </Button>
+
                       <Button variant="default" size="sm" onClick={handleGenerateTitleDesc} disabled={generateMutation.isPending}>
                         {generateMutation.isPending ? <Loader2 className="w-4 h-4 mr-1 animate-spin" /> : <Sparkles className="w-4 h-4 mr-1" />}
-                        AI自動生成
-                      </Button>
-                      <Button variant="ghost" size="sm" onClick={handleSaveTitleDesc} disabled={!isTitleDescDirty || saveTitleDescMutation.isPending}>
-                        {saveTitleDescMutation.isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
+                        タイトル・ディスクリプション生成
                       </Button>
                     </div>
                   </div>
@@ -744,7 +769,10 @@ export default function QueryDetail() {
                     <label className="text-sm font-medium">タイトル ({title.length}文字)</label>
                     <Textarea
                       value={title}
-                      onChange={(e) => setTitle(e.target.value)}
+                      onChange={(e) => {
+                        setTitle(e.target.value);
+                        setIsTitleDescDirty(true);
+                      }}
                       placeholder="SEOに強い魅力的なタイトルを入力..."
                       className="font-bold text-lg"
                       rows={2}
@@ -754,33 +782,90 @@ export default function QueryDetail() {
                     <label className="text-sm font-medium">ディスクリプション ({description.length}文字)</label>
                     <Textarea
                       value={description}
-                      onChange={(e) => setDescription(e.target.value)}
+                      onChange={(e) => {
+                        setDescription(e.target.value);
+                        setIsTitleDescDirty(true);
+                      }}
                       placeholder="検索結果に表示される説明文を入力..."
                       rows={3}
                     />
                   </div>
+                  <div className="flex justify-end">
+                    <Button
+                      onClick={handleSaveTitleDesc}
+                      disabled={!isTitleDescDirty || saveTitleDescMutation.isPending}
+                      variant={isTitleDescDirty ? "default" : "outline"}
+                      size="sm"
+                      className={cn(
+                        "transition-all",
+                        isTitleDescDirty ? "bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm" : "text-muted-foreground"
+                      )}
+                    >
+                      {saveTitleDescMutation.isPending ? (
+                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      ) : isTitleDescDirty ? (
+                        <>
+                          <CheckCircle2 className="w-4 h-4 mr-2" />
+                          変更を保存
+                        </>
+                      ) : (
+                        <>
+                          <CheckCircle2 className="w-4 h-4 mr-2 text-green-500" />
+                          保存済み
+                        </>
+                      )}
+                    </Button>
+                  </div>
 
-                  {/* Lead Text Section */}
-                  <div className="pt-4 border-t">
-                    <div className="flex justify-between items-center mb-2">
-                      <label className="text-sm font-medium">リード文 (導入)</label>
-                      <div className="flex gap-2">
-                        <Button variant="outline" size="sm" onClick={handleGenerateLeadText} disabled={generateLeadTextMutation.isPending || !title}>
-                          {generateLeadTextMutation.isPending ? <Loader2 className="w-3 h-3 mr-1 animate-spin" /> : <Sparkles className="w-3 h-3 mr-1" />}
-                          AI生成
-                        </Button>
-                        <Button variant="ghost" size="sm" onClick={handleSaveLeadText} disabled={!isLeadTextDirty || saveLeadTextMutation.isPending}>
-                          {saveLeadTextMutation.isPending ? <Loader2 className="w-3 h-3 animate-spin" /> : <Download className="w-3 h-3" />}
-                        </Button>
-                      </div>
+                </CardContent>
+              </Card>
+
+              {/* Lead Text Section */}
+              <Card>
+                <CardHeader>
+                  <div className="flex justify-between items-center">
+                    <CardTitle className="text-lg">リード文 (導入)</CardTitle>
+                    <div className="flex gap-2">
+                      <Button variant="default" size="sm" onClick={handleGenerateLeadText} disabled={generateLeadTextMutation.isPending || !title}>
+                        {generateLeadTextMutation.isPending ? <Loader2 className="w-3 h-3 mr-1 animate-spin" /> : <Sparkles className="w-3 h-3 mr-1" />}
+                        リード文自動生成
+                      </Button>
                     </div>
-                    <Textarea
-                      value={leadText}
-                      onChange={(e) => setLeadText(e.target.value)}
-                      placeholder="読者を引き込む魅力的な導入文..."
-                      rows={5}
-                      className="text-gray-700 leading-relaxed"
-                    />
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <Textarea
+                    value={leadText}
+                    onChange={(e) => setLeadText(e.target.value)}
+                    placeholder="読者を引き込む魅力的な導入文..."
+                    rows={5}
+                    className="text-gray-700 leading-relaxed"
+                  />
+                  <div className="flex justify-end mt-2">
+                    <Button
+                      onClick={handleSaveLeadText}
+                      disabled={!isLeadTextDirty || saveLeadTextMutation.isPending}
+                      variant={isLeadTextDirty ? "default" : "outline"}
+                      size="sm"
+                      className={cn(
+                        "transition-all",
+                        isLeadTextDirty ? "bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm" : "text-muted-foreground"
+                      )}
+                    >
+                      {saveLeadTextMutation.isPending ? (
+                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      ) : isLeadTextDirty ? (
+                        <>
+                          <CheckCircle2 className="w-4 h-4 mr-2" />
+                          変更を保存
+                        </>
+                      ) : (
+                        <>
+                          <CheckCircle2 className="w-4 h-4 mr-2 text-green-500" />
+                          保存済み
+                        </>
+                      )}
+                    </Button>
                   </div>
                 </CardContent>
               </Card>
@@ -799,7 +884,7 @@ export default function QueryDetail() {
                       </Button>
                       <Button variant="default" size="sm" onClick={handleGenerateOutline} disabled={generateOutlineMutation.isPending}>
                         {generateOutlineMutation.isPending ? <Loader2 className="w-4 h-4 mr-1 animate-spin" /> : <Sparkles className="w-4 h-4 mr-1" />}
-                        AI生成
+                        目次構成案自動生成
                       </Button>
                     </div>
                   </div>
@@ -866,7 +951,7 @@ export default function QueryDetail() {
             {/* Sidebar (SEO Score, etc) */}
             {isAdmin && (
               <div className="space-y-6">
-                <div className="sticky top-6">
+                <div className="sticky top-6 space-y-4">
                   <Card>
                     <CardHeader>
                       <CardTitle>SEOスコア</CardTitle>
@@ -875,6 +960,21 @@ export default function QueryDetail() {
                       <SEOScoreBar currentScore={seoScore} targetScore={targetScore} />
                     </CardContent>
                   </Card>
+
+                  {/* SERP Analysis (Admin Only) */}
+                  {recommendations?.serp_summary && (
+                    <Card>
+                      <CardHeader>
+                        <CardTitle className="text-sm font-semibold flex items-center gap-2">
+                          <BarChart className="w-4 h-4 text-indigo-600" />
+                          SERP分析
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        {renderSerpSummary(recommendations.serp_summary, true)}
+                      </CardContent>
+                    </Card>
+                  )}
                 </div>
               </div>
             )}
@@ -892,15 +992,17 @@ export default function QueryDetail() {
       </Tabs>
 
       {/* Scroll to Top Button */}
-      {showScrollTop && (
-        <Button
-          className="fixed bottom-8 right-8 rounded-full shadow-lg z-50 transition-all duration-300 hover:-translate-y-1"
-          size="icon"
-          onClick={scrollToTop}
-        >
-          <ArrowUp className="h-5 w-5" />
-        </Button>
-      )}
-    </div>
+      {
+        showScrollTop && (
+          <Button
+            className="fixed bottom-8 right-8 rounded-full shadow-lg z-50 transition-all duration-300 hover:-translate-y-1"
+            size="icon"
+            onClick={scrollToTop}
+          >
+            <ArrowUp className="h-5 w-5" />
+          </Button>
+        )
+      }
+    </div >
   );
 }

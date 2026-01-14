@@ -346,6 +346,27 @@ export function OutlineEditor({ headings, onChange, recommendedKeywords = [], on
                         )}
                       />
 
+                      {/* Keyword Suggestions Support */}
+                      <div className="absolute top-12 left-0 w-full z-20 hidden group-focus-within:block bg-white border rounded-md shadow-lg p-3">
+                        <div className="text-xs font-semibold text-muted-foreground mb-2">推奨キーワード (クリックで追加):</div>
+                        <div className="flex flex-wrap gap-2 max-h-32 overflow-y-auto">
+                          {recommendedKeywords.filter(k => !heading.text.includes(k)).slice(0, 15).map((keyword, kIdx) => (
+                            <Badge
+                              key={kIdx}
+                              variant="outline"
+                              className="cursor-pointer hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-200 transition-colors"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                insertKeyword(heading.id, keyword);
+                              }}
+                            >
+                              {keyword}
+                              <Plus className="w-3 h-3 ml-1 opacity-50" />
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+
                       {/* 執筆ボタン（H2のみ、または既にコンテンツがあるH3） */}
                       {(heading.level === 2 || heading.content || heading.level === 3) && (
                         <Button
