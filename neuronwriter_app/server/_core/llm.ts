@@ -56,6 +56,7 @@ export type ToolChoice =
   | ToolChoiceExplicit;
 
 export type InvokeParams = {
+  model?: string;
   messages: Message[];
   tools?: Tool[];
   toolChoice?: ToolChoice;
@@ -287,7 +288,7 @@ export async function invokeLLM(params: InvokeParams): Promise<InvokeResult> {
   } = params;
 
   const payload: Record<string, unknown> = {
-    model: ENV.llmModel,
+    model: params.model || ENV.llmModel, // Use override model if provided, else default
     messages: messages.map(normalizeMessage),
   };
 
@@ -303,25 +304,18 @@ export async function invokeLLM(params: InvokeParams): Promise<InvokeResult> {
     payload.tool_choice = normalizedToolChoice;
   }
 
-  // Set default max_tokens, but allow override if needed (though existing type definition uses maxTokens/max_tokens in InvokeParams which are not currently destructured from params above properly? 
-  // Wait, let's look at the original code. It hardcoded max_tokens=32768. 
-  // I should probably keep it safe but allow it to be dynamic if I was rewriting the whole thing. 
-  // For now, I'll stick to replacing the block effectively.)
-
   if (params.maxTokens || params.max_tokens) {
     payload.max_tokens = params.maxTokens || params.max_tokens;
   } else {
-    payload.max_tokens = 32768;
+    // Default max tokens based on model if possible, or safe default
+    payload.max_tokens = 8192;
   }
 
-  // Note: "thinking" parameter might be specific to Flash 2.5 on Vertex/Forge. 
-  // OpenRouter or standard OpenAI might reject it if it's not supported.
-  // I will conditionally include it only if the model is 'gemini-2.5-flash' to be safe, 
-  // OR just remove it if it's not critical. 
-  // Since user wants OpenRouter, I should probably remove it or make it conditional.
-  if (ENV.llmModel.includes("gemini-2.5-flash")) {
+  // Include "thinking" parameter only for specific Gemini Flash reasoning models on Vertex/Forge
+  const targetModel = (params.model || ENV.llmModel);
+  if (targetModel.includes("gemini-2.5-flash")) {
     payload.thinking = {
-      "budget_tokens": 128
+      "budget_tokens": 1024 // Increased budget for reasoning
     };
   }
 

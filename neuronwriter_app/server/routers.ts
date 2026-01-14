@@ -848,7 +848,7 @@ ${articleKeywords}
         let trendSummary = "トレンド取得に失敗しました";
         try {
           const trendQuery = `${query.keyword} トレンド 最新 ${new Date().getFullYear()}`;
-          const trendResults = await searchTavily(trendQuery, 3);
+          const trendResults = await searchTavily(trendQuery, { maxResults: 3 });
           trendSummary = trendResults.results.map(r => r.title).join(", ");
           console.log(`Trend Search Result: ${trendSummary}`);
         } catch (e) {
@@ -1195,7 +1195,7 @@ ${headingsHtml}
 
         let searchContext = "";
         try {
-          const searchResults = await searchTavily(searchQuery, 5);
+          const searchResults = await searchTavily(searchQuery, { maxResults: 3 });
           searchContext = searchResults.results
             .map((r, i) => `【出典${i + 1}】${r.title} (${r.url})\n${r.content}`)
             .join("\n\n");
@@ -1338,7 +1338,7 @@ ${searchContext}
 
         try {
           // 複数のクエリを並列実行して情報を収集（Tavilyのレート制限を考慮しつつ）
-          const searchPromises = searchQueries.map(q => searchTavily(q, isCommercialContext || isCriticalContext ? 5 : 7));
+          const searchPromises = searchQueries.map(q => searchTavily(q, { maxResults: isCommercialContext || isCriticalContext ? 5 : 7 }));
           const results = await Promise.all(searchPromises);
 
           // 結果の統合と重複除去（URLでユニーク化）
@@ -1514,7 +1514,7 @@ Content: ${input.content}
         let searchContext = "";
         let sources: { id: number; title: string; url: string }[] = [];
         try {
-          const searchResults = await searchTavily(searchQuery, 7); // 少し多めに取得
+          const searchResults = await searchTavily(searchQuery, { maxResults: 5 }); // 少し多めに取得
           sources = searchResults.results.map((r, i) => ({ id: i + 1, title: r.title, url: r.url }));
           searchContext = searchResults.results
             .map((r, i) => `[Source ${i + 1}] Title: ${r.title} (URL: ${r.url})\nContent: ${r.content}`)
@@ -1606,6 +1606,19 @@ ${searchContext}
         }
 
         return { results, sources };
+      }),
+  }),
+
+  factCheck: router({
+    checkText: protectedProcedure
+      .input(
+        z.object({
+          text: z.string(),
+        })
+      )
+      .mutation(async ({ input }) => {
+        const { checkTextFactuality } = await import("./factcheck");
+        return await checkTextFactuality(input.text);
       }),
   }),
 

@@ -1,23 +1,27 @@
 import { ENV } from "./env";
 
-export type TavilySearchResult = {
+export interface ToolTavilySearchResult {
     title: string;
     url: string;
     content: string;
     raw_content?: string;
-    score: number;
-};
+    score?: number;
+    published_date?: string;
+}
 
-export type TavilyResponse = {
-    results: TavilySearchResult[];
-    answer?: string;
+export interface ToolTavilySearchResponse {
     query: string;
+    follow_up_questions?: string[];
+    answer?: string;
     images?: string[];
-};
+    results: ToolTavilySearchResult[];
+    response_time: number;
+}
 
-export async function searchTavily(query: string, maxResults = 5): Promise<TavilyResponse> {
-    if (!ENV.tavilyApiKey) {
-        throw new Error("TAVILY_API_KEY is not configured");
+export async function searchTavily(query: string, options: { maxResults?: number; includeAnswer?: boolean } = {}): Promise<ToolTavilySearchResponse> {
+    const apiKey = ENV.tavilyApiKey;
+    if (!apiKey) {
+        throw new Error("TAVILY_API_KEY is not configured in .env");
     }
 
     const response = await fetch("https://api.tavily.com/search", {
@@ -26,20 +30,20 @@ export async function searchTavily(query: string, maxResults = 5): Promise<Tavil
             "Content-Type": "application/json",
         },
         body: JSON.stringify({
-            api_key: ENV.tavilyApiKey,
+            api_key: apiKey,
             query,
-            search_depth: "advanced", // 'basic' or 'advanced'
-            include_answer: false,
-            include_images: false,
+            search_depth: "basic",
+            include_answer: options.includeAnswer ?? false,
             include_raw_content: false,
-            max_results: maxResults,
+            max_results: options.maxResults ?? 3,
+            // topic: "general", // "news" is also available
         }),
     });
 
     if (!response.ok) {
         const errorText = await response.text();
-        throw new Error(`Tavily API request failed: ${response.status} ${response.statusText} - ${errorText}`);
+        throw new Error(`Tavily API search failed: ${response.status} ${response.statusText} - ${errorText}`);
     }
 
-    return response.json() as Promise<TavilyResponse>;
+    return (await response.json()) as ToolTavilySearchResponse;
 }
