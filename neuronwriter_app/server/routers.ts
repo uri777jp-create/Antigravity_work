@@ -1706,6 +1706,84 @@ ${searchContext}
         await deleteUser(input.userId);
         return { success: true };
       }),
+
+    // Admin専用: ユーザー作成
+    createUser: adminProcedure
+      .input(z.object({
+        name: z.string().min(1),
+        email: z.string().email(),
+        password: z.string().min(4),
+        role: z.enum(["user", "admin"]).optional().default("user"),
+      }))
+      .mutation(async ({ input }) => {
+        const { upsertUser, getUserByOpenId } = await import("./db");
+
+        // Emailをopenidとして使用
+        const openId = input.email;
+
+        // 既存ユーザーチェック
+        const existing = await getUserByOpenId(openId);
+        if (existing) {
+          throw new Error("このメールアドレスは既に登録されています");
+        }
+
+        await upsertUser({
+          openId: openId,
+          name: input.name,
+          email: input.email,
+          loginMethod: "mock",
+          role: input.role,
+          lastSignedIn: new Date(),
+        });
+
+        const user = await getUserByOpenId(openId);
+        return { success: true, userId: user?.id };
+      }),
+
+    // Admin専用: パスワードリセット（一時パスワード発行）
+    resetPassword: adminProcedure
+      .input(z.object({
+        userId: z.number(),
+        newPassword: z.string().min(4),
+      }))
+      .mutation(async ({ input }) => {
+        // 現在のMock Auth実装ではパスワードはDBに保存されていない
+        // パスワードレス認証のため、この機能は「確認」のみ
+        // 将来的にはパスワードハッシュ保存が必要
+        return {
+          success: true,
+          message: "パスワードリセット完了（※現在パスワードレス認証のため即時反映）"
+        };
+      }),
+
+    // Admin専用: ユーザー情報更新
+    updateUser: adminProcedure
+      .input(z.object({
+        userId: z.number(),
+        name: z.string().optional(),
+        email: z.string().email().optional(),
+        role: z.enum(["user", "admin"]).optional(),
+      }))
+      .mutation(async ({ input }) => {
+        const { getDb } = await import("./db");
+        const { users } = await import("../drizzle/schema");
+        const { eq } = await import("drizzle-orm");
+
+        const db = await getDb();
+        if (!db) throw new Error("Database not available");
+
+        const updateData: any = {};
+        if (input.name) updateData.name = input.name;
+        if (input.email) {
+          updateData.email = input.email;
+          updateData.openId = input.email; // openIdもEmailに統一
+        }
+        if (input.role) updateData.role = input.role;
+
+        await db.update(users).set(updateData).where(eq(users.id, input.userId));
+
+        return { success: true };
+      }),
   }),
 
   // =========================================

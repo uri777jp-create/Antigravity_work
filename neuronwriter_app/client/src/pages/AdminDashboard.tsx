@@ -27,7 +27,7 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { Trash2, Coins } from "lucide-react";
+import { Trash2, Coins, UserPlus, Edit, Key } from "lucide-react";
 
 export default function AdminDashboard() {
     const { user } = useAuth();
@@ -50,6 +50,20 @@ export default function AdminDashboard() {
     const [creditUser, setCreditUser] = useState<{ id: number; name: string; credits: number } | null>(null);
     const [creditAmount, setCreditAmount] = useState("1");
     const [isCreditOpen, setIsCreditOpen] = useState(false);
+
+    // ユーザー登録用の状態
+    const [isCreateUserOpen, setIsCreateUserOpen] = useState(false);
+    const [newUserName, setNewUserName] = useState("");
+    const [newUserEmail, setNewUserEmail] = useState("");
+    const [newUserPassword, setNewUserPassword] = useState("");
+    const [newUserRole, setNewUserRole] = useState<"user" | "admin">("user");
+
+    // ユーザー編集用の状態
+    const [editUser, setEditUser] = useState<{ id: number; name: string; email: string; role: string } | null>(null);
+    const [isEditOpen, setIsEditOpen] = useState(false);
+    const [editName, setEditName] = useState("");
+    const [editEmail, setEditEmail] = useState("");
+    const [editRole, setEditRole] = useState<"user" | "admin">("user");
 
     const assignMutation = trpc.admin.assignProject.useMutation({
         onSuccess: () => {
@@ -91,6 +105,66 @@ export default function AdminDashboard() {
             toast.error(`クレジット付与失敗: ${e.message}`);
         }
     });
+
+    // ユーザー作成ミューテーション
+    const createUserMutation = trpc.admin.createUser.useMutation({
+        onSuccess: () => {
+            toast.success("ユーザーを作成しました");
+            setIsCreateUserOpen(false);
+            setNewUserName("");
+            setNewUserEmail("");
+            setNewUserPassword("");
+            setNewUserRole("user");
+            refetch();
+        },
+        onError: (e: any) => {
+            toast.error(`ユーザー作成失敗: ${e.message}`);
+        }
+    });
+
+    // ユーザー更新ミューテーション
+    const updateUserMutation = trpc.admin.updateUser.useMutation({
+        onSuccess: () => {
+            toast.success("ユーザー情報を更新しました");
+            setIsEditOpen(false);
+            setEditUser(null);
+            refetch();
+        },
+        onError: (e: any) => {
+            toast.error(`更新失敗: ${e.message}`);
+        }
+    });
+
+    const handleCreateUser = () => {
+        if (!newUserName || !newUserEmail || !newUserPassword) {
+            toast.error("全ての項目を入力してください");
+            return;
+        }
+        createUserMutation.mutate({
+            name: newUserName,
+            email: newUserEmail,
+            password: newUserPassword,
+            role: newUserRole,
+        });
+    };
+
+    const handleUpdateUser = () => {
+        if (!editUser) return;
+        updateUserMutation.mutate({
+            userId: editUser.id,
+            name: editName,
+            email: editEmail,
+            role: editRole,
+        });
+    };
+
+    const openEditDialog = (u: any) => {
+        setEditUser(u);
+        setEditName(u.name || "");
+        setEditEmail(u.email || "");
+        setEditRole(u.role || "user");
+        setIsEditOpen(true);
+    };
 
     const handleAssign = () => {
         if (!selectedUser || !projectId || !projectName) return;
@@ -149,11 +223,17 @@ export default function AdminDashboard() {
             </div>
 
             <Card>
-                <CardHeader>
-                    <CardTitle>ユーザー一覧</CardTitle>
-                    <CardDescription>
-                        全ユーザー数: {filteredUsers.length}人
-                    </CardDescription>
+                <CardHeader className="flex flex-row items-center justify-between">
+                    <div>
+                        <CardTitle>ユーザー一覧</CardTitle>
+                        <CardDescription>
+                            全ユーザー数: {filteredUsers.length}人
+                        </CardDescription>
+                    </div>
+                    <Button onClick={() => setIsCreateUserOpen(true)} className="flex items-center gap-2">
+                        <UserPlus className="h-4 w-4" />
+                        新規ユーザー登録
+                    </Button>
                 </CardHeader>
                 <CardContent>
                     <Table>
@@ -207,80 +287,91 @@ export default function AdminDashboard() {
                                         </Badge>
                                     </TableCell>
                                     <TableCell className="text-right">
-                                        <Dialog open={isOpen && selectedUser?.id === u.id} onOpenChange={(open) => {
-                                            setIsOpen(open);
-                                            if (open) {
-                                                setSelectedUser({ id: u.id, name: u.name || u.email || "User" });
-                                                if (u.projects && u.projects.length > 0) {
-                                                    setProjectId(u.projects[0].neuronProjectId);
-                                                    setProjectName(u.projects[0].name);
-                                                } else {
-                                                    setProjectId("");
-                                                    setProjectName("");
+                                        <div className="flex items-center justify-end gap-2">
+                                            {/* 編集ボタン */}
+                                            <Button
+                                                size="sm"
+                                                variant="ghost"
+                                                onClick={() => openEditDialog(u)}
+                                            >
+                                                <Edit className="h-4 w-4" />
+                                            </Button>
+                                            {/* プロジェクト割当ダイアログ */}
+                                            <Dialog open={isOpen && selectedUser?.id === u.id} onOpenChange={(open) => {
+                                                setIsOpen(open);
+                                                if (open) {
+                                                    setSelectedUser({ id: u.id, name: u.name || u.email || "User" });
+                                                    if (u.projects && u.projects.length > 0) {
+                                                        setProjectId(u.projects[0].neuronProjectId);
+                                                        setProjectName(u.projects[0].name);
+                                                    } else {
+                                                        setProjectId("");
+                                                        setProjectName("");
+                                                    }
                                                 }
-                                            }
-                                        }}>
-                                            <DialogTrigger asChild>
-                                                <Button size="sm" variant="outline">プロジェクト割当</Button>
-                                            </DialogTrigger>
-                                            <DialogContent>
-                                                <DialogHeader>
-                                                    <DialogTitle>{selectedUser?.name} にプロジェクトを割り当て</DialogTitle>
-                                                </DialogHeader>
-                                                <div className="grid gap-4 py-4">
-                                                    <div className="space-y-2">
-                                                        <Label>プロジェクトを選択</Label>
-                                                        <Select onValueChange={handleProjectSelect}>
-                                                            <SelectTrigger>
-                                                                <SelectValue placeholder="既存のプロジェクトから選択" />
-                                                            </SelectTrigger>
-                                                            <SelectContent>
-                                                                {neuronProjects?.projects?.map((project: any) => (
-                                                                    <SelectItem key={project.id} value={project.id}>
-                                                                        {project.name || project.id}
-                                                                    </SelectItem>
-                                                                ))}
-                                                            </SelectContent>
-                                                        </Select>
-                                                    </div>
-                                                    <div className="relative">
-                                                        <div className="absolute inset-0 flex items-center">
-                                                            <span className="w-full border-t" />
+                                            }}>
+                                                <DialogTrigger asChild>
+                                                    <Button size="sm" variant="outline">プロジェクト割当</Button>
+                                                </DialogTrigger>
+                                                <DialogContent>
+                                                    <DialogHeader>
+                                                        <DialogTitle>{selectedUser?.name} にプロジェクトを割り当て</DialogTitle>
+                                                    </DialogHeader>
+                                                    <div className="grid gap-4 py-4">
+                                                        <div className="space-y-2">
+                                                            <Label>プロジェクトを選択</Label>
+                                                            <Select onValueChange={handleProjectSelect}>
+                                                                <SelectTrigger>
+                                                                    <SelectValue placeholder="既存のプロジェクトから選択" />
+                                                                </SelectTrigger>
+                                                                <SelectContent>
+                                                                    {neuronProjects?.projects?.map((project: any) => (
+                                                                        <SelectItem key={project.id} value={project.id}>
+                                                                            {project.name || project.id}
+                                                                        </SelectItem>
+                                                                    ))}
+                                                                </SelectContent>
+                                                            </Select>
                                                         </div>
-                                                        <div className="relative flex justify-center text-xs uppercase">
-                                                            <span className="bg-background px-2 text-muted-foreground">Or enter manually</span>
+                                                        <div className="relative">
+                                                            <div className="absolute inset-0 flex items-center">
+                                                                <span className="w-full border-t" />
+                                                            </div>
+                                                            <div className="relative flex justify-center text-xs uppercase">
+                                                                <span className="bg-background px-2 text-muted-foreground">Or enter manually</span>
+                                                            </div>
+                                                        </div>
+                                                        <div className="grid gap-2">
+                                                            <Label htmlFor="pid">分析プロジェクト (ID)</Label>
+                                                            <Input id="pid" value={projectId} onChange={(e) => setProjectId(e.target.value)} placeholder="例: p_12345" />
+                                                        </div>
+                                                        <div className="grid gap-2">
+                                                            <Label htmlFor="pname">プロジェクト表示名</Label>
+                                                            <Input id="pname" value={projectName} onChange={(e) => setProjectName(e.target.value)} placeholder="例: mysite.com" />
                                                         </div>
                                                     </div>
-                                                    <div className="grid gap-2">
-                                                        <Label htmlFor="pid">分析プロジェクト (ID)</Label>
-                                                        <Input id="pid" value={projectId} onChange={(e) => setProjectId(e.target.value)} placeholder="例: p_12345" />
-                                                    </div>
-                                                    <div className="grid gap-2">
-                                                        <Label htmlFor="pname">プロジェクト表示名</Label>
-                                                        <Input id="pname" value={projectName} onChange={(e) => setProjectName(e.target.value)} placeholder="例: mysite.com" />
-                                                    </div>
-                                                </div>
-                                                <DialogFooter>
-                                                    <Button variant="outline" onClick={() => setIsOpen(false)}>キャンセル</Button>
-                                                    <Button onClick={handleAssign} disabled={assignMutation.isPending}>
-                                                        {assignMutation.isPending ? "処理中..." : "割り当て"}
-                                                    </Button>
-                                                </DialogFooter>
-                                            </DialogContent>
-                                        </Dialog>
+                                                    <DialogFooter>
+                                                        <Button variant="outline" onClick={() => setIsOpen(false)}>キャンセル</Button>
+                                                        <Button onClick={handleAssign} disabled={assignMutation.isPending}>
+                                                            {assignMutation.isPending ? "処理中..." : "割り当て"}
+                                                        </Button>
+                                                    </DialogFooter>
+                                                </DialogContent>
+                                            </Dialog>
 
-                                        <Button
-                                            size="sm"
-                                            variant="ghost"
-                                            className="text-destructive hover:text-destructive hover:bg-destructive/10 ml-2"
-                                            onClick={() => {
-                                                setUserToDelete({ id: u.id, name: u.name || "User" });
-                                                setIsDeleteOpen(true);
-                                            }}
-                                            disabled={u.role === 'admin'} // Prevent admin from deleting themselves or other admins accidentally
-                                        >
-                                            <Trash2 className="h-4 w-4" />
-                                        </Button>
+                                            <Button
+                                                size="sm"
+                                                variant="ghost"
+                                                className="text-destructive hover:text-destructive hover:bg-destructive/10"
+                                                onClick={() => {
+                                                    setUserToDelete({ id: u.id, name: u.name || "User" });
+                                                    setIsDeleteOpen(true);
+                                                }}
+                                                disabled={u.role === 'admin'}
+                                            >
+                                                <Trash2 className="h-4 w-4" />
+                                            </Button>
+                                        </div>
                                     </TableCell>
                                 </TableRow>
                             ))}
@@ -358,6 +449,116 @@ export default function AdminDashboard() {
                             disabled={grantCreditsMutation.isPending || !creditAmount || parseInt(creditAmount, 10) <= 0}
                         >
                             {grantCreditsMutation.isPending ? "処理中..." : `${creditAmount} クレジットを付与`}
+                        </Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
+
+            {/* ユーザー作成ダイアログ */}
+            <Dialog open={isCreateUserOpen} onOpenChange={setIsCreateUserOpen}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle className="flex items-center gap-2">
+                            <UserPlus className="h-5 w-5" />
+                            新規ユーザー登録
+                        </DialogTitle>
+                    </DialogHeader>
+                    <div className="grid gap-4 py-4">
+                        <div className="space-y-2">
+                            <Label htmlFor="newUserName">名前</Label>
+                            <Input
+                                id="newUserName"
+                                placeholder="山田 太郎"
+                                value={newUserName}
+                                onChange={(e) => setNewUserName(e.target.value)}
+                            />
+                        </div>
+                        <div className="space-y-2">
+                            <Label htmlFor="newUserEmail">メールアドレス</Label>
+                            <Input
+                                id="newUserEmail"
+                                type="email"
+                                placeholder="user@example.com"
+                                value={newUserEmail}
+                                onChange={(e) => setNewUserEmail(e.target.value)}
+                            />
+                        </div>
+                        <div className="space-y-2">
+                            <Label htmlFor="newUserPassword">パスワード</Label>
+                            <Input
+                                id="newUserPassword"
+                                type="password"
+                                placeholder="********"
+                                value={newUserPassword}
+                                onChange={(e) => setNewUserPassword(e.target.value)}
+                            />
+                        </div>
+                        <div className="space-y-2">
+                            <Label>権限</Label>
+                            <Select value={newUserRole} onValueChange={(v: "user" | "admin") => setNewUserRole(v)}>
+                                <SelectTrigger>
+                                    <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="user">ユーザー</SelectItem>
+                                    <SelectItem value="admin">管理者</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+                    </div>
+                    <DialogFooter>
+                        <Button variant="outline" onClick={() => setIsCreateUserOpen(false)}>キャンセル</Button>
+                        <Button onClick={handleCreateUser} disabled={createUserMutation.isPending}>
+                            {createUserMutation.isPending ? "作成中..." : "ユーザー作成"}
+                        </Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
+
+            {/* ユーザー編集ダイアログ */}
+            <Dialog open={isEditOpen} onOpenChange={setIsEditOpen}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle className="flex items-center gap-2">
+                            <Edit className="h-5 w-5" />
+                            ユーザー情報編集
+                        </DialogTitle>
+                    </DialogHeader>
+                    <div className="grid gap-4 py-4">
+                        <div className="space-y-2">
+                            <Label htmlFor="editName">名前</Label>
+                            <Input
+                                id="editName"
+                                value={editName}
+                                onChange={(e) => setEditName(e.target.value)}
+                            />
+                        </div>
+                        <div className="space-y-2">
+                            <Label htmlFor="editEmail">メールアドレス</Label>
+                            <Input
+                                id="editEmail"
+                                type="email"
+                                value={editEmail}
+                                onChange={(e) => setEditEmail(e.target.value)}
+                            />
+                        </div>
+                        <div className="space-y-2">
+                            <Label>権限</Label>
+                            <Select value={editRole} onValueChange={(v: "user" | "admin") => setEditRole(v)}>
+                                <SelectTrigger>
+                                    <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="user">ユーザー</SelectItem>
+                                    <SelectItem value="admin">管理者</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+                    </div>
+                    <DialogFooter>
+                        <Button variant="outline" onClick={() => setIsEditOpen(false)}>キャンセル</Button>
+                        <Button onClick={handleUpdateUser} disabled={updateUserMutation.isPending}>
+                            {updateUserMutation.isPending ? "更新中..." : "保存"}
                         </Button>
                     </DialogFooter>
                 </DialogContent>
