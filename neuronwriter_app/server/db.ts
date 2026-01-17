@@ -184,6 +184,37 @@ export async function getUserQueries(userId: number) {
   return await db.select().from(queries).where(eq(queries.userId, userId));
 }
 
+// Admin用: 全ユーザーのクエリ一覧（ユーザー・プロジェクト情報付き）
+export async function getAllQueries() {
+  const db = await getDb();
+  if (!db) return [];
+  const result = await db
+    .select({
+      id: queries.id,
+      userId: queries.userId,
+      projectId: queries.projectId,
+      keyword: queries.keyword,
+      status: queries.status,
+      language: queries.language,
+      searchEngine: queries.searchEngine,
+      createdAt: queries.createdAt,
+      user: {
+        id: users.id,
+        name: users.name,
+        email: users.email,
+      },
+      project: {
+        id: projects.id,
+        name: projects.name,
+      },
+    })
+    .from(queries)
+    .leftJoin(users, eq(queries.userId, users.id))
+    .leftJoin(projects, eq(queries.projectId, projects.id))
+    .orderBy(queries.createdAt);
+  return result;
+}
+
 export async function getQueryById(queryId: number) {
   const db = await getDb();
   if (!db) return undefined;

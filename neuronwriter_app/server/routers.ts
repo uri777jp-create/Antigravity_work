@@ -142,6 +142,15 @@ export const appRouter = router({
       return await getUserQueries(ctx.user.id);
     }),
 
+    // Admin専用: 全ユーザーのクエリ一覧
+    getAllQueries: protectedProcedure.query(async ({ ctx }) => {
+      if (ctx.user.role !== "admin") {
+        throw new Error("管理者権限が必要です");
+      }
+      const { getAllQueries } = await import("./db");
+      return await getAllQueries();
+    }),
+
     getQueryById: protectedProcedure
       .input(
         z.object({

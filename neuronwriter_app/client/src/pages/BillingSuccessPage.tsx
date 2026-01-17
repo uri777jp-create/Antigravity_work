@@ -63,16 +63,16 @@ export default function BillingSuccessPage() {
                     <div className="space-y-4">
                         <Button
                             className="w-full"
-                            onClick={() => setLocation("/billing")}
+                            onClick={() => setLocation("/dashboard")}
                         >
-                            クレジット管理に戻る
+                            ダッシュボードに戻る
                         </Button>
                         <Button
                             variant="outline"
                             className="w-full"
-                            onClick={() => setLocation("/new-query")}
+                            onClick={() => setLocation("/billing")}
                         >
-                            キーワード分析を始める
+                            クレジット管理を見る
                         </Button>
                     </div>
                 </CardContent>

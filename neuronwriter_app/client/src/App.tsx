@@ -10,6 +10,8 @@ import NewQuery from "./pages/NewQuery";
 import QueriesList from "./pages/QueriesList";
 import QueryDetail from "./pages/QueryDetail";
 import AdminDashboard from "./pages/AdminDashboard";
+import AdminNewQuery from "./pages/AdminNewQuery";
+import AdminQueriesList from "./pages/AdminQueriesList";
 import Login from "./pages/Login";
 import BillingPage from "./pages/BillingPage";
 import BillingSuccessPage from "./pages/BillingSuccessPage";
@@ -21,7 +23,12 @@ function Router() {
       <Route path={"/"} component={Home} />
       <Route path={"/login"} component={Login} />
       <Route path={"/dashboard"} component={Dashboard} />
+      {/* Admin専用ルート */}
       <Route path={"/admin"} component={AdminDashboard} />
+      <Route path="/admin/new-query" component={AdminNewQuery} />
+      <Route path="/admin/queries" component={AdminQueriesList} />
+      <Route path="/admin/queries/:id" component={QueryDetail} />
+      {/* User用ルート */}
       <Route path="/new-query" component={NewQuery} />
       <Route path="/queries" component={QueriesList} />
       <Route path="/query/:id" component={QueryDetail} />

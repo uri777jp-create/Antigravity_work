@@ -27,7 +27,7 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { Trash2 } from "lucide-react";
+import { Trash2, Coins } from "lucide-react";
 
 export default function AdminDashboard() {
     const { user } = useAuth();
@@ -45,6 +45,11 @@ export default function AdminDashboard() {
     const [projectId, setProjectId] = useState("");
     const [projectName, setProjectName] = useState("");
     const [isOpen, setIsOpen] = useState(false);
+
+    // クレジット付与用の状態
+    const [creditUser, setCreditUser] = useState<{ id: number; name: string; credits: number } | null>(null);
+    const [creditAmount, setCreditAmount] = useState("1");
+    const [isCreditOpen, setIsCreditOpen] = useState(false);
 
     const assignMutation = trpc.admin.assignProject.useMutation({
         onSuccess: () => {
@@ -71,6 +76,19 @@ export default function AdminDashboard() {
         },
         onError: (e: any) => {
             toast.error(`削除失敗: ${e.message}`);
+        }
+    });
+
+    // クレジット付与ミューテーション
+    const grantCreditsMutation = trpc.billing.grantCredits.useMutation({
+        onSuccess: (data: any) => {
+            toast.success(`${data.creditsAdded} クレジットを付与しました（残高: ${data.newBalance}）`);
+            setIsCreditOpen(false);
+            setCreditAmount("1");
+            refetch();
+        },
+        onError: (e: any) => {
+            toast.error(`クレジット付与失敗: ${e.message}`);
         }
     });
 
@@ -104,6 +122,32 @@ export default function AdminDashboard() {
                 <Button variant="outline" onClick={() => setLocation("/dashboard")}>戻る</Button>
             </div>
 
+            {/* Admin専用ナビゲーション */}
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 mb-8">
+                <Card className="hover:border-primary/50 transition-all cursor-pointer" onClick={() => setLocation("/admin/new-query")}>
+                    <CardHeader className="pb-2">
+                        <CardTitle className="text-lg flex items-center gap-2">
+                            <Coins className="h-5 w-5 text-primary" />
+                            クエリ作成
+                        </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <p className="text-sm text-muted-foreground">全プロジェクト選択可能・詳細設定付き</p>
+                    </CardContent>
+                </Card>
+                <Card className="hover:border-primary/50 transition-all cursor-pointer" onClick={() => setLocation("/admin/queries")}>
+                    <CardHeader className="pb-2">
+                        <CardTitle className="text-lg flex items-center gap-2">
+                            <Trash2 className="h-5 w-5 text-primary" />
+                            全クエリ一覧
+                        </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <p className="text-sm text-muted-foreground">全ユーザーのクエリを管理</p>
+                    </CardContent>
+                </Card>
+            </div>
+
             <Card>
                 <CardHeader>
                     <CardTitle>ユーザー一覧</CardTitle>
@@ -120,6 +164,7 @@ export default function AdminDashboard() {
                                 <TableHead>Email</TableHead>
                                 <TableHead>現在のプロジェクト</TableHead>
                                 <TableHead>最終ログイン</TableHead>
+                                <TableHead>クレジット</TableHead>
                                 <TableHead>権限</TableHead>
                                 <TableHead className="text-right">アクション</TableHead>
                             </TableRow>
@@ -137,6 +182,25 @@ export default function AdminDashboard() {
                                     <TableCell>{u.email || "未設定"}</TableCell>
                                     <TableCell>{u.projects?.[0]?.name || "-"}</TableCell>
                                     <TableCell>{new Date(u.lastSignedIn).toLocaleString()}</TableCell>
+                                    <TableCell>
+                                        <div className="flex items-center gap-2">
+                                            <Coins className="h-4 w-4 text-yellow-500" />
+                                            <span className="font-medium">{u.credits ?? 0}</span>
+                                            <Button
+                                                size="sm"
+                                                variant="ghost"
+                                                className="h-6 px-2 text-xs"
+                                                onClick={() => {
+                                                    setCreditUser({ id: u.id, name: u.name || "User", credits: u.credits ?? 0 });
+                                                    setCreditAmount("1");
+                                                    setIsCreditOpen(true);
+                                                }}
+                                                disabled={u.role === 'admin'}
+                                            >
+                                                +付与
+                                            </Button>
+                                        </div>
+                                    </TableCell>
                                     <TableCell>
                                         <Badge variant={u.role === 'admin' ? "default" : "secondary"}>
                                             {u.role}
@@ -249,6 +313,55 @@ export default function AdminDashboard() {
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
+
+            {/* クレジット付与ダイアログ */}
+            <Dialog open={isCreditOpen} onOpenChange={setIsCreditOpen}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle className="flex items-center gap-2">
+                            <Coins className="h-5 w-5 text-yellow-500" />
+                            クレジット付与
+                        </DialogTitle>
+                    </DialogHeader>
+                    <div className="py-4 space-y-4">
+                        <div>
+                            <p className="text-sm text-muted-foreground">対象ユーザー</p>
+                            <p className="font-medium">{creditUser?.name}</p>
+                        </div>
+                        <div>
+                            <p className="text-sm text-muted-foreground">現在の残高</p>
+                            <p className="font-medium">{creditUser?.credits ?? 0} クレジット</p>
+                        </div>
+                        <div className="space-y-2">
+                            <Label htmlFor="creditAmount">付与するクレジット数</Label>
+                            <Input
+                                id="creditAmount"
+                                type="number"
+                                min="1"
+                                value={creditAmount}
+                                onChange={(e) => setCreditAmount(e.target.value)}
+                                placeholder="例: 10"
+                            />
+                        </div>
+                    </div>
+                    <DialogFooter>
+                        <Button variant="outline" onClick={() => setIsCreditOpen(false)}>キャンセル</Button>
+                        <Button
+                            onClick={() => {
+                                if (creditUser && creditAmount) {
+                                    grantCreditsMutation.mutate({
+                                        userId: creditUser.id,
+                                        amount: parseInt(creditAmount, 10)
+                                    });
+                                }
+                            }}
+                            disabled={grantCreditsMutation.isPending || !creditAmount || parseInt(creditAmount, 10) <= 0}
+                        >
+                            {grantCreditsMutation.isPending ? "処理中..." : `${creditAmount} クレジットを付与`}
+                        </Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
         </div >
     );
 }

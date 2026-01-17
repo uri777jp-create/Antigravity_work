@@ -10,8 +10,8 @@ export default function Home() {
 
   const handleLogout = async () => {
     await logout();
-    // ログアウト後はトップページ（未ログイン状態）を再表示するか、ログインページへ
-    setLocation("/");
+    // ログアウト後はログインページへリダイレクト
+    setLocation("/login");
   };
 
   if (loading) {
