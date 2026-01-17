@@ -1,4 +1,5 @@
 import { useAuth } from "@/_core/hooks/useAuth";
+import DOMPurify from "dompurify";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -938,7 +939,7 @@ export default function QueryDetail() {
                       <pre>{htmlContent}</pre>
                     </TabsContent>
                     <TabsContent value="preview" className="border rounded-md p-6 bg-white min-h-[300px] prose max-w-none">
-                      <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
+                      <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(htmlContent) }} />
                     </TabsContent>
                   </Tabs>
 

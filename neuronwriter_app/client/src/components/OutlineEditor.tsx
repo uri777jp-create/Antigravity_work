@@ -1,4 +1,5 @@
 import { useState } from "react";
+import DOMPurify from "dompurify";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -616,7 +617,7 @@ export function OutlineEditor({ headings, onChange, recommendedKeywords = [], on
                         {heading.content ? (
                           <div
                             className="prose prose-sm max-w-none dark:prose-invert prose-p:my-2 prose-ul:my-2 prose-li:my-0.5"
-                            dangerouslySetInnerHTML={{ __html: heading.content }}
+                            dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(heading.content) }}
                           />
                         ) : (
                           <p className="text-muted-foreground text-center py-8">
