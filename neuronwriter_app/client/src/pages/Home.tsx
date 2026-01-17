@@ -23,66 +23,15 @@ export default function Home() {
   }
 
   if (isAuthenticated && user) {
+    // ログイン済みユーザーは自動的にダッシュボードへリダイレクト
+    if (user.role === "admin") {
+      setLocation("/admin");
+    } else {
+      setLocation("/dashboard");
+    }
     return (
-      <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5">
-        <div className="container py-6 flex justify-end gap-4">
-          <Link href="/dashboard">
-            <Button variant="outline">ダッシュボードへ</Button>
-          </Link>
-          <Button variant="ghost" onClick={handleLogout}>ログアウト</Button>
-        </div>
-        <div className="container py-10">
-          <div className="text-center mb-12">
-            <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent">
-              おかえりなさい、{user.name || "ユーザー"}様！
-            </h1>
-            <p className="text-xl text-muted-foreground">
-              素晴らしいSEOコンテンツを作成しましょう
-            </p>
-          </div>
-
-          <div className="grid gap-6 md:grid-cols-3 max-w-5xl mx-auto">
-            <Link href="/new-query">
-              <div className="group cursor-pointer">
-                <div className="p-8 rounded-2xl border-2 border-primary/20 bg-card hover:border-primary/50 hover:shadow-xl transition-all h-full">
-                  <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                    <Sparkles className="w-7 h-7 text-primary" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-2">クエリ作成</h3>
-                  <p className="text-muted-foreground">
-                    AI搭載の推薦機能で新しいSEOコンテンツクエリを開始
-                  </p>
-                </div>
-              </div>
-            </Link>
-
-            <Link href="/queries">
-              <div className="group cursor-pointer">
-                <div className="p-8 rounded-2xl border-2 border-primary/20 bg-card hover:border-primary/50 hover:shadow-xl transition-all h-full">
-                  <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                    <FileText className="w-7 h-7 text-primary" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-2">クエリ一覧</h3>
-                  <p className="text-muted-foreground">
-                    全てのコンテンツクエリを一箇所で管理
-                  </p>
-                </div>
-              </div>
-            </Link>
-
-            <div className="group cursor-pointer">
-              <div className="p-8 rounded-2xl border-2 border-primary/20 bg-card hover:border-primary/50 hover:shadow-xl transition-all h-full">
-                <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                  <BarChart3 className="w-7 h-7 text-primary" />
-                </div>
-                <h3 className="text-xl font-semibold mb-2">分析</h3>
-                <p className="text-muted-foreground">
-                  SEOパフォーマンスとコンテンツインサイトを追跡
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div className="flex items-center justify-center min-h-screen">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
       </div>
     );
   }

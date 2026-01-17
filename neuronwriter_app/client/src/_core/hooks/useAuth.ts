@@ -38,6 +38,10 @@ export function useAuth(options?: UseAuthOptions) {
     } finally {
       utils.auth.me.setData(undefined, null);
       await utils.auth.me.invalidate();
+      // localStorage のユーザー情報もクリア
+      localStorage.removeItem("manus-runtime-user-info");
+      // ハードリロードでReact Queryキャッシュを完全クリア
+      window.location.href = "/login";
     }
   }, [logoutMutation, utils]);
 
