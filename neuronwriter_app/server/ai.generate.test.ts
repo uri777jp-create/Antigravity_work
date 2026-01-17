@@ -14,6 +14,7 @@ describe("AI Title and Description Generation", () => {
       openId: "test-openid-ai-gen",
       name: "Test User",
       email: "test@example.com",
+      passwordHash: null, // 追加: passwordHashカラムに対応
       loginMethod: "google",
       role: "user",
       credits: 0, // 追加: creditsカラムに対応

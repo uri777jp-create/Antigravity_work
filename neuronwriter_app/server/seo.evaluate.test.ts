@@ -13,12 +13,16 @@ describe("SEO Score Evaluation", () => {
         openId: "test-user",
         name: "Test User",
         email: "test@example.com",
+        passwordHash: null,
         loginMethod: "google",
         role: "admin" as const,
+        credits: 0,
         createdAt: new Date(),
         updatedAt: new Date(),
         lastSignedIn: new Date(),
       },
+      req: {} as any,
+      res: {} as any,
     };
 
     caller = appRouter.createCaller(mockContext);
@@ -44,7 +48,7 @@ describe("SEO Score Evaluation", () => {
 
     expect(result).toBeDefined();
     console.log("SEO Evaluation Result:", JSON.stringify(result, null, 2));
-    
+
     // Check if result contains expected fields
     if (result.content_score !== undefined) {
       expect(typeof result.content_score).toBe("number");

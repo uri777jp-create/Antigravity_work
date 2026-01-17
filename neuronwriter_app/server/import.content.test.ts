@@ -26,7 +26,7 @@ describe("Import Content Integration", () => {
 
   it("should generate title and description, save to NeuronWriter, and return SEO score", { timeout: 30000 }, async () => {
     const caller = appRouter.createCaller({
-      user: { id: testUserId, openId: process.env.OWNER_OPEN_ID || "", role: "admin" },
+      user: { id: testUserId, openId: process.env.OWNER_OPEN_ID || "", role: "admin", name: null, email: null, passwordHash: null, loginMethod: null, credits: 0, createdAt: new Date(), updatedAt: new Date(), lastSignedIn: new Date() },
       req: {} as any,
       res: {} as any,
     });
@@ -58,7 +58,7 @@ describe("Import Content Integration", () => {
 
   it("should generate outline considering current score gap", { timeout: 60000 }, async () => {
     const caller = appRouter.createCaller({
-      user: { id: testUserId, openId: process.env.OWNER_OPEN_ID || "", role: "admin" },
+      user: { id: testUserId, openId: process.env.OWNER_OPEN_ID || "", role: "admin", name: null, email: null, passwordHash: null, loginMethod: null, credits: 0, createdAt: new Date(), updatedAt: new Date(), lastSignedIn: new Date() },
       req: {} as any,
       res: {} as any,
     });

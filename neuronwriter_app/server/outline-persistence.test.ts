@@ -17,19 +17,19 @@ describe("Outline Persistence Feature - tRPC Procedures", () => {
   it("should have generateOutline procedure defined", async () => {
     const { appRouter } = await import("./routers");
     expect(appRouter).toBeDefined();
-    expect(appRouter._def.procedures["neuronwriter.generateOutline"]).toBeDefined();
+    expect(appRouter.neuronwriter.generateOutline).toBeDefined();
   });
 
   it("should have getOutlinesByQuery procedure defined", async () => {
     const { appRouter } = await import("./routers");
     expect(appRouter).toBeDefined();
-    expect(appRouter._def.procedures["neuronwriter.getOutlinesByQuery"]).toBeDefined();
+    expect(appRouter.neuronwriter.getOutlinesByQuery).toBeDefined();
   });
 
   it("should have updateOutline procedure defined", async () => {
     const { appRouter } = await import("./routers");
     expect(appRouter).toBeDefined();
-    expect(appRouter._def.procedures["neuronwriter.updateOutline"]).toBeDefined();
+    expect(appRouter.neuronwriter.updateOutline).toBeDefined();
   });
 });
 

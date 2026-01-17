@@ -26,7 +26,7 @@ describe("Outline Generation", () => {
 
   it("should generate outline with SEO score", { timeout: 60000 }, async () => {
     const caller = appRouter.createCaller({
-      user: { id: testUserId, openId: process.env.OWNER_OPEN_ID || "", role: "admin" },
+      user: { id: testUserId, openId: process.env.OWNER_OPEN_ID || "", role: "admin", name: null, email: null, passwordHash: null, loginMethod: null, credits: 0, createdAt: new Date(), updatedAt: new Date(), lastSignedIn: new Date() },
       req: {} as any,
       res: {} as any,
     });
@@ -59,7 +59,7 @@ describe("Outline Generation", () => {
 
   it("should get outlines by query ID", async () => {
     const caller = appRouter.createCaller({
-      user: { id: testUserId, openId: process.env.OWNER_OPEN_ID || "", role: "admin" },
+      user: { id: testUserId, openId: process.env.OWNER_OPEN_ID || "", role: "admin", name: null, email: null, passwordHash: null, loginMethod: null, credits: 0, createdAt: new Date(), updatedAt: new Date(), lastSignedIn: new Date() },
       req: {} as any,
       res: {} as any,
     });
@@ -85,7 +85,7 @@ describe("Outline Generation", () => {
 
   it("should evaluate outline structure", async () => {
     const caller = appRouter.createCaller({
-      user: { id: testUserId, openId: process.env.OWNER_OPEN_ID || "", role: "admin" },
+      user: { id: testUserId, openId: process.env.OWNER_OPEN_ID || "", role: "admin", name: null, email: null, passwordHash: null, loginMethod: null, credits: 0, createdAt: new Date(), updatedAt: new Date(), lastSignedIn: new Date() },
       req: {} as any,
       res: {} as any,
     });

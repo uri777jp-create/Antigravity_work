@@ -10,8 +10,10 @@ function createAuthContext(): { ctx: TrpcContext } {
     openId: "test-user",
     email: "test@example.com",
     name: "Test User",
+    passwordHash: null,
     loginMethod: "manus",
     role: "user",
+    credits: 0,
     createdAt: new Date(),
     updatedAt: new Date(),
     lastSignedIn: new Date(),
@@ -24,8 +26,8 @@ function createAuthContext(): { ctx: TrpcContext } {
       headers: {},
     } as TrpcContext["req"],
     res: {
-      clearCookie: () => {},
-    } as TrpcContext["res"],
+      clearCookie: () => { },
+    } as unknown as TrpcContext["res"],
   };
 
   return { ctx };

@@ -26,7 +26,7 @@ describe("Title and Description Persistence", () => {
 
   it("should save title and description to local DB", { timeout: 30000 }, async () => {
     const caller = appRouter.createCaller({
-      user: { id: testUserId, openId: process.env.OWNER_OPEN_ID || "", role: "admin" },
+      user: { id: testUserId, openId: process.env.OWNER_OPEN_ID || "", role: "admin", name: null, email: null, passwordHash: null, loginMethod: null, credits: 0, createdAt: new Date(), updatedAt: new Date(), lastSignedIn: new Date() },
       req: {} as any,
       res: {} as any,
     });
@@ -60,7 +60,7 @@ describe("Title and Description Persistence", () => {
 
   it("should retrieve saved title and description on query fetch", { timeout: 10000 }, async () => {
     const caller = appRouter.createCaller({
-      user: { id: testUserId, openId: process.env.OWNER_OPEN_ID || "", role: "admin" },
+      user: { id: testUserId, openId: process.env.OWNER_OPEN_ID || "", role: "admin", name: null, email: null, passwordHash: null, loginMethod: null, credits: 0, createdAt: new Date(), updatedAt: new Date(), lastSignedIn: new Date() },
       req: {} as any,
       res: {} as any,
     });

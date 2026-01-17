@@ -31,7 +31,7 @@ describe("Save Content", () => {
 
   it("should save content to NeuronWriter using neuronQueryId", { timeout: 30000 }, async () => {
     const caller = appRouter.createCaller({
-      user: { id: testUserId, openId: process.env.OWNER_OPEN_ID || "", role: "admin" },
+      user: { id: testUserId, openId: process.env.OWNER_OPEN_ID || "", role: "admin", name: null, email: null, passwordHash: null, loginMethod: null, credits: 0, createdAt: new Date(), updatedAt: new Date(), lastSignedIn: new Date() },
       req: {} as any,
       res: {} as any,
     });
@@ -60,7 +60,7 @@ describe("Save Content", () => {
     expect(result).toBeDefined();
     expect(result.success).toBe(true);
     expect(result.neuronResult).toBeDefined();
-    
+
     console.log(`✓ Content saved successfully`);
     console.log(`✓ NeuronWriter response status: ${result.neuronResult?.status || "unknown"}`);
   });

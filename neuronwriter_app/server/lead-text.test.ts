@@ -29,14 +29,14 @@ describe("Lead Text Feature - tRPC Procedures", () => {
     const { appRouter } = await import("./routers");
     expect(appRouter).toBeDefined();
     // The router should have generateLeadText procedure in neuronwriter namespace
-    expect(appRouter._def.procedures["neuronwriter.generateLeadText"]).toBeDefined();
+    expect(appRouter.neuronwriter.generateLeadText).toBeDefined();
   });
 
   it("should have saveLeadText procedure defined", async () => {
     const { appRouter } = await import("./routers");
     expect(appRouter).toBeDefined();
     // The router should have saveLeadText procedure in neuronwriter namespace
-    expect(appRouter._def.procedures["neuronwriter.saveLeadText"]).toBeDefined();
+    expect(appRouter.neuronwriter.saveLeadText).toBeDefined();
   });
 });
 
@@ -57,7 +57,7 @@ describe("Lead Text Feature - Database Helpers", () => {
 describe("Lead Text Generation Logic", () => {
   it("should generate lead text with proper structure", async () => {
     const { invokeLLM } = await import("./_core/llm");
-    
+
     const response = await invokeLLM({
       messages: [
         { role: "system", content: "You are an SEO content writer." },
