@@ -1717,6 +1717,7 @@ ${searchContext}
       }))
       .mutation(async ({ input }) => {
         const { upsertUser, getUserByOpenId } = await import("./db");
+        const bcrypt = await import("bcrypt");
 
         // Emailをopenidとして使用
         const openId = input.email;
@@ -1727,11 +1728,15 @@ ${searchContext}
           throw new Error("このメールアドレスは既に登録されています");
         }
 
+        // パスワードハッシュ化
+        const passwordHash = await bcrypt.hash(input.password, 10);
+
         await upsertUser({
           openId: openId,
           name: input.name,
           email: input.email,
-          loginMethod: "mock",
+          passwordHash: passwordHash,
+          loginMethod: "password",
           role: input.role,
           lastSignedIn: new Date(),
         });
@@ -1740,20 +1745,28 @@ ${searchContext}
         return { success: true, userId: user?.id };
       }),
 
-    // Admin専用: パスワードリセット（一時パスワード発行）
+    // Admin専用: パスワードリセット
     resetPassword: adminProcedure
       .input(z.object({
         userId: z.number(),
         newPassword: z.string().min(4),
       }))
       .mutation(async ({ input }) => {
-        // 現在のMock Auth実装ではパスワードはDBに保存されていない
-        // パスワードレス認証のため、この機能は「確認」のみ
-        // 将来的にはパスワードハッシュ保存が必要
-        return {
-          success: true,
-          message: "パスワードリセット完了（※現在パスワードレス認証のため即時反映）"
-        };
+        const { getDb } = await import("./db");
+        const { users } = await import("../drizzle/schema");
+        const { eq } = await import("drizzle-orm");
+        const bcrypt = await import("bcrypt");
+
+        const db = await getDb();
+        if (!db) throw new Error("Database not available");
+
+        // 新しいパスワードをハッシュ化
+        const passwordHash = await bcrypt.hash(input.newPassword, 10);
+
+        // データベース更新
+        await db.update(users).set({ passwordHash }).where(eq(users.id, input.userId));
+
+        return { success: true, message: "パスワードをリセットしました" };
       }),
 
     // Admin専用: ユーザー情報更新

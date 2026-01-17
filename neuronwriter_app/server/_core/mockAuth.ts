@@ -72,8 +72,9 @@ export function registerMockAuthRoutes(app: Express) {
         }
 
         try {
-            // Check if user exists (Mock simple check: strictly match email)
-            // Ideally we should use db.getUserByEmail if available, for now matching all users
+            const bcrypt = await import("bcrypt");
+
+            // ユーザー検索
             const users = await db.getAllUsers();
             const user = users.find(u => u.email === email);
 
@@ -81,7 +82,16 @@ export function registerMockAuthRoutes(app: Express) {
                 return res.status(401).json({ error: "メールアドレスまたはパスワードが間違っています" });
             }
 
-            // Create session
+            // パスワード検証（passwordHashがある場合のみ）
+            if (user.passwordHash) {
+                const isValid = await bcrypt.compare(password, user.passwordHash);
+                if (!isValid) {
+                    return res.status(401).json({ error: "メールアドレスまたはパスワードが間違っています" });
+                }
+            }
+            // passwordHashがない場合は旧方式（任意パスワード）で許可
+
+            // セッション作成
             const sessionToken = await sdk.createSessionToken(user.openId, {
                 name: user.name || "User",
                 expiresInMs: ONE_YEAR_MS,
@@ -104,24 +114,20 @@ export function registerMockAuthRoutes(app: Express) {
     app.post("/api/auth/register", async (req: Request, res: Response) => {
         const { name, email, password } = req.body;
         if (!name || !email || !password) {
-            return res.status(400).json({ error: "プロジェクト名、メールアドレス、パスワードは必須です" });
+            return res.status(400).json({ error: "名前、メールアドレス、パスワードは必須です" });
         }
 
         try {
+            const bcrypt = await import("bcrypt");
+
             const users = await db.getAllUsers();
             const existingEmail = users.find(u => u.email === email);
             if (existingEmail) {
                 return res.status(400).json({ error: "このメールアドレスは既に登録されています" });
             }
 
-            // Project ID check removed since we are not autocreating projects.
-            /*
-            // Check if project name/id already exists
-            const existingProject = await db.getProjectByNeuronId(name);
-            if (existingProject) {
-                return res.status(400).json({ error: "このプロジェクトIDは既に使用されています。別の名前を指定してください" });
-            }
-            */
+            // パスワードハッシュ化
+            const passwordHash = await bcrypt.hash(password, 10);
 
             // Use email as OpenID for simplicity
             const newOpenId = email;
@@ -130,7 +136,8 @@ export function registerMockAuthRoutes(app: Express) {
                 openId: newOpenId,
                 name: name,
                 email: email,
-                loginMethod: "mock",
+                passwordHash: passwordHash,
+                loginMethod: "password",
                 role: name === "admin_sarami" ? "admin" : "user",
                 lastSignedIn: new Date(),
             });

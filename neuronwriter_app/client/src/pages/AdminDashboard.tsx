@@ -65,6 +65,11 @@ export default function AdminDashboard() {
     const [editEmail, setEditEmail] = useState("");
     const [editRole, setEditRole] = useState<"user" | "admin">("user");
 
+    // パスワードリセット用の状態
+    const [isPasswordResetOpen, setIsPasswordResetOpen] = useState(false);
+    const [resetPasswordUser, setResetPasswordUser] = useState<{ id: number; name: string } | null>(null);
+    const [newPassword, setNewPassword] = useState("");
+
     const assignMutation = trpc.admin.assignProject.useMutation({
         onSuccess: () => {
             toast.success("プロジェクトを割り当てました");
@@ -164,6 +169,36 @@ export default function AdminDashboard() {
         setEditEmail(u.email || "");
         setEditRole(u.role || "user");
         setIsEditOpen(true);
+    };
+
+    // パスワードリセットミューテーション
+    const resetPasswordMutation = trpc.admin.resetPassword.useMutation({
+        onSuccess: () => {
+            toast.success("パスワードをリセットしました");
+            setIsPasswordResetOpen(false);
+            setNewPassword("");
+            setResetPasswordUser(null);
+        },
+        onError: (e: any) => {
+            toast.error(`パスワードリセット失敗: ${e.message}`);
+        }
+    });
+
+    const handleResetPassword = () => {
+        if (!resetPasswordUser || !newPassword) {
+            toast.error("新しいパスワードを入力してください");
+            return;
+        }
+        resetPasswordMutation.mutate({
+            userId: resetPasswordUser.id,
+            newPassword: newPassword,
+        });
+    };
+
+    const openPasswordResetDialog = (u: any) => {
+        setResetPasswordUser({ id: u.id, name: u.name || "User" });
+        setNewPassword("");
+        setIsPasswordResetOpen(true);
     };
 
     const handleAssign = () => {
@@ -293,8 +328,18 @@ export default function AdminDashboard() {
                                                 size="sm"
                                                 variant="ghost"
                                                 onClick={() => openEditDialog(u)}
+                                                title="ユーザー編集"
                                             >
                                                 <Edit className="h-4 w-4" />
+                                            </Button>
+                                            {/* パスワードリセットボタン */}
+                                            <Button
+                                                size="sm"
+                                                variant="ghost"
+                                                onClick={() => openPasswordResetDialog(u)}
+                                                title="パスワードリセット"
+                                            >
+                                                <Key className="h-4 w-4" />
                                             </Button>
                                             {/* プロジェクト割当ダイアログ */}
                                             <Dialog open={isOpen && selectedUser?.id === u.id} onOpenChange={(open) => {
@@ -559,6 +604,43 @@ export default function AdminDashboard() {
                         <Button variant="outline" onClick={() => setIsEditOpen(false)}>キャンセル</Button>
                         <Button onClick={handleUpdateUser} disabled={updateUserMutation.isPending}>
                             {updateUserMutation.isPending ? "更新中..." : "保存"}
+                        </Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
+
+            {/* パスワードリセットダイアログ */}
+            <Dialog open={isPasswordResetOpen} onOpenChange={setIsPasswordResetOpen}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle className="flex items-center gap-2">
+                            <Key className="h-5 w-5" />
+                            パスワードリセット
+                        </DialogTitle>
+                    </DialogHeader>
+                    <div className="grid gap-4 py-4">
+                        <p className="text-sm text-muted-foreground">
+                            {resetPasswordUser?.name} さんの新しいパスワードを設定します。
+                        </p>
+                        <div className="space-y-2">
+                            <Label htmlFor="newPassword">新しいパスワード</Label>
+                            <Input
+                                id="newPassword"
+                                type="password"
+                                placeholder="4文字以上"
+                                value={newPassword}
+                                onChange={(e) => setNewPassword(e.target.value)}
+                                minLength={4}
+                            />
+                        </div>
+                    </div>
+                    <DialogFooter>
+                        <Button variant="outline" onClick={() => setIsPasswordResetOpen(false)}>キャンセル</Button>
+                        <Button
+                            onClick={handleResetPassword}
+                            disabled={resetPasswordMutation.isPending || newPassword.length < 4}
+                        >
+                            {resetPasswordMutation.isPending ? "リセット中..." : "パスワードをリセット"}
                         </Button>
                     </DialogFooter>
                 </DialogContent>
