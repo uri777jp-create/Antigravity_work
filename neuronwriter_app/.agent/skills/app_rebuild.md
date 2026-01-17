@@ -36,6 +36,8 @@ export const users = mysqlTable("users", {
   email: varchar("email", { length: 320 }),
   loginMethod: varchar("loginMethod", { length: 64 }),
   role: mysqlEnum("role", ["user", "admin"]).default("user").notNull(),
+  // クレジット管理（1クレジット = 1キーワード = 1,000円）
+  credits: int("credits").default(0).notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
   lastSignedIn: timestamp("lastSignedIn").defaultNow().notNull(),
@@ -105,6 +107,38 @@ export const outlines = mysqlTable("outlines", {
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
 ```
+
+### payments テーブル（NEW: Stripe連携）
+```typescript
+export const payments = mysqlTable("payments", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(),
+  // 購入クレジット数
+  creditsAmount: int("creditsAmount").notNull(),
+  // 支払い金額（円）
+  amountJpy: int("amountJpy").notNull(),
+  // Stripe決済情報
+  stripeSessionId: varchar("stripeSessionId", { length: 255 }),
+  stripePaymentIntentId: varchar("stripePaymentIntentId", { length: 255 }),
+  // ステータス
+  status: mysqlEnum("status", ["pending", "completed", "failed", "refunded"]).default("pending").notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+```
+
+### api_usage テーブル（NEW: API使用量管理）
+```typescript
+export const apiUsage = mysqlTable("api_usage", {
+  id: int("id").autoincrement().primaryKey(),
+  // 月別の使用量追跡
+  yearMonth: varchar("yearMonth", { length: 7 }).notNull(), // "2026-01"
+  usageCount: int("usageCount").default(0).notNull(),
+  // NeuronWriter API月間上限（200枠）
+  monthlyLimit: int("monthlyLimit").default(200).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
 
 ---
 
@@ -286,8 +320,115 @@ SEOスコアをプログレスバーで表示。
 
 ---
 
+## RBAC（役割ベースアクセス制御）
+
+### 役割定義
+
+| 役割 | 説明 | 識別方法 |
+|-----|------|---------|
+| **admin** | 開発者・運営者 | `user.role === "admin"` |
+| **user** | 一般ユーザー | `user.role === "user"` |
+
+### アドミン専用機能
+
+| 機能 | 用途 |
+|-----|------|
+| NeuronWriter API生データ表示 | プロンプト調整・実験用 |
+| 推奨語句リスト閲覧 | SEO分析確認 |
+| API使用量モニタリング | 月間200枠の消費状況 |
+| ユーザー管理 | クレジット付与・調整 |
+
+### ユーザー制限事項
+
+> ⚠️ **重要: NeuronWriter APIライセンス違反防止**
+
+| 制限項目 | 理由 |
+|---------|------|
+| 推奨語句リストの非表示 | ライセンス違反 |
+| SERP生データの非表示 | ライセンス違反 |
+| API使用量の非表示 | 運営情報のため |
+
+ユーザーには**AIが生成した最終成果物のみ**を表示する。
+
+---
+
+## 課金システム（Stripe連携）
+
+### 料金体系
+
+| 項目 | 価格 |
+|-----|------|
+| 1クレジット | 1,000円 |
+| 1キーワード分析 | 1クレジット消費 |
+
+### クレジット消費フロー
+
+```
+1. ユーザーがキーワード入力
+   ↓
+2. クレジット残高チェック（credits > 0）
+   ↓
+3. API月間枠チェック（api_usage.usageCount < 200）
+   ↓
+4. NeuronWriter API呼び出し
+   ↓
+5. 成功時: credits -= 1, usageCount += 1
+   ↓
+6. 失敗時: ロールバック（クレジット返還）
+```
+
+### tRPC追加エンドポイント
+
+| エンドポイント | 種別 | 用途 |
+|---------------|------|------|
+| `createCheckoutSession` | mutation | Stripe決済セッション作成 |
+| `handleWebhook` | mutation | Stripe Webhook処理 |
+| `getUserCredits` | query | 残高確認 |
+| `getApiUsage` | query | API使用量確認（admin用） |
+
+### 環境変数追加
+
+```env
+# Stripe
+STRIPE_SECRET_KEY=sk_live_xxxxxxxxxxxx
+STRIPE_WEBHOOK_SECRET=whsec_xxxxxxxxxxxx
+STRIPE_PRICE_ID=price_xxxxxxxxxxxx
+```
+
+---
+
+## UI画面分岐
+
+### ログイン後の遷移
+
+```
+ログインページ
+    ├── admin → アドミンダッシュボード
+    │              ├── キーワード作成（API生データ表示）
+    │              ├── 記事作成（フル機能）
+    │              └── 記事一覧
+    │
+    └── user → ユーザーダッシュボード
+                   ├── クレジット購入（Stripe）
+                   ├── キーワード作成（シンプルUI）
+                   ├── 記事作成（成果物のみ）
+                   └── 記事一覧
+```
+
+### サイドバーの切り替え
+
+```typescript
+// DashboardLayout.tsx
+const menuItems = user.role === "admin" 
+  ? adminMenuItems    // API生データ、ユーザー管理等
+  : userMenuItems;    // クレジット購入、記事作成等
+```
+
+---
+
 ## 変更履歴
 
 | 日付 | 変更内容 |
 |------|---------|
+| 2026-01-17 | 課金システム、RBAC、UI分岐を追加 |
 | 2026-01-17 | 初版作成 |

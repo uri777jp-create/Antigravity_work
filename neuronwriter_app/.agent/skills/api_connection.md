@@ -150,8 +150,72 @@ async function fetchWithRetry(url, options, retries = 3) {
 
 ---
 
+## 6. クレジット消費とAPI枠チェック
+
+### 必須チェック（キーワード作成時）
+
+NeuronWriter APIを呼び出す前に、以下の2つのチェックが**必須**：
+
+1. **ユーザークレジット残高** > 0
+2. **API月間使用量** < 200（月間上限）
+
+### 実装パターン
+
+```typescript
+// server/routers.ts - createQuery mutation内
+
+async function executeWithCreditCheck(userId: number, operation: () => Promise<T>): Promise<T> {
+  // 1. クレジット残高チェック
+  const user = await getUserById(userId);
+  if (user.credits <= 0) {
+    throw new Error("クレジットが不足しています。購入してください。");
+  }
+
+  // 2. API月間枠チェック
+  const currentMonth = new Date().toISOString().slice(0, 7); // "2026-01"
+  const usage = await getApiUsage(currentMonth);
+  if (usage.usageCount >= usage.monthlyLimit) {
+    throw new Error("今月のAPI利用枠が上限に達しました。");
+  }
+
+  // 3. クレジット仮消費（先に減算）
+  await decrementUserCredits(userId, 1);
+  
+  try {
+    // 4. API実行
+    const result = await operation();
+    
+    // 5. 使用量カウント増加
+    await incrementApiUsage(currentMonth);
+    
+    return result;
+  } catch (error) {
+    // 6. 失敗時はクレジット返還（ロールバック）
+    await incrementUserCredits(userId, 1);
+    throw error;
+  }
+}
+```
+
+### ルール
+
+| ルール | 説明 |
+|-------|------|
+| **先消費後実行** | APIを呼ぶ前にクレジットを減算し、失敗時に返還 |
+| **トランザクション一貫性** | 必ずtry-catchでロールバック処理 |
+| **月間リセット** | 毎月1日に `usageCount` を0にリセット |
+
+### 禁止事項
+
+- ❌ クレジットチェックなしでのNeuronWriter API呼び出し
+- ❌ API枠チェックのスキップ
+- ❌ 失敗時のロールバック処理の省略
+
+---
+
 ## 変更履歴
 
 | 日付 | 変更内容 |
 |------|---------|
+| 2026-01-17 | クレジット消費とAPI枠チェックロジックを追加 |
 | 2026-01-16 | 初版作成 |

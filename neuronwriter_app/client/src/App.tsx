@@ -11,6 +11,8 @@ import QueriesList from "./pages/QueriesList";
 import QueryDetail from "./pages/QueryDetail";
 import AdminDashboard from "./pages/AdminDashboard";
 import Login from "./pages/Login";
+import BillingPage from "./pages/BillingPage";
+import BillingSuccessPage from "./pages/BillingSuccessPage";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -23,6 +25,10 @@ function Router() {
       <Route path="/new-query" component={NewQuery} />
       <Route path="/queries" component={QueriesList} />
       <Route path="/query/:id" component={QueryDetail} />
+      {/* 課金関連ページ */}
+      <Route path="/billing" component={BillingPage} />
+      <Route path="/billing/success" component={BillingSuccessPage} />
+      <Route path="/billing/cancel" component={BillingPage} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />

@@ -1,16 +1,19 @@
 import axios from "axios";
+import { ENV } from "./_core/env";
 
-const API_KEY = process.env.X_API_KEY;
 const BASE_URL = "https://app.neuronwriter.com/neuron-api/0.5/writer";
 
-if (!process.env.NEURON_API_KEY) {
+// ENV.neuronWriterApiKey から取得
+const API_KEY = ENV.neuronWriterApiKey;
+
+if (!API_KEY) {
   console.warn("[NLP Data] X_API_KEY not found in environment variables");
 }
 
 const apiClient = axios.create({
   baseURL: BASE_URL,
   headers: {
-    "X-API-KEY": API_KEY || "",
+    "X-API-KEY": API_KEY,
     "Content-Type": "application/json",
     "Accept": "application/json",
   },

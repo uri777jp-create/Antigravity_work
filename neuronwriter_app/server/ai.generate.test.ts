@@ -16,6 +16,7 @@ describe("AI Title and Description Generation", () => {
       email: "test@example.com",
       loginMethod: "google",
       role: "user",
+      credits: 0, // 追加: creditsカラムに対応
       createdAt: new Date(),
       updatedAt: new Date(),
       lastSignedIn: new Date(),
@@ -42,11 +43,11 @@ describe("AI Title and Description Generation", () => {
       expect(result.description).toBeDefined();
       expect(typeof result.title).toBe("string");
       expect(typeof result.description).toBe("string");
-      
+
       // Check title length (recommended 30-60 characters)
       expect(result.title.length).toBeGreaterThan(0);
       expect(result.title.length).toBeLessThanOrEqual(100); // Allow some flexibility
-      
+
       // Check description length (recommended 80-160 characters)
       expect(result.description.length).toBeGreaterThan(0);
       expect(result.description.length).toBeLessThanOrEqual(200); // Allow some flexibility

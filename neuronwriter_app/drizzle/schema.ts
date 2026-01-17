@@ -17,6 +17,8 @@ export const users = mysqlTable("users", {
   email: varchar("email", { length: 320 }),
   loginMethod: varchar("loginMethod", { length: 64 }),
   role: mysqlEnum("role", ["user", "admin"]).default("user").notNull(),
+  /** クレジット残高（1クレジット = 1キーワード分析 = 1,000円） */
+  credits: int("credits").default(0).notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
   lastSignedIn: timestamp("lastSignedIn").defaultNow().notNull(),
@@ -81,7 +83,6 @@ export const contents = mysqlTable("contents", {
 export type Content = typeof contents.$inferSelect;
 export type InsertContent = typeof contents.$inferInsert;
 
-// Query Snapshots table removed - not needed as each new query gets a new ID
 /**
  * Outlines table - stores AI-generated article outlines/table of contents
  */
@@ -109,3 +110,45 @@ export const outlines = mysqlTable("outlines", {
 
 export type Outline = typeof outlines.$inferSelect;
 export type InsertOutline = typeof outlines.$inferInsert;
+
+/**
+ * Payments table - Stripe決済履歴
+ */
+export const payments = mysqlTable("payments", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(),
+  /** 購入クレジット数 */
+  creditsAmount: int("creditsAmount").notNull(),
+  /** 支払い金額（円） */
+  amountJpy: int("amountJpy").notNull(),
+  /** Stripe決済セッションID */
+  stripeSessionId: varchar("stripeSessionId", { length: 255 }),
+  /** Stripe PaymentIntent ID */
+  stripePaymentIntentId: varchar("stripePaymentIntentId", { length: 255 }),
+  /** 決済ステータス */
+  status: mysqlEnum("status", ["pending", "completed", "failed", "refunded"]).default("pending").notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type Payment = typeof payments.$inferSelect;
+export type InsertPayment = typeof payments.$inferInsert;
+
+/**
+ * API Usage table - NeuronWriter API月間使用量管理
+ */
+export const apiUsage = mysqlTable("api_usage", {
+  id: int("id").autoincrement().primaryKey(),
+  /** 年月（例: "2026-01"） */
+  yearMonth: varchar("yearMonth", { length: 7 }).notNull().unique(),
+  /** 今月の使用回数 */
+  usageCount: int("usageCount").default(0).notNull(),
+  /** 月間上限（NeuronWriter APIは200枠/月） */
+  monthlyLimit: int("monthlyLimit").default(200).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type ApiUsage = typeof apiUsage.$inferSelect;
+export type InsertApiUsage = typeof apiUsage.$inferInsert;
+

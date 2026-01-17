@@ -80,26 +80,61 @@ export const appRouter = router({
       )
       .mutation(async ({ ctx, input }) => {
         const { createNewQuery } = await import("./neuronwriter");
-        const { createQuery } = await import("./db");
+        const { createQuery, getUserCredits, decrementUserCredits, incrementUserCredits, checkApiUsageLimit, incrementApiUsage } = await import("./db");
 
-        const result = await createNewQuery({
-          project: input.neuronProjectId,
-          keyword: input.keyword,
-          language: input.language,
-          engine: input.searchEngine,
-        });
+        // =========================================
+        // クレジット・API枠チェック（adminは無制限）
+        // =========================================
+        const isAdmin = ctx.user.role === "admin";
 
-        const dbQuery = await createQuery({
-          userId: ctx.user.id,
-          projectId: input.projectId,
-          neuronQueryId: result.query || input.keyword,
-          keyword: input.keyword,
-          language: input.language,
-          searchEngine: input.searchEngine,
-          status: "pending",
-        });
+        if (!isAdmin) {
+          // 1. クレジット残高チェック
+          const credits = await getUserCredits(ctx.user.id);
+          if (credits <= 0) {
+            throw new Error("クレジットが不足しています。購入してください。");
+          }
 
-        return { success: true, queryId: dbQuery.insertId, neuronQueryId: result.query, neuronResult: result };
+          // 2. API月間枠チェック
+          const currentMonth = new Date().toISOString().slice(0, 7);
+          const { isLimitReached } = await checkApiUsageLimit(currentMonth);
+          if (isLimitReached) {
+            throw new Error("今月のAPI利用枠が上限に達しました。来月までお待ちください。");
+          }
+
+          // 3. クレジット仮消費（先に減算）
+          await decrementUserCredits(ctx.user.id, 1);
+        }
+
+        try {
+          const result = await createNewQuery({
+            project: input.neuronProjectId,
+            keyword: input.keyword,
+            language: input.language,
+            engine: input.searchEngine,
+          });
+
+          const dbQuery = await createQuery({
+            userId: ctx.user.id,
+            projectId: input.projectId,
+            neuronQueryId: result.query || input.keyword,
+            keyword: input.keyword,
+            language: input.language,
+            searchEngine: input.searchEngine,
+            status: "pending",
+          });
+
+          // 成功時: API使用量カウント増加（adminも含む）
+          const currentMonth = new Date().toISOString().slice(0, 7);
+          await incrementApiUsage(currentMonth);
+
+          return { success: true, queryId: dbQuery.insertId, neuronQueryId: result.query, neuronResult: result };
+        } catch (error) {
+          // 失敗時: クレジット返還（adminは除く）
+          if (!isAdmin) {
+            await incrementUserCredits(ctx.user.id, 1);
+          }
+          throw error;
+        }
       }),
 
     getUserQueries: protectedProcedure.query(async ({ ctx }) => {
@@ -1663,6 +1698,155 @@ ${searchContext}
         return { success: true };
       }),
   }),
+
+  // =========================================
+  // 課金・クレジット管理ルーター
+  // =========================================
+  billing: router({
+    // ユーザーのクレジット残高取得
+    getUserCredits: protectedProcedure.query(async ({ ctx }) => {
+      const { getUserCredits } = await import("./db");
+      const credits = await getUserCredits(ctx.user.id);
+      return { credits };
+    }),
+
+    // 決済履歴取得
+    getPaymentHistory: protectedProcedure.query(async ({ ctx }) => {
+      const { getUserPayments } = await import("./db");
+      return await getUserPayments(ctx.user.id);
+    }),
+
+    // Stripe Checkout セッション作成
+    createCheckoutSession: protectedProcedure
+      .input(z.object({
+        creditsAmount: z.number().min(1).max(100),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        const { ENV } = await import("./_core/env");
+        const { createPayment } = await import("./db");
+
+        if (!ENV.stripeSecretKey) {
+          throw new Error("Stripe is not configured");
+        }
+
+        // Stripeインポート（動的）
+        const Stripe = (await import("stripe")).default;
+        const stripe = new Stripe(ENV.stripeSecretKey);
+
+        const amountJpy = input.creditsAmount * 1000; // 1クレジット = 1,000円
+
+        // Stripeセッション作成
+        const session = await stripe.checkout.sessions.create({
+          payment_method_types: ["card"],
+          line_items: [
+            {
+              price_data: {
+                currency: "jpy",
+                product_data: {
+                  name: `クレジット ${input.creditsAmount} 個`,
+                  description: `キーワード分析 ${input.creditsAmount} 回分`,
+                },
+                unit_amount: 1000,
+              },
+              quantity: input.creditsAmount,
+            },
+          ],
+          mode: "payment",
+          success_url: `${ctx.req.headers.origin || "http://localhost:5173"}/billing/success?session_id={CHECKOUT_SESSION_ID}`,
+          cancel_url: `${ctx.req.headers.origin || "http://localhost:5173"}/billing/cancel`,
+          metadata: {
+            userId: ctx.user.id.toString(),
+            creditsAmount: input.creditsAmount.toString(),
+          },
+        });
+
+        // 決済レコード作成（pendingステータス）
+        await createPayment({
+          userId: ctx.user.id,
+          creditsAmount: input.creditsAmount,
+          amountJpy,
+          stripeSessionId: session.id,
+          status: "pending",
+        });
+
+        return { sessionId: session.id, url: session.url };
+      }),
+
+    // Stripe Webhook処理（セッション完了時）
+    handleCheckoutSuccess: protectedProcedure
+      .input(z.object({
+        sessionId: z.string(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        const { ENV } = await import("./_core/env");
+        const { getPaymentBySessionId, updatePaymentStatus, incrementUserCredits } = await import("./db");
+
+        if (!ENV.stripeSecretKey) {
+          throw new Error("Stripe is not configured");
+        }
+
+        // Stripeセッション確認
+        const Stripe = (await import("stripe")).default;
+        const stripe = new Stripe(ENV.stripeSecretKey);
+
+        const session = await stripe.checkout.sessions.retrieve(input.sessionId);
+
+        if (session.payment_status !== "paid") {
+          throw new Error("Payment not completed");
+        }
+
+        // 決済レコード確認
+        const payment = await getPaymentBySessionId(input.sessionId);
+        if (!payment) {
+          throw new Error("Payment record not found");
+        }
+
+        if (payment.status === "completed") {
+          // 既に処理済み
+          return { success: true, alreadyProcessed: true };
+        }
+
+        // ステータス更新 & クレジット付与
+        await updatePaymentStatus(input.sessionId, "completed", session.payment_intent as string);
+        await incrementUserCredits(payment.userId, payment.creditsAmount);
+
+        return { success: true, creditsAdded: payment.creditsAmount };
+      }),
+
+    // API使用量取得（admin用）
+    getApiUsage: adminProcedure.query(async () => {
+      const { getAllApiUsage, checkApiUsageLimit } = await import("./db");
+      const allUsage = await getAllApiUsage();
+      const currentMonth = new Date().toISOString().slice(0, 7);
+      const currentUsage = await checkApiUsageLimit(currentMonth);
+      return { allUsage, currentUsage };
+    }),
+
+    // クレジット付与（admin用）
+    grantCredits: adminProcedure
+      .input(z.object({
+        userId: z.number(),
+        amount: z.number().min(1),
+      }))
+      .mutation(async ({ input }) => {
+        const { incrementUserCredits } = await import("./db");
+        await incrementUserCredits(input.userId, input.amount);
+        return { success: true };
+      }),
+
+    // クレジット設定（admin用）
+    setCredits: adminProcedure
+      .input(z.object({
+        userId: z.number(),
+        credits: z.number().min(0),
+      }))
+      .mutation(async ({ input }) => {
+        const { setUserCredits } = await import("./db");
+        await setUserCredits(input.userId, input.credits);
+        return { success: true };
+      }),
+  }),
 });
 
 export type AppRouter = typeof appRouter;
+

@@ -12,4 +12,10 @@ export const ENV = {
   hallucinationLlmApiKey: process.env.HALLUCINATION_LLM_API_KEY ?? "",
   hallucinationLlmModel: process.env.HALLUCINATION_LLM_MODEL ?? "",
   enableMockAuth: process.env.NODE_ENV !== "production" || process.env.ENABLE_MOCK_AUTH === "true",
+  // Stripe決済
+  stripeSecretKey: process.env.STRIPE_SECRET_KEY ?? "",
+  stripeWebhookSecret: process.env.STRIPE_WEBHOOK_SECRET ?? "",
+  stripePriceId: process.env.STRIPE_PRICE_ID ?? "",
+  // NeuronWriter API
+  neuronWriterApiKey: process.env.X_API_KEY ?? "",
 };
