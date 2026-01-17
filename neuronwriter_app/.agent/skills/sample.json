@@ -1,0 +1,3312 @@
+{
+    "ideas": {
+        "suggest_questions": [],
+        "people_also_ask": [],
+        "topic_matrix": {
+            "Difyをローカル環境で動かすには何が必要ですか？": {
+                "importance": 10
+            },
+            "Difyをローカル環境にインストールする手順は？": {
+                "importance": 10
+            },
+            "Difyをローカル環境で動かすメリットは何ですか？": {
+                "importance": 9
+            },
+            "Difyのローカル環境構築に必要なPCのスペックは？": {
+                "importance": 8
+            },
+            "Difyをローカル環境でアップデートするには？": {
+                "importance": 7
+            },
+            "Difyをローカル環境で使う際の注意点は？": {
+                "importance": 7
+            },
+            "DifyでローカルLLMを使うには？": {
+                "importance": 8
+            },
+            "ローカル環境のDifyに外部からアクセスするには？": {
+                "importance": 6
+            },
+            "Difyのローカル版でよくある問題とその解決策は？": {
+                "importance": 6
+            },
+            "Difyはローカル環境とクラウド環境のどちらが良いですか？": {
+                "importance": 7
+            }
+        },
+        "content_questions": []
+    },
+    "competitors": [
+        {
+            "rank": 1,
+            "url": "https://note.com/itella/n/n28ecccdb72e3",
+            "title": "ローカル環境でDifyを動かそう！初心者でも簡単にセットアップ！－windows編－｜itella",
+            "desc": "はじめに  こんにちは！ 今回はDifyのローカル環境のセットアップについて紹介します！  Difyのローカル環境では、アップデートがあったら毎回自分で更新しないといけないという少しめんどくさい部分がありますが、メリットもたくさんあります！ データは外部サーバーに送信されることなく、自分のサーバー内に留まるため安心です！ 会社の機密情報など扱う場合は、ローカル環境をおすすめします！ また、ネット環境がなくても開発を進められるため便利です！  環境構築って難しそう！と思いますが、一緒に進めていきましょう！ 🌟  mac編はこちら👇 \n    &nbsp;🛠️ ツールの紹介  ローカル環境",
+            "headers": [
+                [
+                    "h1",
+                    "ローカル環境でDifyを動かそう！初心者でも簡単にセットアップ！－windows編－"
+                ],
+                [
+                    "h2",
+                    "はじめに"
+                ],
+                [
+                    "h2",
+                    "🛠️ ツールの紹介"
+                ],
+                [
+                    "h2",
+                    "🌈 環境構築の大まかな流れ"
+                ],
+                [
+                    "h2",
+                    "💻 システム要件のチェック"
+                ],
+                [
+                    "h2",
+                    "📝 インストール手順"
+                ],
+                [
+                    "h2",
+                    "🤖 Difyの導入方法"
+                ],
+                [
+                    "h2",
+                    "🌟 Difyの起動"
+                ],
+                [
+                    "h2",
+                    "💡 さいごに"
+                ],
+                [
+                    "h2",
+                    "いいなと思ったら応援しよう！"
+                ]
+            ],
+            "content_score": 54,
+            "readability": 24,
+            "word_count": 1402,
+            "content_len": 3547
+        },
+        {
+            "rank": 2,
+            "url": "https://datastudio.jp/dify-windows/",
+            "title": "WindowsでDifyをローカル環境にインストールする手順と方法 | @データ工房",
+            "desc": "WindowsでDifyをローカル環境に簡単にインストールする手順と方法を詳しく解説。生成AIアプリ開発を始めるための設定も紹介します。",
+            "headers": [
+                [
+                    "h1",
+                    "WindowsでDifyをローカル環境にインストールする手順と方法"
+                ],
+                [
+                    "h2",
+                    "Diftyをインストールする為の前提条件"
+                ],
+                [
+                    "h2",
+                    "Difyのインストール手順"
+                ],
+                [
+                    "h2",
+                    "Difyのインストール方法"
+                ],
+                [
+                    "h2",
+                    "LLMのAPI設定"
+                ],
+                [
+                    "h2",
+                    "Open AI APIの設定"
+                ],
+                [
+                    "h2",
+                    "特殊事例 BIOSでハードウェア仮想化を有効にする"
+                ],
+                [
+                    "h2",
+                    "メーカー別の手順"
+                ]
+            ],
+            "content_score": 67,
+            "readability": 44,
+            "word_count": 2999,
+            "content_len": 8018
+        },
+        {
+            "rank": 3,
+            "url": "https://y3kikaku.co.jp/dify%E3%82%92windows%E3%83%AD%E3%83%BC%E3%82%AB%E3%83%AB%E7%92%B0%E5%A2%83%E3%81%A7%E5%8B%95%E3%81%8B%E3%81%99%E6%96%B9%E6%B3%95/",
+            "title": "DifyをWindowsローカル環境で動かす方法  |  株式会社ワイスリー企画",
+            "desc": "ローカル環境でDifyを動かすメリット Difyをローカル環境で動かすと、インターネット接続を介さずに操作できるため、特定の機能でクラウド版よりも速く動作することがあります。また、アカウントの登録が不要で、無料で使用することが出来ます。ただし、クラウド版と異なり、外部へのアクセスやデータのバックアップ機能など、限定される機能もある点にご注意ください。 ローカル環境とは、自分のパソコンにソフトウェアをインストールして使う方法です。クラウド版とは、インターネット経由で提供されるサービスを使う方法で、インストール不要で、どこからでもアクセスできる利便性があります。 スピーディな開発とデバッグローカル...",
+            "headers": [
+                [
+                    "h1",
+                    "滋賀県・大津市のホームページ管理・更新｜株式会社ワイスリー企画"
+                ],
+                [
+                    "h2",
+                    "制作・リニューアル・運営代行も対応"
+                ],
+                [
+                    "h1",
+                    ""
+                ],
+                [
+                    "h2",
+                    "株式会社ワイスリー企画"
+                ],
+                [
+                    "h2",
+                    "DifyをWindowsローカル環境で動かす方法"
+                ],
+                [
+                    "h1",
+                    ""
+                ],
+                [
+                    "h2",
+                    "ローカル環境でDifyを動かすメリット"
+                ],
+                [
+                    "h2",
+                    "手順"
+                ]
+            ],
+            "content_score": 51,
+            "readability": 43,
+            "word_count": 3218,
+            "content_len": 7721
+        },
+        {
+            "rank": 4,
+            "url": "https://dify.tdse.jp/post_column/342/",
+            "title": "生成AIサービス構築ツールDify",
+            "desc": "",
+            "headers": [
+                [
+                    "h1",
+                    "Difyをローカル環境で動かすには？　具体的な手順やメリット、注意点を解説"
+                ],
+                [
+                    "h2",
+                    "DifyとはノーコードでAIアプリを開発できるツール"
+                ],
+                [
+                    "h2",
+                    "Difyはクラウド上かローカル環境で動かせる"
+                ],
+                [
+                    "h2",
+                    "Difyをローカル環境で始める5つのメリット"
+                ],
+                [
+                    "h2",
+                    "【6STEP】Difyをローカル環境で始める手順"
+                ],
+                [
+                    "h2",
+                    "Difyローカル版でチャットボットを開発するには？"
+                ],
+                [
+                    "h2",
+                    "Difyをローカル環境で動かす際の注意点"
+                ],
+                [
+                    "h2",
+                    "Difyはクラウド版かローカル版かどちらを選ぶべき？"
+                ],
+                [
+                    "h2",
+                    "Difyをローカル環境で動かして業務に役立つAIを構築しよう"
+                ]
+            ],
+            "content_score": 51,
+            "readability": 35,
+            "word_count": 4073,
+            "content_len": 8691
+        },
+        {
+            "rank": 5,
+            "url": "https://www.capybara-engineer.com/entry/2025/09/08/%E3%83%AD%E3%83%BC%E3%82%AB%E3%83%AB%E3%81%A7Dify%E3%82%92%E5%8B%95%E3%81%8B%E3%81%97%E3%81%A6%E3%81%BF%E3%82%8B",
+            "title": "ローカルでDifyを動かしてみる - カピバラ好きなエンジニアブログ",
+            "desc": "今更ながらローカルでDifyを構築することがあったので備忘として残しておきます。",
+            "headers": [
+                [
+                    "h1",
+                    "カピバラ好きなエンジニアブログ"
+                ],
+                [
+                    "h2",
+                    "興味ある技術とか検証した内容を赴くままに書いていきます。カピバラの可愛さこそ至高。"
+                ],
+                [
+                    "h1",
+                    "ローカルでDifyを動かしてみる"
+                ],
+                [
+                    "h1",
+                    "ローカルでDifyを動かしてみる"
+                ]
+            ],
+            "content_score": 34,
+            "readability": 48,
+            "word_count": 1320,
+            "content_len": 9382
+        },
+        {
+            "rank": 6,
+            "url": "https://zenn.dev/headwaters/articles/952630f3c329a1",
+            "title": "【Dify】- LocalでDifyを立ち上げる方法",
+            "desc": "",
+            "headers": [
+                [
+                    "h1",
+                    "執筆日"
+                ],
+                [
+                    "h1",
+                    "Difyをローカルで立ち上げる方法"
+                ],
+                [
+                    "h2",
+                    "前提条件"
+                ],
+                [
+                    "h2",
+                    "手順"
+                ],
+                [
+                    "h2",
+                    "私だけ？"
+                ]
+            ],
+            "content_score": 27,
+            "readability": 49,
+            "word_count": 278,
+            "content_len": 787
+        },
+        {
+            "rank": 7,
+            "url": "https://qiita.com/hiyuuma/items/f883b4628750d32b44ee",
+            "title": "DIfyを無料で制限なく使いたいので、ローカルPCにセルフホストしてみた。 #Dify - Qiita",
+            "desc": "はじめに Difyってご存じですか？ LLM活用のためのワークフローや生成AIチャットアプリを簡単に構築できる、いわゆるノーコード・ローコードツールの一種です。 クラウド版も提供されているのですが、個人が無料で使う場合にはクラウド版だといろいろと制限があり、有料契約が意外...",
+            "headers": [
+                [
+                    "h1",
+                    "DIfyを無料で制限なく使いたいので、ローカルPCにセルフホストしてみた。"
+                ],
+                [
+                    "h1",
+                    "はじめに"
+                ],
+                [
+                    "h2",
+                    "ローカル環境でDifyを運用するメリット"
+                ],
+                [
+                    "h2",
+                    "システム要件"
+                ],
+                [
+                    "h2",
+                    "今回検証した環境"
+                ],
+                [
+                    "h1",
+                    "構築手順"
+                ],
+                [
+                    "h2",
+                    "停止方法"
+                ],
+                [
+                    "h2",
+                    "ポートの変更方法"
+                ],
+                [
+                    "h1",
+                    "おわりに"
+                ]
+            ],
+            "content_score": 48,
+            "readability": 34,
+            "word_count": 1676,
+            "content_len": 3584
+        },
+        {
+            "rank": 8,
+            "url": "https://liber-craft.co.jp/column/dify-local",
+            "title": "Difyのローカル環境を構築する5つのステップ。構築後に行う2つの対策まで解説 | 株式会社リベルクラフト",
+            "desc": "「Difyをローカル環境で構築したいが、やり方がわからない」という方も多いでしょう。Difyをクラウド環境で利用する人は多いですが、ローカル環境でも構築するメリットがあります。",
+            "headers": [
+                [
+                    "h1",
+                    "Difyのローカル環境を構築する5つのステップ。構築後に行う2つの対策まで解説"
+                ],
+                [
+                    "h2",
+                    "Difyとは"
+                ],
+                [
+                    "h2",
+                    "Difyの構築方法"
+                ],
+                [
+                    "h2",
+                    "Difyをローカル環境で構築するメリット"
+                ],
+                [
+                    "h2",
+                    "Difyローカル環境の5つの構築ステップ"
+                ],
+                [
+                    "h2",
+                    "Difyローカル環境構築後に行うべきこと"
+                ],
+                [
+                    "h2",
+                    "Difyの環境構築はリベルクラフトへ"
+                ],
+                [
+                    "h2",
+                    "カテゴリー一覧"
+                ],
+                [
+                    "h2",
+                    "ランキング"
+                ]
+            ],
+            "content_score": 52,
+            "readability": 28,
+            "word_count": 2991,
+            "content_len": 6256
+        },
+        {
+            "rank": 9,
+            "url": "https://it.sho-ryu.com/ai/dify-install-windows/",
+            "title": "DifyをローカルPC(windows)にインストールする方法  |  ITブログ",
+            "desc": "DifyをWindows11にインストールしてみたメモ。ちょっとハマった。 まずgitを使えるようにする すでに入ってたらスルーで。 次にDifyをGithubからクローンする コマンドプロンプトを開いてインストールしたいフォルダに移動して",
+            "headers": [
+                [
+                    "h1",
+                    "DifyをローカルPC(windows)にインストールする方法"
+                ],
+                [
+                    "h2",
+                    "まずgitを使えるようにする"
+                ],
+                [
+                    "h2",
+                    "次にDifyをGithubからクローンする"
+                ],
+                [
+                    "h2",
+                    "次はDocker Desktop for Windowsをインストール"
+                ],
+                [
+                    "h2",
+                    "あとはブラウザでアクセス"
+                ],
+                [
+                    "h2",
+                    "コメント"
+                ]
+            ],
+            "content_score": 51,
+            "readability": 47,
+            "word_count": 533,
+            "content_len": 1647
+        },
+        {
+            "rank": 10,
+            "url": "https://myuuu.co.jp/media/509/",
+            "title": "Difyのローカル環境構築方法！導入からローカルLLMの使い方まで徹底解説 – FRACTAL LAB Powered by MYUUU",
+            "desc": "",
+            "headers": [
+                [
+                    "h1",
+                    "Difyのローカル環境構築方法！導入からローカルLLMの使い方まで徹底解説"
+                ],
+                [
+                    "h2",
+                    "Difyとは？LLMアプリ開発の革命児"
+                ],
+                [
+                    "h2",
+                    "ローカル版Difyの環境構築と初期設定"
+                ],
+                [
+                    "h2",
+                    "Difyをローカル環境で動かす5つのメリット"
+                ],
+                [
+                    "h2",
+                    "ローカル版Difyの高度な活用法"
+                ],
+                [
+                    "h2",
+                    "ローカル版Difyのよくある質問と解決策"
+                ],
+                [
+                    "h2",
+                    "まとめ"
+                ],
+                [
+                    "h2",
+                    "このコンテンツの投稿者"
+                ],
+                [
+                    "h2",
+                    "関連記事"
+                ]
+            ],
+            "content_score": 59,
+            "readability": 33,
+            "word_count": 2618,
+            "content_len": 5965
+        },
+        {
+            "rank": 11,
+            "url": "https://docs.dify.ai/ja/self-host/advanced-deployments/local-source-code",
+            "title": "ローカルソースコードからの起動 - Dify Docs",
+            "desc": "",
+            "headers": [
+                [
+                    "h1",
+                    "ローカルソースコードからの起動"
+                ],
+                [
+                    "h2",
+                    "​前提条件"
+                ],
+                [
+                    "h2",
+                    "​バックエンドサービスのセットアップ"
+                ],
+                [
+                    "h2",
+                    "​Web サービスのセットアップ"
+                ]
+            ],
+            "content_score": 25,
+            "readability": 45,
+            "word_count": 2026,
+            "content_len": 9018
+        },
+        {
+            "rank": 12,
+            "url": "https://miralab.co.jp/media/dify_local_setup/",
+            "title": "【Dify入門】初心者向けローカル環境構築の方法！Dockerで簡単セットアップ | MiraLabAI",
+            "desc": "Dify入門として、この記事ではAIアプリケーションを簡単に構築できるプラットフォーム「Dify」のローカル環境構築について詳しく解説します。 特に、Dify Dockerを活用したデプロイ方法をステップバイステップで紹介し、初心者でも分か",
+            "headers": [
+                [
+                    "h1",
+                    "【Dify入門】初心者向けローカル環境構築の方法！Dockerで簡単セットアップ"
+                ],
+                [
+                    "h2",
+                    "Difyとは？機能や特徴"
+                ],
+                [
+                    "h2",
+                    "ローカル環境でDifyを使う5つのメリット"
+                ],
+                [
+                    "h2",
+                    "Dify入門①：DockerとGitを使ったローカル環境構築手順"
+                ],
+                [
+                    "h2",
+                    "Dify入門②：ブラウザでログイン後の初期設定とAPI連携"
+                ],
+                [
+                    "h2",
+                    "【初心者向け】Difyのローカル環境構築が難しいと感じたら"
+                ],
+                [
+                    "h2",
+                    "まとめ"
+                ]
+            ],
+            "content_score": 55,
+            "readability": 30,
+            "word_count": 2515,
+            "content_len": 5547
+        },
+        {
+            "rank": 13,
+            "url": "https://ai-native.jp/dify/local",
+            "title": "Difyローカル環境構築ガイド｜Docker・Ollama連携・自社サーバー運用 | AI Native | AI Native（AIネイティブ）",
+            "desc": "Difyをローカル環境・自社サーバーで動かす方法を完全解説。Docker Composeでのセットアップ、Ollamaとの連携、本番運用のベストプラクティスまで網羅。",
+            "headers": [
+                [
+                    "h1",
+                    "Difyローカル環境構築ガイド｜Docker・Ollama連携・自社サーバー運用"
+                ],
+                [
+                    "h2",
+                    "ローカル環境でDifyを使うメリット"
+                ],
+                [
+                    "h2",
+                    "システム要件"
+                ],
+                [
+                    "h2",
+                    "Docker Composeでのセットアップ"
+                ],
+                [
+                    "h2",
+                    "Ollamaとの連携（ローカルLLM）"
+                ],
+                [
+                    "h2",
+                    "ローカルEmbeddingモデル"
+                ],
+                [
+                    "h2",
+                    "本番環境の構成"
+                ],
+                [
+                    "h2",
+                    "よくあるトラブルと解決策"
+                ],
+                [
+                    "h2",
+                    "よくある質問"
+                ],
+                [
+                    "h2",
+                    "まとめ"
+                ]
+            ],
+            "content_score": 43,
+            "readability": 36,
+            "word_count": 1222,
+            "content_len": 4043
+        },
+        {
+            "rank": 14,
+            "url": "https://www.treasure-max.fun/difykoutiku/",
+            "title": "【やってみたシリーズ】校内のネットワーク内で、Difyを使ってAIチャットボットを使うことができるのか！ | 学校DX化でわくわくをサポート",
+            "desc": "ローカルでDifyを稼働させ、おげんまるなどのチャットボットを使うことができるのか検証しました。ローカルネットワーク内でのDifyの設定手順まず、Difyをローカル環境で使えるようにするために、PCやMacにインストールします。通常行うソフ...",
+            "headers": [
+                [
+                    "h1",
+                    "【やってみたシリーズ】校内のネットワーク内で、Difyを使ってAIチャットボットを使うことができるのか！"
+                ],
+                [
+                    "h2",
+                    "ローカルネットワーク内でのDifyの設定手順"
+                ],
+                [
+                    "h2",
+                    "1. はじめに：ローカルネットワークでDifyを使えるようにしよう！"
+                ],
+                [
+                    "h2",
+                    "２. Difyのローカル環境でのインストール"
+                ],
+                [
+                    "h2",
+                    "３.ローカルネットワーク上で Dify を共有して使う"
+                ],
+                [
+                    "h2",
+                    "４.ローカルDify（API使用時）の個人情報漏洩リスクについて"
+                ],
+                [
+                    "h2",
+                    "５.LM Studio x Dify の連携"
+                ],
+                [
+                    "h2",
+                    "6. 完全ローカルのDifyを実際に動かしてみた"
+                ],
+                [
+                    "h2",
+                    "7. 【やってみた】まとめ"
+                ],
+                [
+                    "h2",
+                    "コメント"
+                ]
+            ],
+            "content_score": 38,
+            "readability": 34,
+            "word_count": 3576,
+            "content_len": 8333
+        },
+        {
+            "rank": 15,
+            "url": "https://weel.co.jp/media/dify-local/",
+            "title": "Difyをローカル環境で動かす方法！ローカルだからこそのメリットや使い方を徹底解説 | WEEL",
+            "desc": "Difyはローカル環境で利用可能なオープンソースのAIアプリ開発プラットフォーム。セキュリティ重視の企業でもノーコードでRAG搭載チャットボットやAIエージェントを構築可能です。本記事ではローカル版Difyのメリット、インストール方法、実際の利用手順まで詳しく解説！",
+            "headers": [
+                [
+                    "h1",
+                    "Difyをローカル環境で動かす方法！ローカルだからこそのメリットや使い方を徹底解説"
+                ],
+                [
+                    "h2",
+                    "Difyはローカル環境でも動かせる！"
+                ],
+                [
+                    "h2",
+                    "Difyをローカルで動かすメリット"
+                ],
+                [
+                    "h2",
+                    "ローカル版Difyの使い方"
+                ],
+                [
+                    "h2",
+                    "ローカル版DifyでRAGチャットボットを作ってみた"
+                ],
+                [
+                    "h2",
+                    "Difyならローカルで動くAIツールが簡単に作れる！"
+                ],
+                [
+                    "h2",
+                    "最後に"
+                ],
+                [
+                    "h2",
+                    "投稿者"
+                ],
+                [
+                    "h2",
+                    "カテゴリーから探す"
+                ],
+                [
+                    "h2",
+                    "「日本一透明性の高いAIプロフェッショナル集団」を目指して"
+                ]
+            ],
+            "content_score": 52,
+            "readability": 26,
+            "word_count": 3861,
+            "content_len": 8486
+        },
+        {
+            "rank": 16,
+            "url": "https://allai.co.jp/columns/dify-local/",
+            "title": "Difyのローカル環境を使いこなす！インストールから実践まで解説！ - 生成AIで業務の悩みをまるっと改善｜株式会社ALL AI",
+            "desc": "「Dify」はAIアプリをノーコードで作ることができる優れたプラットフォームです。 最近ではコスト削減やセキュ",
+            "headers": [
+                [
+                    "h1",
+                    "Difyのローカル環境を使いこなす！インストールから実践まで解説！"
+                ],
+                [
+                    "h2",
+                    "Difyとは？ローカル環境で動かす基本を理解しよう"
+                ],
+                [
+                    "h2",
+                    "メリット多数！Difyをローカル環境で使う理由と活用シーン"
+                ],
+                [
+                    "h2",
+                    "初心者でも安心！Difyローカル環境の構築ステップ"
+                ],
+                [
+                    "h2",
+                    "Difyローカル版を使ってみよう"
+                ],
+                [
+                    "h2",
+                    "【ローカル vs クラウド】Difyのどちらを選ぶべきか徹底比較"
+                ],
+                [
+                    "h2",
+                    "自分に合った方を選んで触ってみよう！"
+                ],
+                [
+                    "h2",
+                    ""
+                ],
+                [
+                    "h2",
+                    "お問い合わせ"
+                ]
+            ],
+            "content_score": 46,
+            "readability": 29,
+            "word_count": 2986,
+            "content_len": 6336
+        },
+        {
+            "rank": 17,
+            "url": "https://www.itrco.jp/wordpress/2024/06/dify%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6%E3%83%BC%E3%81%9D%E3%81%AE2/",
+            "title": "Difyについてーその2（ローカル環境の構築） – インターテックリサーチ株式会社",
+            "desc": "Rayne – The Welsh Princess Public House © Copyright Trevor Wright and licensed for reuse under this Creative Commo",
+            "headers": [
+                [
+                    "h1",
+                    "Difyについてーその2（ローカル環境の構築）"
+                ]
+            ],
+            "content_score": 37,
+            "readability": 25,
+            "word_count": 1474,
+            "content_len": 3439
+        },
+        {
+            "rank": 18,
+            "url": "https://note.com/shinoan_01/n/n10633874057b",
+            "title": "DifyをWindows11のローカルで動かす｜しのあん",
+            "desc": "非エンジニアです。文系です。 Officeは使えるけど、開発はなにそれ状態。 ど素人がDifyをWindowsローカルで動かそうとして頑張った記録です。 Macの人とかエンジニアは困らないと思いますが、ど素人なんで！！ Dify、検索したのにインストール方法が分からなかったんです…。 普通のWindows使いさんの参考になればと思います。   PCのスペックの確認    WSL2 バックエンド←これは勝手にインストールされるのでわからなくてOK      Hyper-V と Windows コンテナー    Windows 11 64ビット： Home か Pro バージョン 21H2",
+            "headers": [
+                [
+                    "h1",
+                    "DifyをWindows11のローカルで動かす"
+                ],
+                [
+                    "h2",
+                    "いいなと思ったら応援しよう！"
+                ]
+            ],
+            "content_score": 39,
+            "readability": 48,
+            "word_count": 992,
+            "content_len": 2533
+        },
+        {
+            "rank": 19,
+            "url": "https://qiita.com/daishiro_jp/items/6bf5e703ae81626fdb6a",
+            "title": "超簡単に、Windows11+DockerのDifyから、ローカルLLMを使う手順 #LMStudio - Qiita",
+            "desc": "はじめに こんにちは、Daishiroです。前回の記事、 では、Widnows11にDockerを入れて、Difyを使えるようにするまでの手順を書きました。簡単でしたね！これで手元のPCで自由にDifyを使えるようになりましたが、OpenAIやClaudeのAPIキ...",
+            "headers": [
+                [
+                    "h1",
+                    "超簡単に、Windows11+DockerのDifyから、ローカルLLMを使う手順"
+                ],
+                [
+                    "h1",
+                    "はじめに"
+                ],
+                [
+                    "h1",
+                    "前提条件"
+                ],
+                [
+                    "h1",
+                    "1. ローカルLLMのサーバーを起動"
+                ],
+                [
+                    "h1",
+                    "2. DifyにロカールLLMを登録"
+                ],
+                [
+                    "h1",
+                    "3.動作確認"
+                ],
+                [
+                    "h1",
+                    "おまけ"
+                ],
+                [
+                    "h1",
+                    "まとめ"
+                ]
+            ],
+            "content_score": 39,
+            "readability": 42,
+            "word_count": 1259,
+            "content_len": 3827
+        },
+        {
+            "rank": 20,
+            "url": "https://blog.denet.co.jp/dify-013/",
+            "title": "Dify 三昧：【特別編】ローカル環境でAIを安全に活用！Dify + gpt-oss 構築ガイド - DENET 技術ブログ",
+            "desc": "",
+            "headers": [
+                [
+                    "h1",
+                    "Dify 三昧：【特別編】ローカル環境でAIを安全に活用！Dify + gpt-oss 構築ガイド"
+                ],
+                [
+                    "h2",
+                    "はじめに"
+                ],
+                [
+                    "h2",
+                    "検証環境の概要"
+                ],
+                [
+                    "h2",
+                    "1. Ollama実行環境の構築"
+                ],
+                [
+                    "h2",
+                    "2. Dify側の設定"
+                ],
+                [
+                    "h2",
+                    "検証結果"
+                ],
+                [
+                    "h2",
+                    "まとめ"
+                ]
+            ],
+            "content_score": 36,
+            "readability": 42,
+            "word_count": 1481,
+            "content_len": 4744
+        },
+        {
+            "rank": 21,
+            "url": "https://aicafe.jp/dify-local/",
+            "title": "【Dify】ローカル環境セットアップ完全ガイド!導入手順と注意点 - Ai Cafe",
+            "desc": "ノーコードで手軽にアプリ作成ができるDify。Difyのローカル環境へのインストールや運用は、手順さえ分かれば、簡単にできます。今回は、Difyのローカル環境へのインストール方法、よくあるトラブルシューティングまで、わかりやすくステップごとに解説します。",
+            "headers": [
+                [
+                    "h1",
+                    "【Dify】ローカル環境セットアップ完全ガイド!導入手順と注意点"
+                ],
+                [
+                    "h2",
+                    "Difyってなに?どんなことができる?"
+                ],
+                [
+                    "h2",
+                    "【Dify】ローカル環境にインストールするメリット"
+                ],
+                [
+                    "h2",
+                    "【Dify】ローカル環境へのインストール手順"
+                ],
+                [
+                    "h2",
+                    "【Dify】よくある問題と解決策"
+                ],
+                [
+                    "h2",
+                    "【Dify】ローカル環境セットアップ完全ガイド!導入手順と注意点：まとめ"
+                ]
+            ],
+            "content_score": 42,
+            "readability": 42,
+            "word_count": 2092,
+            "content_len": 4920
+        },
+        {
+            "rank": 22,
+            "url": "https://zenn.dev/yakumo3/articles/415f83ed3f7cb7",
+            "title": "difyをすべてローカルで動かす手順の話",
+            "desc": "",
+            "headers": [
+                [
+                    "h1",
+                    "difyとは"
+                ],
+                [
+                    "h2",
+                    "作成したシステム関連の環境"
+                ],
+                [
+                    "h2",
+                    "環境構築"
+                ],
+                [
+                    "h2",
+                    "動作設定"
+                ],
+                [
+                    "h2",
+                    "AIとチャットをしてみる"
+                ],
+                [
+                    "h2",
+                    "以上です"
+                ]
+            ],
+            "content_score": 28,
+            "readability": 38,
+            "word_count": 1959,
+            "content_len": 6556
+        },
+        {
+            "rank": 23,
+            "url": "https://dai-dai.com/wp/dify-ai-%E3%83%AD%E3%83%BC%E3%82%AB%E3%83%AB%E7%92%B0%E5%A2%83%E9%96%8B%E7%99%BA%E3%82%AC%E3%82%A4%E3%83%89%EF%BC%88windows-11%EF%BC%89/",
+            "title": "Dify.AI ローカル環境開発ガイド（Windows 11） – それもまた人生なり",
+            "desc": "",
+            "headers": [
+                [
+                    "h1",
+                    "それもまた人生なり"
+                ],
+                [
+                    "h1",
+                    "Dify.AI ローカル環境開発ガイド（Windows 11）"
+                ],
+                [
+                    "h1",
+                    ""
+                ],
+                [
+                    "h2",
+                    "前提条件"
+                ],
+                [
+                    "h2",
+                    "ステップ 1: WSL2のインストールと設定"
+                ],
+                [
+                    "h2",
+                    "ステップ 2: Docker Desktopのインストールと設定"
+                ],
+                [
+                    "h2",
+                    "ステップ 3: Dify.AIのクローンと起動"
+                ],
+                [
+                    "h2",
+                    "About Me"
+                ],
+                [
+                    "h2",
+                    "Featured Posts"
+                ],
+                [
+                    "h2",
+                    "Categories"
+                ]
+            ],
+            "content_score": 40,
+            "readability": 60,
+            "word_count": 333,
+            "content_len": 937
+        },
+        {
+            "rank": 24,
+            "url": "https://fragments.co.jp/blog/dify-local/",
+            "title": "Difyをローカル環境で動かす方法を初心者向けに解説【Dockerを利用】  |  株式会社フラグメンツ",
+            "desc": "Difyはローカル環境（パソコン）でも利用でき、無料で使うことができます。この記事では、Dockerを使ってDifyをローカルにインストールする方法をわかりやすく解説します。作業時間はおよそ15分ほどです。ぜひ記事を読みながら、Difyをローカルにインストールしてみてください。",
+            "headers": [
+                [
+                    "h1",
+                    "Difyをローカル環境で動かす方法を初心者向けに解説【Dockerを利用】"
+                ],
+                [
+                    "h2",
+                    "Dockerをパソコンにインストール"
+                ],
+                [
+                    "h2",
+                    "GitHubでDifyをダウンロード"
+                ],
+                [
+                    "h2",
+                    "Docker Composeを使ってDifyをインストールする"
+                ],
+                [
+                    "h2",
+                    "ローカル版Difyのセットアップを行う"
+                ],
+                [
+                    "h2",
+                    "ローカルからDifyを使う時の注意点"
+                ]
+            ],
+            "content_score": 40,
+            "readability": 44,
+            "word_count": 1418,
+            "content_len": 3317
+        },
+        {
+            "rank": 25,
+            "url": "https://dify.tdse.jp/post_column/359/",
+            "title": "生成AIサービス構築ツールDify",
+            "desc": "",
+            "headers": [
+                [
+                    "h1",
+                    "DifyとOllamaを連携する方法を6ステップで解説！　ローカルで立ち上げるメリットも紹介"
+                ],
+                [
+                    "h2",
+                    "Difyとは？"
+                ],
+                [
+                    "h2",
+                    "Ollamaとは？"
+                ],
+                [
+                    "h2",
+                    "DifyとOllamaを連携させるメリット"
+                ],
+                [
+                    "h2",
+                    "DifyとOllamaを連携する方法【6ステップ】"
+                ],
+                [
+                    "h2",
+                    "DifyとOllamaを使ってAIチャットボットを作ってみよう"
+                ],
+                [
+                    "h2",
+                    "Dify × Ollamaの活用事例2選"
+                ],
+                [
+                    "h2",
+                    "DifyとOllamaを連携して柔軟なAI活用を進めよう"
+                ]
+            ],
+            "content_score": 41,
+            "readability": 38,
+            "word_count": 3445,
+            "content_len": 7877
+        },
+        {
+            "rank": 26,
+            "url": "https://qiita.com/KazutoMakino/items/a88930fddab54ce62bf2",
+            "title": "社用WindowsPCでDifyのセルフホスト環境を構築する #環境構築 - Qiita",
+            "desc": "0. この記事の記載内容 この記事では、比較的大きめの日系企業における、ある程度セキュリティのかかった会社支給の Windows PC にて、WSL2 がユーザーアカウントで用いることができないことの回避策として、Rancher Desktop を用いて Dify のセル...",
+            "headers": [
+                [
+                    "h1",
+                    "社用WindowsPCでDifyのセルフホスト環境を構築する"
+                ],
+                [
+                    "h1",
+                    "0. この記事の記載内容"
+                ],
+                [
+                    "h1",
+                    "1. 背景／概要"
+                ],
+                [
+                    "h1",
+                    "2. 環境構築の手順"
+                ],
+                [
+                    "h2",
+                    "2.1. 管理者アカウントでログインし WSL2 をインストール"
+                ],
+                [
+                    "h2",
+                    "2.2. ユーザーアカウントでログインし、Rancher Desktop をインストール・起動"
+                ],
+                [
+                    "h2",
+                    "2.3. Dify を git clone またはリモートリポジトリから .zip でダウンロード＆展開"
+                ],
+                [
+                    "h2",
+                    "2.4. docker 起動"
+                ],
+                [
+                    "h2",
+                    "2.5. web ブラウザで Dify の localhost にアクセスしアカウント登録"
+                ],
+                [
+                    "h1",
+                    "3. まとめ"
+                ]
+            ],
+            "content_score": 32,
+            "readability": 33,
+            "word_count": 1635,
+            "content_len": 4001
+        },
+        {
+            "rank": 27,
+            "url": "https://allai.co.jp/columns/dify-docker/",
+            "title": "コピペでOK！Dockerを利用してDifyをローカルで立ち上げる方法！ - 生成AIで業務の悩みをまるっと改善｜株式会社ALL AI",
+            "desc": "AIアプリを作ってみたいけれど、「専門知識がないから難しそう」と感じていませんか？ Difyはオープンソースの",
+            "headers": [
+                [
+                    "h1",
+                    "コピペでOK！Dockerを利用してDifyをローカルで立ち上げる方法！"
+                ],
+                [
+                    "h2",
+                    "Dockerとは？"
+                ],
+                [
+                    "h2",
+                    "インストール前の環境準備"
+                ],
+                [
+                    "h2",
+                    "Dockerの環境を構築する事前準備"
+                ],
+                [
+                    "h2",
+                    "Dockerリポジトリのセットアップ"
+                ],
+                [
+                    "h2",
+                    "環境設定ファイルの詳細解説と編集方法"
+                ],
+                [
+                    "h2",
+                    "docker-compose.ymlファイルについて"
+                ],
+                [
+                    "h2",
+                    "DifyのDockerでのインストールと初期起動"
+                ],
+                [
+                    "h2",
+                    "DockerとDifyについてよくある質問"
+                ],
+                [
+                    "h2",
+                    "Dockerを使ってDifyを立ち上げてみよう！"
+                ],
+                [
+                    "h2",
+                    ""
+                ],
+                [
+                    "h2",
+                    "お問い合わせ"
+                ]
+            ],
+            "content_score": 49,
+            "readability": 32,
+            "word_count": 3893,
+            "content_len": 9273
+        },
+        {
+            "rank": 28,
+            "url": "https://note.com/aibootcamp/n/n6a32a7bec9ba",
+            "title": "Difyのローカル環境設定：Mac & Windows向けガイド｜AI BOOTCAMP 公式note",
+            "desc": "ビジネスシーンでのデジタルツール活用がますます注目される中、Difyは最新のソリューションとして多くの企業や個人に注目されています。  Difyはウェブ環境でも使えますが、オフラインでの利用やデータ管理の自由度を求める方に向け、ローカル環境の構築方法を解説します。比較的技術的な手順が含まれますので、初めての場合はウェブ環境もあわせてご検討ください。  Difyの解説記事はこちらから  AI BOOTCAMPではDifyについての解説記事を掲載しております。 Difyをまだ知らない方、振り返りをしたい方はぜひ記事をご覧ください。 \n  Difyのウェブ環境とローカル環境のメリット・デメリ",
+            "headers": [
+                [
+                    "h1",
+                    "Difyのローカル環境設定：Mac & Windows向けガイド"
+                ],
+                [
+                    "h2",
+                    "Difyの解説記事はこちらから"
+                ],
+                [
+                    "h2",
+                    "Difyのウェブ環境とローカル環境のメリット・デメリット"
+                ],
+                [
+                    "h2",
+                    "Difyをローカル環境に設定する前に"
+                ],
+                [
+                    "h2",
+                    "Mac&Windowsへのローカル環境設定"
+                ],
+                [
+                    "h2",
+                    "まとめ"
+                ],
+                [
+                    "h2",
+                    "いいなと思ったら応援しよう！"
+                ]
+            ],
+            "content_score": 54,
+            "readability": 34,
+            "word_count": 2414,
+            "content_len": 5561
+        }
+    ],
+    "metrics": {
+        "word_count": {
+            "median": 2147,
+            "target": 2147
+        },
+        "readability": {
+            "median": 39,
+            "target": 39
+        }
+    },
+    "terms": {
+        "title": [
+            {
+                "t": "方法",
+                "usage_pc": 50
+            },
+            {
+                "t": "windows",
+                "usage_pc": 40
+            },
+            {
+                "t": "構築",
+                "usage_pc": 30
+            },
+            {
+                "t": "インストール",
+                "usage_pc": 20
+            },
+            {
+                "t": "difyをローカル",
+                "usage_pc": 20
+            },
+            {
+                "t": "pc",
+                "usage_pc": 20
+            },
+            {
+                "t": "解説",
+                "usage_pc": 20
+            },
+            {
+                "t": "使い",
+                "usage_pc": 20
+            }
+        ],
+        "desc": [
+            {
+                "t": "インストール",
+                "usage_pc": 30
+            },
+            {
+                "t": "構築",
+                "usage_pc": 30
+            },
+            {
+                "t": "difyをローカル",
+                "usage_pc": 30
+            },
+            {
+                "t": "クラウド",
+                "usage_pc": 30
+            },
+            {
+                "t": "windows",
+                "usage_pc": 20
+            },
+            {
+                "t": "方法",
+                "usage_pc": 20
+            },
+            {
+                "t": "ai",
+                "usage_pc": 20
+            },
+            {
+                "t": "版",
+                "usage_pc": 20
+            },
+            {
+                "t": "開発",
+                "usage_pc": 20
+            },
+            {
+                "t": "アプリ",
+                "usage_pc": 20
+            },
+            {
+                "t": "簡単",
+                "usage_pc": 20
+            },
+            {
+                "t": "提供",
+                "usage_pc": 20
+            },
+            {
+                "t": "生成ai",
+                "usage_pc": 20
+            }
+        ],
+        "h1": [
+            {
+                "t": "方法",
+                "usage_pc": 40
+            },
+            {
+                "t": "difyをローカル",
+                "usage_pc": 40
+            },
+            {
+                "t": "windows",
+                "usage_pc": 30
+            },
+            {
+                "t": "構築",
+                "usage_pc": 30
+            },
+            {
+                "t": "手順",
+                "usage_pc": 30
+            },
+            {
+                "t": "解説",
+                "usage_pc": 30
+            },
+            {
+                "t": "インストール",
+                "usage_pc": 20
+            },
+            {
+                "t": "pc",
+                "usage_pc": 20
+            },
+            {
+                "t": "使い",
+                "usage_pc": 20
+            },
+            {
+                "t": "的",
+                "usage_pc": 10
+            },
+            {
+                "t": "後",
+                "usage_pc": 10
+            },
+            {
+                "t": "llm",
+                "usage_pc": 10
+            },
+            {
+                "t": "セットアップ",
+                "usage_pc": 10
+            },
+            {
+                "t": "動かす",
+                "usage_pc": 10
+            },
+            {
+                "t": "方",
+                "usage_pc": 10
+            },
+            {
+                "t": "簡単",
+                "usage_pc": 10
+            }
+        ],
+        "h2": [
+            {
+                "t": "方法",
+                "usage_pc": 50
+            },
+            {
+                "t": "手順",
+                "usage_pc": 50
+            },
+            {
+                "t": "構築",
+                "usage_pc": 40
+            },
+            {
+                "t": "インストール",
+                "usage_pc": 30
+            },
+            {
+                "t": "difyをローカル",
+                "usage_pc": 30
+            },
+            {
+                "t": "動かす",
+                "usage_pc": 30
+            },
+            {
+                "t": "windows",
+                "usage_pc": 20
+            },
+            {
+                "t": "設定",
+                "usage_pc": 20
+            },
+            {
+                "t": "ai",
+                "usage_pc": 20
+            },
+            {
+                "t": "版",
+                "usage_pc": 20
+            },
+            {
+                "t": "開発",
+                "usage_pc": 20
+            },
+            {
+                "t": "アプリ",
+                "usage_pc": 20
+            },
+            {
+                "t": "システム",
+                "usage_pc": 20
+            },
+            {
+                "t": "llm",
+                "usage_pc": 20
+            },
+            {
+                "t": "ツール",
+                "usage_pc": 20
+            },
+            {
+                "t": "git",
+                "usage_pc": 10
+            },
+            {
+                "t": "起動",
+                "usage_pc": 10
+            },
+            {
+                "t": "アクセス",
+                "usage_pc": 10
+            },
+            {
+                "t": "api",
+                "usage_pc": 10
+            },
+            {
+                "t": "後",
+                "usage_pc": 10
+            },
+            {
+                "t": "クラウド",
+                "usage_pc": 10
+            },
+            {
+                "t": "化",
+                "usage_pc": 10
+            },
+            {
+                "t": "記事",
+                "usage_pc": 10
+            },
+            {
+                "t": "変更",
+                "usage_pc": 10
+            },
+            {
+                "t": "初期",
+                "usage_pc": 10
+            },
+            {
+                "t": "たら",
+                "usage_pc": 10
+            },
+            {
+                "t": "ブラウザ",
+                "usage_pc": 10
+            },
+            {
+                "t": "次",
+                "usage_pc": 10
+            },
+            {
+                "t": "まず",
+                "usage_pc": 10
+            },
+            {
+                "t": "上",
+                "usage_pc": 10
+            }
+        ],
+        "content_basic": [
+            {
+                "t": "windows",
+                "usage_pc": 100,
+                "sugg_usage": [
+                    2,
+                    7
+                ]
+            },
+            {
+                "t": "インストール",
+                "usage_pc": 90,
+                "sugg_usage": [
+                    6,
+                    18
+                ]
+            },
+            {
+                "t": "設定",
+                "usage_pc": 90,
+                "sugg_usage": [
+                    2,
+                    24
+                ]
+            },
+            {
+                "t": "構築",
+                "usage_pc": 70,
+                "sugg_usage": [
+                    1,
+                    6
+                ]
+            },
+            {
+                "t": "方法",
+                "usage_pc": 90,
+                "sugg_usage": [
+                    1,
+                    5
+                ]
+            },
+            {
+                "t": "git",
+                "usage_pc": 100,
+                "sugg_usage": [
+                    4,
+                    15
+                ]
+            },
+            {
+                "t": "ai",
+                "usage_pc": 80,
+                "sugg_usage": [
+                    2,
+                    16
+                ]
+            },
+            {
+                "t": "実行",
+                "usage_pc": 100,
+                "sugg_usage": [
+                    3,
+                    9
+                ]
+            },
+            {
+                "t": "必要",
+                "usage_pc": 90,
+                "sugg_usage": [
+                    1,
+                    15
+                ]
+            },
+            {
+                "t": "手順",
+                "usage_pc": 90,
+                "sugg_usage": [
+                    2,
+                    5
+                ]
+            },
+            {
+                "t": "表示",
+                "usage_pc": 100,
+                "sugg_usage": [
+                    2,
+                    8
+                ]
+            },
+            {
+                "t": "確認",
+                "usage_pc": 90,
+                "sugg_usage": [
+                    2,
+                    9
+                ]
+            },
+            {
+                "t": "起動",
+                "usage_pc": 80,
+                "sugg_usage": [
+                    2,
+                    10
+                ]
+            },
+            {
+                "t": "アクセス",
+                "usage_pc": 100,
+                "sugg_usage": [
+                    2,
+                    8
+                ]
+            },
+            {
+                "t": "画面",
+                "usage_pc": 90,
+                "sugg_usage": [
+                    1,
+                    10
+                ]
+            },
+            {
+                "t": "利用",
+                "usage_pc": 90,
+                "sugg_usage": [
+                    1,
+                    10
+                ]
+            },
+            {
+                "t": "版",
+                "usage_pc": 80,
+                "sugg_usage": [
+                    1,
+                    4
+                ]
+            },
+            {
+                "t": "difyをローカル",
+                "usage_pc": 70,
+                "sugg_usage": [
+                    1,
+                    4
+                ]
+            },
+            {
+                "t": "場合",
+                "usage_pc": 80,
+                "sugg_usage": [
+                    1,
+                    9
+                ]
+            },
+            {
+                "t": "使用",
+                "usage_pc": 80,
+                "sugg_usage": [
+                    1,
+                    11
+                ]
+            },
+            {
+                "t": "データ",
+                "usage_pc": 80,
+                "sugg_usage": [
+                    1,
+                    4
+                ]
+            },
+            {
+                "t": "クリック",
+                "usage_pc": 60,
+                "sugg_usage": [
+                    1,
+                    10
+                ]
+            },
+            {
+                "t": "的",
+                "usage_pc": 80,
+                "sugg_usage": [
+                    2,
+                    7
+                ]
+            },
+            {
+                "t": "入力",
+                "usage_pc": 90,
+                "sugg_usage": [
+                    2,
+                    5
+                ]
+            },
+            {
+                "t": "開発",
+                "usage_pc": 80,
+                "sugg_usage": [
+                    1,
+                    4
+                ]
+            },
+            {
+                "t": "情報",
+                "usage_pc": 80,
+                "sugg_usage": [
+                    1,
+                    5
+                ]
+            },
+            {
+                "t": "作成",
+                "usage_pc": 80,
+                "sugg_usage": [
+                    2,
+                    5
+                ]
+            },
+            {
+                "t": "ファイル",
+                "usage_pc": 80,
+                "sugg_usage": [
+                    1,
+                    5
+                ]
+            },
+            {
+                "t": "コンテナ",
+                "usage_pc": 90,
+                "sugg_usage": [
+                    1,
+                    3
+                ]
+            },
+            {
+                "t": "api",
+                "usage_pc": 70,
+                "sugg_usage": [
+                    1,
+                    7
+                ]
+            },
+            {
+                "t": "アプリ",
+                "usage_pc": 70,
+                "sugg_usage": [
+                    1,
+                    6
+                ]
+            },
+            {
+                "t": "ダウンロード",
+                "usage_pc": 80,
+                "sugg_usage": [
+                    1,
+                    6
+                ]
+            },
+            {
+                "t": "ログイン",
+                "usage_pc": 90,
+                "sugg_usage": [
+                    1,
+                    3
+                ]
+            },
+            {
+                "t": "pc",
+                "usage_pc": 70,
+                "sugg_usage": [
+                    1,
+                    3
+                ]
+            },
+            {
+                "t": "動作",
+                "usage_pc": 80,
+                "sugg_usage": [
+                    1,
+                    4
+                ]
+            },
+            {
+                "t": "可能",
+                "usage_pc": 80,
+                "sugg_usage": [
+                    1,
+                    7
+                ]
+            },
+            {
+                "t": "後",
+                "usage_pc": 90,
+                "sugg_usage": [
+                    1,
+                    4
+                ]
+            },
+            {
+                "t": "システム",
+                "usage_pc": 70,
+                "sugg_usage": [
+                    1,
+                    4
+                ]
+            },
+            {
+                "t": "以下のコマンド",
+                "usage_pc": 90,
+                "sugg_usage": [
+                    1,
+                    3
+                ]
+            },
+            {
+                "t": "解説",
+                "usage_pc": 50,
+                "sugg_usage": [
+                    1,
+                    6
+                ]
+            },
+            {
+                "t": "llm",
+                "usage_pc": 70,
+                "sugg_usage": [
+                    1,
+                    4
+                ]
+            },
+            {
+                "t": "クラウド",
+                "usage_pc": 60,
+                "sugg_usage": [
+                    1,
+                    5
+                ]
+            },
+            {
+                "t": "アカウント",
+                "usage_pc": 90,
+                "sugg_usage": [
+                    1,
+                    4
+                ]
+            },
+            {
+                "t": "サービス",
+                "usage_pc": 80,
+                "sugg_usage": [
+                    1,
+                    3
+                ]
+            },
+            {
+                "t": "キー",
+                "usage_pc": 70,
+                "sugg_usage": [
+                    1,
+                    4
+                ]
+            },
+            {
+                "t": "化",
+                "usage_pc": 70,
+                "sugg_usage": [
+                    1,
+                    7
+                ]
+            },
+            {
+                "t": "ツール",
+                "usage_pc": 60,
+                "sugg_usage": [
+                    1,
+                    5
+                ]
+            },
+            {
+                "t": "セットアップ",
+                "usage_pc": 80,
+                "sugg_usage": [
+                    1,
+                    3
+                ]
+            },
+            {
+                "t": "公開",
+                "usage_pc": 60,
+                "sugg_usage": [
+                    1,
+                    2
+                ]
+            },
+            {
+                "t": "ソースコード",
+                "usage_pc": 70,
+                "sugg_usage": [
+                    1,
+                    4
+                ]
+            },
+            {
+                "t": "動かす",
+                "usage_pc": 60,
+                "sugg_usage": [
+                    1,
+                    4
+                ]
+            },
+            {
+                "t": "サーバー",
+                "usage_pc": 70,
+                "sugg_usage": [
+                    1,
+                    4
+                ]
+            },
+            {
+                "t": "方",
+                "usage_pc": 60,
+                "sugg_usage": [
+                    1,
+                    4
+                ]
+            },
+            {
+                "t": "記事",
+                "usage_pc": 70,
+                "sugg_usage": [
+                    1,
+                    6
+                ]
+            },
+            {
+                "t": "変更",
+                "usage_pc": 70,
+                "sugg_usage": [
+                    1,
+                    3
+                ]
+            },
+            {
+                "t": "初期",
+                "usage_pc": 70,
+                "sugg_usage": [
+                    1,
+                    4
+                ]
+            },
+            {
+                "t": "使い",
+                "usage_pc": 60,
+                "sugg_usage": [
+                    1,
+                    2
+                ]
+            },
+            {
+                "t": "たら",
+                "usage_pc": 90,
+                "sugg_usage": [
+                    2,
+                    6
+                ]
+            },
+            {
+                "t": "簡単",
+                "usage_pc": 70,
+                "sugg_usage": [
+                    1,
+                    3
+                ]
+            },
+            {
+                "t": "管理者",
+                "usage_pc": 80,
+                "sugg_usage": [
+                    1,
+                    3
+                ]
+            },
+            {
+                "t": "名",
+                "usage_pc": 80,
+                "sugg_usage": [
+                    1,
+                    3
+                ]
+            },
+            {
+                "t": "正常",
+                "usage_pc": 80,
+                "sugg_usage": [
+                    1,
+                    1
+                ]
+            },
+            {
+                "t": "エラー",
+                "usage_pc": 70,
+                "sugg_usage": [
+                    1,
+                    3
+                ]
+            },
+            {
+                "t": "ユーザー",
+                "usage_pc": 70,
+                "sugg_usage": [
+                    1,
+                    4
+                ]
+            },
+            {
+                "t": "画面が表示",
+                "usage_pc": 70,
+                "sugg_usage": [
+                    1,
+                    2
+                ]
+            },
+            {
+                "t": "コマンドを実行",
+                "usage_pc": 70,
+                "sugg_usage": [
+                    1,
+                    2
+                ]
+            },
+            {
+                "t": "wsl2",
+                "usage_pc": 60,
+                "sugg_usage": [
+                    1,
+                    2
+                ]
+            },
+            {
+                "t": "cpu",
+                "usage_pc": 80,
+                "sugg_usage": [
+                    1,
+                    2
+                ]
+            },
+            {
+                "t": "パスワード",
+                "usage_pc": 80,
+                "sugg_usage": [
+                    1,
+                    3
+                ]
+            },
+            {
+                "t": "提供",
+                "usage_pc": 70,
+                "sugg_usage": [
+                    1,
+                    2
+                ]
+            },
+            {
+                "t": "以上",
+                "usage_pc": 90,
+                "sugg_usage": [
+                    2,
+                    3
+                ]
+            },
+            {
+                "t": "生成ai",
+                "usage_pc": 60,
+                "sugg_usage": [
+                    1,
+                    2
+                ]
+            },
+            {
+                "t": "ブラウザ",
+                "usage_pc": 80,
+                "sugg_usage": [
+                    1,
+                    1
+                ]
+            },
+            {
+                "t": "コマンドプロンプト",
+                "usage_pc": 60,
+                "sugg_usage": [
+                    1,
+                    3
+                ]
+            },
+            {
+                "t": "メールアドレス",
+                "usage_pc": 80,
+                "sugg_usage": [
+                    1,
+                    2
+                ]
+            },
+            {
+                "t": "次",
+                "usage_pc": 90,
+                "sugg_usage": [
+                    1,
+                    3
+                ]
+            },
+            {
+                "t": "まず",
+                "usage_pc": 80,
+                "sugg_usage": [
+                    1,
+                    2
+                ]
+            },
+            {
+                "t": "アプリケーション",
+                "usage_pc": 60,
+                "sugg_usage": [
+                    1,
+                    2
+                ]
+            },
+            {
+                "t": "mac",
+                "usage_pc": 60,
+                "sugg_usage": [
+                    1,
+                    2
+                ]
+            },
+            {
+                "t": "中",
+                "usage_pc": 70,
+                "sugg_usage": [
+                    1,
+                    3
+                ]
+            },
+            {
+                "t": "上",
+                "usage_pc": 70,
+                "sugg_usage": [
+                    1,
+                    3
+                ]
+            },
+            {
+                "t": "他",
+                "usage_pc": 70,
+                "sugg_usage": [
+                    1,
+                    2
+                ]
+            }
+        ],
+        "content_extended": [
+            {
+                "t": "httplocalhost",
+                "usage_pc": 0,
+                "sugg_usage": [
+                    1,
+                    1
+                ]
+            },
+            {
+                "t": "dockercomposeup",
+                "usage_pc": 0,
+                "sugg_usage": [
+                    1,
+                    1
+                ]
+            },
+            {
+                "t": "httplocalhostinstall",
+                "usage_pc": 0,
+                "sugg_usage": [
+                    1,
+                    1
+                ]
+            },
+            {
+                "t": "dockercomposeupd",
+                "usage_pc": 0,
+                "sugg_usage": [
+                    1,
+                    1
+                ]
+            },
+            {
+                "t": "difydocker",
+                "usage_pc": 0,
+                "sugg_usage": [
+                    1,
+                    1
+                ]
+            },
+            {
+                "t": "dockerdesktop",
+                "usage_pc": 10,
+                "sugg_usage": [
+                    1,
+                    1
+                ]
+            }
+        ],
+        "entities": [
+            {
+                "t": "Docker",
+                "importance": 75.512,
+                "relevance": 0.75512,
+                "confidence": 5.889399999999999,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/Docker"
+                    ]
+                ]
+            },
+            {
+                "t": "インストール",
+                "importance": 67.37200000000001,
+                "relevance": 0.6737200000000001,
+                "confidence": 4.7572,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/インストール"
+                    ]
+                ]
+            },
+            {
+                "t": "Microsoft Windows",
+                "importance": 53.526,
+                "relevance": 0.53526,
+                "confidence": 4.0218,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/Microsoft_Windows"
+                    ]
+                ]
+            },
+            {
+                "t": "Git",
+                "importance": 53.396,
+                "relevance": 0.53396,
+                "confidence": 10.106199999999998,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/Git"
+                    ]
+                ]
+            },
+            {
+                "t": "アプリケーションソフトウェア",
+                "importance": 46.032000000000004,
+                "relevance": 0.46032,
+                "confidence": 17.037,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/アプリケーションソフトウェア"
+                    ]
+                ]
+            },
+            {
+                "t": "ソースコード",
+                "importance": 42.25600000000001,
+                "relevance": 0.42256,
+                "confidence": 25.374,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/ソースコード"
+                    ]
+                ]
+            },
+            {
+                "t": "コマンド (コンピュータ)",
+                "importance": 25.9584,
+                "relevance": 0.4056,
+                "confidence": 3.277,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/コマンド_(コンピュータ)"
+                    ]
+                ]
+            },
+            {
+                "t": "コマンドプロンプト",
+                "importance": 21.1584,
+                "relevance": 0.3306,
+                "confidence": 30.548000000000002,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/コマンドプロンプト"
+                    ]
+                ]
+            },
+            {
+                "t": "アカウント",
+                "importance": 20.202239999999996,
+                "relevance": 0.31566,
+                "confidence": 2.5766,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/アカウント"
+                    ]
+                ]
+            },
+            {
+                "t": "Mac (コンピュータ)",
+                "importance": 19.700479999999995,
+                "relevance": 0.30782,
+                "confidence": 6.0062,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/Mac_(コンピュータ)"
+                    ]
+                ]
+            },
+            {
+                "t": "Bash",
+                "importance": 19.62368,
+                "relevance": 0.30662,
+                "confidence": 3.5789999999999997,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/Bash"
+                    ]
+                ]
+            },
+            {
+                "t": "ポイント・アンド・クリック",
+                "importance": 19.592959999999998,
+                "relevance": 0.30613999999999997,
+                "confidence": 2.332,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/ポイント・アンド・クリック"
+                    ]
+                ]
+            },
+            {
+                "t": "アプリケーションプログラミングインタフェース",
+                "importance": 18.46144,
+                "relevance": 0.28846,
+                "confidence": 19.137,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/アプリケーションプログラミングインタフェース"
+                    ]
+                ]
+            },
+            {
+                "t": "バージョン管理システム",
+                "importance": 14.9616,
+                "relevance": 0.41559999999999997,
+                "confidence": 3.5275999999999996,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/バージョン管理システム"
+                    ]
+                ]
+            },
+            {
+                "t": "オペレーティングシステム",
+                "importance": 13.781519999999999,
+                "relevance": 0.38282,
+                "confidence": 6.0718000000000005,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/オペレーティングシステム"
+                    ]
+                ]
+            },
+            {
+                "t": "ディレクトリ",
+                "importance": 13.674959999999997,
+                "relevance": 0.37986,
+                "confidence": 6.585800000000001,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/ディレクトリ"
+                    ]
+                ]
+            },
+            {
+                "t": "サーバ",
+                "importance": 12.6784,
+                "relevance": 0.1981,
+                "confidence": 4.3732,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/サーバ"
+                    ]
+                ]
+            },
+            {
+                "t": "Hypertext Transfer Protocol",
+                "importance": 12.602880000000003,
+                "relevance": 0.19691999999999998,
+                "confidence": 2.1590000000000003,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/Hypertext_Transfer_Protocol"
+                    ]
+                ]
+            },
+            {
+                "t": "ログイン",
+                "importance": 12.59648,
+                "relevance": 0.19682,
+                "confidence": 2.0398,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/ログイン"
+                    ]
+                ]
+            },
+            {
+                "t": "設定ファイル",
+                "importance": 12.24432,
+                "relevance": 0.34012000000000003,
+                "confidence": 1.9024,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/設定ファイル"
+                    ]
+                ]
+            },
+            {
+                "t": "Linux",
+                "importance": 11.97936,
+                "relevance": 0.33276000000000006,
+                "confidence": 30.984,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/Linux"
+                    ]
+                ]
+            },
+            {
+                "t": "ダウンロード",
+                "importance": 11.264,
+                "relevance": 0.17600000000000002,
+                "confidence": 2.7064,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/ダウンロード"
+                    ]
+                ]
+            },
+            {
+                "t": "大規模言語モデル",
+                "importance": 11.20752,
+                "relevance": 0.31132,
+                "confidence": 6.7538,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/大規模言語モデル"
+                    ]
+                ]
+            },
+            {
+                "t": "64ビット",
+                "importance": 10.52712,
+                "relevance": 0.29242,
+                "confidence": 5.123,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/64ビット"
+                    ]
+                ]
+            },
+            {
+                "t": "PowerShell",
+                "importance": 10.0728,
+                "relevance": 0.2798,
+                "confidence": 5.507000000000001,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/PowerShell"
+                    ]
+                ]
+            },
+            {
+                "t": "パーソナルコンピュータ",
+                "importance": 10.04976,
+                "relevance": 0.27915999999999996,
+                "confidence": 13.352,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/パーソナルコンピュータ"
+                    ]
+                ]
+            },
+            {
+                "t": "ChatGPT",
+                "importance": 9.935279999999999,
+                "relevance": 0.27598,
+                "confidence": 10.412,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/ChatGPT"
+                    ]
+                ]
+            },
+            {
+                "t": "再起動",
+                "importance": 9.249119999999998,
+                "relevance": 0.25692,
+                "confidence": 1.2007999999999999,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/再起動"
+                    ]
+                ]
+            },
+            {
+                "t": "パスワード",
+                "importance": 9.154800000000002,
+                "relevance": 0.2543,
+                "confidence": 4.1290000000000004,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/パスワード"
+                    ]
+                ]
+            },
+            {
+                "t": "スタートメニュー",
+                "importance": 8.71848,
+                "relevance": 0.24218,
+                "confidence": 1.7711999999999999,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/スタートメニュー"
+                    ]
+                ]
+            },
+            {
+                "t": "ユーザー (コンピュータ)",
+                "importance": 7.7436,
+                "relevance": 0.21509999999999999,
+                "confidence": 0.6344,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/ユーザー_(コンピュータ)"
+                    ]
+                ]
+            },
+            {
+                "t": "ウェブブラウザ",
+                "importance": 7.325279999999998,
+                "relevance": 0.20347999999999997,
+                "confidence": 10.269000000000002,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/ウェブブラウザ"
+                    ]
+                ]
+            },
+            {
+                "t": "プラットフォーム (コンピューティング)",
+                "importance": 7.127279999999999,
+                "relevance": 0.19798,
+                "confidence": 1.8725999999999998,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/プラットフォーム_(コンピューティング)"
+                    ]
+                ]
+            },
+            {
+                "t": "CPU",
+                "importance": 6.687359999999997,
+                "relevance": 0.18575999999999998,
+                "confidence": 19.913999999999998,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/CPU"
+                    ]
+                ]
+            },
+            {
+                "t": "Ubuntu",
+                "importance": 6.295823999999999,
+                "relevance": 0.17488399999999998,
+                "confidence": 7.714,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/Ubuntu"
+                    ]
+                ]
+            },
+            {
+                "t": "Localhost",
+                "importance": 5.852415999999999,
+                "relevance": 0.091444,
+                "confidence": 1.9969999999999999,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/Localhost"
+                    ]
+                ]
+            },
+            {
+                "t": "データ",
+                "importance": 5.602319999999999,
+                "relevance": 0.15561999999999998,
+                "confidence": 2.5762,
+                "links": []
+            },
+            {
+                "t": "Windows Subsystem for Linux",
+                "importance": 5.19008,
+                "relevance": 0.32438,
+                "confidence": 1.1852,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/Windows_Subsystem_for_Linux"
+                    ]
+                ]
+            },
+            {
+                "t": "Visual Studio Code",
+                "importance": 4.634240000000001,
+                "relevance": 0.28964,
+                "confidence": 0.4694,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/Visual_Studio_Code"
+                    ]
+                ]
+            },
+            {
+                "t": "Microsoft Windows 10",
+                "importance": 4.34336,
+                "relevance": 0.27146,
+                "confidence": 7.6608,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/Microsoft_Windows_10"
+                    ]
+                ]
+            },
+            {
+                "t": "Windows Explorer",
+                "importance": 3.84672,
+                "relevance": 0.24042,
+                "confidence": 2.7039999999999997,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/Windows_Explorer"
+                    ]
+                ]
+            },
+            {
+                "t": "環境変数",
+                "importance": 3.63904,
+                "relevance": 0.22744,
+                "confidence": 2.6838,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/環境変数"
+                    ]
+                ]
+            },
+            {
+                "t": "メニュー (コンピュータ)",
+                "importance": 3.56448,
+                "relevance": 0.22278000000000003,
+                "confidence": 0.7936,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/メニュー_(コンピュータ)"
+                    ]
+                ]
+            },
+            {
+                "t": "Microsoft Windows 11",
+                "importance": 3.4128,
+                "relevance": 0.2133,
+                "confidence": 1.3474,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/Microsoft_Windows_11"
+                    ]
+                ]
+            },
+            {
+                "t": "動作環境",
+                "importance": 3.364479999999999,
+                "relevance": 0.21027999999999997,
+                "confidence": 0.5422,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/動作環境"
+                    ]
+                ]
+            },
+            {
+                "t": "ファイル (コンピュータ)",
+                "importance": 3.34272,
+                "relevance": 0.20892,
+                "confidence": 3.2923999999999998,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/ファイル_(コンピュータ)"
+                    ]
+                ]
+            },
+            {
+                "t": "ボタン (GUI)",
+                "importance": 3.0633600000000003,
+                "relevance": 0.19146000000000002,
+                "confidence": 0.40337999999999996,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/ボタン_(GUI)"
+                    ]
+                ]
+            },
+            {
+                "t": "コマンドラインインタプリタ",
+                "importance": 3.0627199999999997,
+                "relevance": 0.19142,
+                "confidence": 3.258,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/コマンドラインインタプリタ"
+                    ]
+                ]
+            },
+            {
+                "t": "ライブラリ",
+                "importance": 3.0246399999999998,
+                "relevance": 0.18904,
+                "confidence": 3.8964,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/ライブラリ"
+                    ]
+                ]
+            },
+            {
+                "t": "ダイアログボックス",
+                "importance": 2.98208,
+                "relevance": 0.18638,
+                "confidence": 1.5196,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/ダイアログボックス"
+                    ]
+                ]
+            },
+            {
+                "t": "Hyper-V",
+                "importance": 2.96192,
+                "relevance": 0.18512,
+                "confidence": 1.9600000000000002,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/Hyper-V"
+                    ]
+                ]
+            },
+            {
+                "t": "プロンプトエンジニアリング",
+                "importance": 2.8688,
+                "relevance": 0.17930000000000001,
+                "confidence": 1.3022,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/プロンプトエンジニアリング"
+                    ]
+                ]
+            },
+            {
+                "t": "人工知能",
+                "importance": 2.79328,
+                "relevance": 0.17458,
+                "confidence": 0.6742,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/人工知能"
+                    ]
+                ]
+            },
+            {
+                "t": "クラウドコンピューティング",
+                "importance": 2.79328,
+                "relevance": 0.17458,
+                "confidence": 7.886,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/クラウドコンピューティング"
+                    ]
+                ]
+            },
+            {
+                "t": "インターネット",
+                "importance": 2.68384,
+                "relevance": 0.16774,
+                "confidence": 12.580000000000002,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/インターネット"
+                    ]
+                ]
+            },
+            {
+                "t": "OpenAI",
+                "importance": 2.566080000000001,
+                "relevance": 0.16038000000000002,
+                "confidence": 8.74,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/OpenAI"
+                    ]
+                ]
+            },
+            {
+                "t": "ソフトウェア",
+                "importance": 2.53248,
+                "relevance": 0.15828,
+                "confidence": 11.548,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/ソフトウェア"
+                    ]
+                ]
+            },
+            {
+                "t": "エラー",
+                "importance": 2.5046399999999998,
+                "relevance": 0.15653999999999998,
+                "confidence": 0.66808,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/エラー"
+                    ]
+                ]
+            },
+            {
+                "t": "デバッグ",
+                "importance": 2.4,
+                "relevance": 0.15,
+                "confidence": 4.3376,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/デバッグ"
+                    ]
+                ]
+            },
+            {
+                "t": "ファイルシステム",
+                "importance": 2.1936000000000004,
+                "relevance": 0.1371,
+                "confidence": 4.882,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/ファイルシステム"
+                    ]
+                ]
+            },
+            {
+                "t": "仮想化",
+                "importance": 1.9648,
+                "relevance": 0.12279999999999999,
+                "confidence": 2.8242000000000003,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/仮想化"
+                    ]
+                ]
+            },
+            {
+                "t": "Secure Shell",
+                "importance": 1.9212800000000003,
+                "relevance": 0.12008,
+                "confidence": 3.2811999999999997,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/Secure_Shell"
+                    ]
+                ]
+            },
+            {
+                "t": "コンピュータセキュリティ",
+                "importance": 1.9196800000000003,
+                "relevance": 0.11998,
+                "confidence": 1.6667999999999998,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/コンピュータセキュリティ"
+                    ]
+                ]
+            },
+            {
+                "t": "生成的人工知能",
+                "importance": 1.8617599999999999,
+                "relevance": 0.11635999999999999,
+                "confidence": 0.6392,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/生成的人工知能"
+                    ]
+                ]
+            },
+            {
+                "t": "リポジトリ",
+                "importance": 1.8457599999999998,
+                "relevance": 0.11535999999999999,
+                "confidence": 3.5506,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/リポジトリ"
+                    ]
+                ]
+            },
+            {
+                "t": "デフォルト (コンピュータ)",
+                "importance": 1.8166400000000003,
+                "relevance": 0.11354,
+                "confidence": 0.7338,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/デフォルト_(コンピュータ)"
+                    ]
+                ]
+            },
+            {
+                "t": "Uniform Resource Locator",
+                "importance": 1.7126399999999997,
+                "relevance": 0.10704,
+                "confidence": 4.516,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/Uniform_Resource_Locator"
+                    ]
+                ]
+            },
+            {
+                "t": "ウィンドウ",
+                "importance": 1.54528,
+                "relevance": 0.09658,
+                "confidence": 2.4696000000000002,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/ウィンドウ"
+                    ]
+                ]
+            },
+            {
+                "t": "リスク",
+                "importance": 1.49856,
+                "relevance": 0.09366,
+                "confidence": 0.4102,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/リスク"
+                    ]
+                ]
+            },
+            {
+                "t": "プログラム (コンピュータ)",
+                "importance": 1.4252800000000003,
+                "relevance": 0.08908,
+                "confidence": 7.81,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/プログラム_(コンピュータ)"
+                    ]
+                ]
+            },
+            {
+                "t": "トラブルシューティング",
+                "importance": 1.3484799999999997,
+                "relevance": 0.08428,
+                "confidence": 0.8592000000000001,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/トラブルシューティング"
+                    ]
+                ]
+            },
+            {
+                "t": "インターネットサービスプロバイダ",
+                "importance": 1.3385599999999998,
+                "relevance": 0.08366,
+                "confidence": 3.6046,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/インターネットサービスプロバイダ"
+                    ]
+                ]
+            },
+            {
+                "t": "オフライン",
+                "importance": 1.3334400000000002,
+                "relevance": 0.08334,
+                "confidence": 1.0071999999999999,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/オフライン"
+                    ]
+                ]
+            },
+            {
+                "t": "フロントエンド",
+                "importance": 1.3271039999999996,
+                "relevance": 0.08294399999999999,
+                "confidence": 1.6515999999999997,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/フロントエンド"
+                    ]
+                ]
+            },
+            {
+                "t": "アメリカ合衆国ドル",
+                "importance": 1.2614399999999997,
+                "relevance": 0.07884,
+                "confidence": 0.57,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/アメリカ合衆国ドル"
+                    ]
+                ]
+            },
+            {
+                "t": "プロセッサ",
+                "importance": 1.2204799999999998,
+                "relevance": 0.07627999999999999,
+                "confidence": 2.1149999999999998,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/プロセッサ"
+                    ]
+                ]
+            },
+            {
+                "t": "サービス",
+                "importance": 1.21312,
+                "relevance": 0.07582,
+                "confidence": 0.445,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/サービス"
+                    ]
+                ]
+            },
+            {
+                "t": "アイコン",
+                "importance": 1.062496,
+                "relevance": 0.066406,
+                "confidence": 1.9817999999999998,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/アイコン"
+                    ]
+                ]
+            },
+            {
+                "t": "クローン",
+                "importance": 0.90528,
+                "relevance": 0.05658,
+                "confidence": 0.524,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/クローン"
+                    ]
+                ]
+            },
+            {
+                "t": "バッチファイル",
+                "importance": 0.79464,
+                "relevance": 0.19866,
+                "confidence": 1.7937999999999998,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/バッチファイル"
+                    ]
+                ]
+            },
+            {
+                "t": "通信",
+                "importance": 0.6411519999999998,
+                "relevance": 0.040071999999999997,
+                "confidence": 0.6449999999999999,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/通信"
+                    ]
+                ]
+            },
+            {
+                "t": "パッケージ管理システム",
+                "importance": 0.6408799999999999,
+                "relevance": 0.16022,
+                "confidence": 0.254,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/パッケージ管理システム"
+                    ]
+                ]
+            },
+            {
+                "t": "メールアドレス",
+                "importance": 0.621024,
+                "relevance": 0.038814,
+                "confidence": 1.9103999999999999,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/メールアドレス"
+                    ]
+                ]
+            },
+            {
+                "t": "シェル",
+                "importance": 0.5503199999999999,
+                "relevance": 0.13757999999999998,
+                "confidence": 1.288,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/シェル"
+                    ]
+                ]
+            },
+            {
+                "t": "Basic Input/Output System",
+                "importance": 0.5423199999999999,
+                "relevance": 0.13557999999999998,
+                "confidence": 1.9968,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/Basic_Input/Output_System"
+                    ]
+                ]
+            },
+            {
+                "t": "ノーコード開発プラットフォーム",
+                "importance": 0.5416800000000002,
+                "relevance": 0.13542,
+                "confidence": 0.2958,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/ノーコード開発プラットフォーム"
+                    ]
+                ]
+            },
+            {
+                "t": "インテル バーチャライゼーション・テクノロジー",
+                "importance": 0.53,
+                "relevance": 0.1325,
+                "confidence": 1.9556,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/インテル_バーチャライゼーション・テクノロジー"
+                    ]
+                ]
+            },
+            {
+                "t": "チャットボット",
+                "importance": 0.5107999999999999,
+                "relevance": 0.12769999999999998,
+                "confidence": 0.716,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/チャットボット"
+                    ]
+                ]
+            },
+            {
+                "t": "ビルド (ソフトウェア)",
+                "importance": 0.5102399999999999,
+                "relevance": 0.12756,
+                "confidence": 0.6184000000000001,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/ビルド_(ソフトウェア)"
+                    ]
+                ]
+            }
+        ]
+    },
+    "terms_txt": {
+        "title": "方法\nwindows\n構築\nインストール\ndifyをローカル\npc\n解説\n使い",
+        "desc_title": "インストール\n構築\ndifyをローカル\nクラウド\nwindows\n方法\nai\n版\n開発\nアプリ\n簡単\n提供\n生成ai",
+        "h1": "方法\ndifyをローカル\nwindows\n構築\n手順\n解説\nインストール\npc\n使い\n的\n後\nllm\nセットアップ\n動かす\n方\n簡単",
+        "h2": "方法\n手順\n構築\nインストール\ndifyをローカル\n動かす\nwindows\n設定\nai\n版\n開発\nアプリ\nシステム\nllm\nツール\ngit\n起動\nアクセス\napi\n後\nクラウド\n化\n記事\n変更\n初期\nたら\nブラウザ\n次\nまず\n上",
+        "content_basic": "windows\nインストール\n設定\n構築\n方法\ngit\nai\n実行\n必要\n手順\n表示\n確認\n起動\nアクセス\n画面\n利用\n版\ndifyをローカル\n場合\n使用\nデータ\nクリック\n的\n入力\n開発\n情報\n作成\nファイル\nコンテナ\napi\nアプリ\nダウンロード\nログイン\npc\n動作\n可能\n後\nシステム\n以下のコマンド\n解説\nllm\nクラウド\nアカウント\nサービス\nキー\n化\nツール\nセットアップ\n公開\nソースコード\n動かす\nサーバー\n方\n記事\n変更\n初期\n使い\nたら\n簡単\n管理者\n名\n正常\nエラー\nユーザー\n画面が表示\nコマンドを実行\nwsl2\ncpu\nパスワード\n提供\n以上\n生成ai\nブラウザ\nコマンドプロンプト\nメールアドレス\n次\nまず\nアプリケーション\nmac\n中\n上\n他",
+        "content_basic_w_ranges": "windows: 2-7x\nインストール: 6-18x\n設定: 2-24x\n構築: 1-6x\n方法: 1-5x\ngit: 4-15x\nai: 2-16x\n実行: 3-9x\n必要: 1-15x\n手順: 2-5x\n表示: 2-8x\n確認: 2-9x\n起動: 2-10x\nアクセス: 2-8x\n画面: 1-10x\n利用: 1-10x\n版: 1-4x\ndifyをローカル: 1-4x\n場合: 1-9x\n使用: 1-11x\nデータ: 1-4x\nクリック: 1-10x\n的: 2-7x\n入力: 2-5x\n開発: 1-4x\n情報: 1-5x\n作成: 2-5x\nファイル: 1-5x\nコンテナ: 1-3x\napi: 1-7x\nアプリ: 1-6x\nダウンロード: 1-6x\nログイン: 1-3x\npc: 1-3x\n動作: 1-4x\n可能: 1-7x\n後: 1-4x\nシステム: 1-4x\n以下のコマンド: 1-3x\n解説: 1-6x\nllm: 1-4x\nクラウド: 1-5x\nアカウント: 1-4x\nサービス: 1-3x\nキー: 1-4x\n化: 1-7x\nツール: 1-5x\nセットアップ: 1-3x\n公開: 1-2x\nソースコード: 1-4x\n動かす: 1-4x\nサーバー: 1-4x\n方: 1-4x\n記事: 1-6x\n変更: 1-3x\n初期: 1-4x\n使い: 1-2x\nたら: 2-6x\n簡単: 1-3x\n管理者: 1-3x\n名: 1-3x\n正常: 1x\nエラー: 1-3x\nユーザー: 1-4x\n画面が表示: 1-2x\nコマンドを実行: 1-2x\nwsl2: 1-2x\ncpu: 1-2x\nパスワード: 1-3x\n提供: 1-2x\n以上: 2-3x\n生成ai: 1-2x\nブラウザ: 1x\nコマンドプロンプト: 1-3x\nメールアドレス: 1-2x\n次: 1-3x\nまず: 1-2x\nアプリケーション: 1-2x\nmac: 1-2x\n中: 1-3x\n上: 1-3x\n他: 1-2x",
+        "content_extended": "httplocalhost\ndockercomposeup\nhttplocalhostinstall\ndockercomposeupd\ndifydocker\ndockerdesktop",
+        "content_extended_w_ranges": "httplocalhost: 1x\ndockercomposeup: 1x\nhttplocalhostinstall: 1x\ndockercomposeupd: 1x\ndifydocker: 1x\ndockerdesktop: 1x",
+        "entities": "Docker\nインストール\nMicrosoft Windows\nGit\nアプリケーションソフトウェア\nソースコード\nコマンド (コンピュータ)\nコマンドプロンプト\nアカウント\nMac (コンピュータ)\nBash\nポイント・アンド・クリック\nアプリケーションプログラミングインタフェース\nバージョン管理システム\nオペレーティングシステム\nディレクトリ\nサーバ\nHypertext Transfer Protocol\nログイン\n設定ファイル\nLinux\nダウンロード\n大規模言語モデル\n64ビット\nPowerShell\nパーソナルコンピュータ\nChatGPT\n再起動\nパスワード\nスタートメニュー\nユーザー (コンピュータ)\nウェブブラウザ\nプラットフォーム (コンピューティング)\nCPU\nUbuntu\nLocalhost\nデータ\nWindows Subsystem for Linux\nVisual Studio Code\nMicrosoft Windows 10\nWindows Explorer\n環境変数\nメニュー (コンピュータ)\nMicrosoft Windows 11\n動作環境\nファイル (コンピュータ)\nボタン (GUI)\nコマンドラインインタプリタ\nライブラリ\nダイアログボックス\nHyper-V\nプロンプトエンジニアリング\n人工知能\nクラウドコンピューティング\nインターネット\nOpenAI\nソフトウェア\nエラー\nデバッグ\nファイルシステム\n仮想化\nSecure Shell\nコンピュータセキュリティ\n生成的人工知能\nリポジトリ\nデフォルト (コンピュータ)\nUniform Resource Locator\nウィンドウ\nリスク\nプログラム (コンピュータ)\nトラブルシューティング\nインターネットサービスプロバイダ\nオフライン\nフロントエンド\nアメリカ合衆国ドル\nプロセッサ\nサービス\nアイコン\nクローン\nバッチファイル\n通信\nパッケージ管理システム\nメールアドレス\nシェル\nBasic Input/Output System\nノーコード開発プラットフォーム\nインテル バーチャライゼーション・テクノロジー\nチャットボット\nビルド (ソフトウェア)"
+    },
+    "status": "ready",
+    "keyword": "dify windows ローカル",
+    "language": "Japanese",
+    "engine": "google.co.jp",
+    "project": "1258aa8abe935e25",
+    "query": "2a0d439ee7f957f6",
+    "serp_summary": {
+        "top_intent": "informational",
+        "intent_stats": {
+            "informational": 100,
+            "navigational": 7.1
+        },
+        "top_content_type": "blog-post",
+        "content_type_stats": {
+            "guide": 82.1,
+            "blog-post": 96.4,
+            "educational": 3.6,
+            "case-study": 3.6
+        }
+    },
+    "query_url": "https://app.neuronwriter.com/analysis/view/2a0d439ee7f957f6",
+    "share_url": "https://app.neuronwriter.com/analysis/share/2a0d439ee7f957f6/c3f91c35c2355266c415afdc141ab4dc37bb8",
+    "readonly_url": "https://app.neuronwriter.com/analysis/content-preview/2a0d439ee7f957f6/3b10efd4ac9579bfe36480ae1df082cf37bb8"
+}

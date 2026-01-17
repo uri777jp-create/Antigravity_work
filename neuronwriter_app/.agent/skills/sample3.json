@@ -1,0 +1,3141 @@
+{
+    "ideas": {
+        "suggest_questions": [],
+        "people_also_ask": [
+            {
+                "q": "ChatGPTとGeminiどっちに課金するならどっちがいい？"
+            },
+            {
+                "q": "ChatGPTの有料プランの値段はいくらですか？"
+            },
+            {
+                "q": "ChatGPT ProとPlusの違いは何ですか？"
+            },
+            {
+                "q": "チャットGPTの有料プランと無料プランの違いは何ですか？"
+            }
+        ],
+        "topic_matrix": {
+            "ChatGPTの有料プランの値段はいくらですか？": {
+                "importance": 10
+            },
+            "チャットGPTの有料プランと無料プランの違いは何ですか？": {
+                "importance": 10
+            },
+            "ChatGPT ProとPlusの違いは何ですか？": {
+                "importance": 10
+            },
+            "ChatGPTとGemini、どちらの有料プランがおすすめですか？": {
+                "importance": 10
+            },
+            "ChatGPTの無料プランで何ができますか？制限はありますか？": {
+                "importance": 8
+            },
+            "ChatGPTの各有料プラン（Plus, Pro, Business, Enterprise）の内容と料金は？": {
+                "importance": 8
+            },
+            "ChatGPTの支払い方法は何がありますか？年払いはできますか？": {
+                "importance": 7
+            },
+            "ChatGPTのプランを選ぶ際の基準はありますか？": {
+                "importance": 7
+            },
+            "ChatGPTのAPIの料金はいくらですか？": {
+                "importance": 6
+            },
+            "ChatGPTの解約方法はどうすればいいですか？": {
+                "importance": 6
+            }
+        },
+        "content_questions": []
+    },
+    "competitors": [
+        {
+            "rank": 1,
+            "url": "https://chatgpt.com/ja-JP/pricing/",
+            "title": "ChatGPT のプラン | 無料版、Plus、Pro、Business、Enterprise",
+            "desc": "有料プラン（Plus、Pro、Business、Enterprise）は、ユーザー1人あたりの月額料金です。Plus、Pro、Business には月額プラン、Business と Enterprise には年間プランをご用意しています。",
+            "headers": [
+                [
+                    "h1",
+                    "料金"
+                ]
+            ],
+            "content_score": 46,
+            "readability": 8,
+            "word_count": 5313,
+            "content_len": 16688
+        },
+        {
+            "rank": 2,
+            "url": "https://biz.moneyforward.com/ai/basic/1158/",
+            "title": "ChatGPTに課金するならどのプランがよい？金額と機能の差を解説 | マネーフォワード クラウド",
+            "desc": "ChatGPTは、個人の生産性向上から社内システムへの組み込みまで幅広く活用できる一方で、プランや課金方法が多く、どれを選ぶべきか迷いやすいサービスです。 この記事では、ChatGPTの月額課金プランのそれぞれの違いに加えて、API料金との違い、および課金…",
+            "headers": [
+                [
+                    "h1",
+                    "ChatGPTに課金するならどのプランがよい？金額と機能の差を解説"
+                ],
+                [
+                    "h2",
+                    "ChatGPTの課金プラン"
+                ],
+                [
+                    "h2",
+                    "ChatGPTのサブスクとAPI料金の違い"
+                ],
+                [
+                    "h2",
+                    "ChatGPTに課金するときの判断基準"
+                ],
+                [
+                    "h2",
+                    "ChatGPTのサブスク購入・解約の手順（経路別）"
+                ],
+                [
+                    "h2",
+                    "ChatGPTに課金する際は小規模・少人数向けのプランからスタートするのがおすすめ"
+                ],
+                [
+                    "h2",
+                    "関連記事"
+                ],
+                [
+                    "h2",
+                    ""
+                ]
+            ],
+            "content_score": 55,
+            "readability": 26,
+            "word_count": 4890,
+            "content_len": 10425
+        },
+        {
+            "rank": 3,
+            "url": "https://www.ai-souken.com/article/chatgpt-price-guide",
+            "title": "ChatGPTの料金プラン一覧を比較！無料・有料版の違い・支払い方法を解説 | AI総合研究所 | AI総合研究所",
+            "desc": "ChatGPT(チャットGPT)の有料プラン(無料/Go/Plus/Pro/Business/Enterprise/Edu)を2026年1月時点の最新版で解説。各プランの特徴、機能、API料金、選び方を紹介し、最適なプラン選びを支援。",
+            "headers": [
+                [
+                    "h1",
+                    "ChatGPTの料金プラン一覧を比較！無料・有料版の違い・支払い方法を解説"
+                ],
+                [
+                    "h2",
+                    "ChatGPT(チャットGPT)の料金プラン一覧"
+                ],
+                [
+                    "h2",
+                    "ChatGPTの料金プランごとの違いを比較"
+                ],
+                [
+                    "h2",
+                    "ChatGPTの有料プランは課金する価値があるか？【プラン別詳細解説】"
+                ],
+                [
+                    "h2",
+                    "ChatGPTの支払い方法と年払いについて"
+                ],
+                [
+                    "h2",
+                    "OpenAI APIの料金とモデル一覧"
+                ],
+                [
+                    "h2",
+                    "ChatGPT料金プランに関するよくある質問（FAQ）"
+                ],
+                [
+                    "h2",
+                    "まとめ"
+                ],
+                [
+                    "h2",
+                    "DomoAIとは？使い方や料金体系、商用利用についてわかりやすく解説"
+                ],
+                [
+                    "h2",
+                    "GPT-5.2(ChatGPT 5.2)とは？性能の違いや使い方、料金を解説！【無料】"
+                ],
+                [
+                    "h2",
+                    "【OpenAI】Soraとは？主要機能や使い方、料金体系を解説！"
+                ],
+                [
+                    "h2",
+                    "Heygenとは？使い方や料金、日本語利用・商用利用の可否を解説"
+                ],
+                [
+                    "h2",
+                    "GPT Image 1.5とは？使い方や料金、プロンプトのコツを徹底解説！"
+                ]
+            ],
+            "content_score": 85,
+            "readability": 24,
+            "word_count": 8287,
+            "content_len": 18948
+        },
+        {
+            "rank": 4,
+            "url": "https://openai.com/ja-JP/business/chatgpt-pricing/",
+            "title": "ChatGPT 料金設定 | OpenAI",
+            "desc": "有料プラン（Plus、Pro、Business、Enterprise）は、ユーザー1人あたりの月額料金です。Plus、Pro、Business には月額プラン、Business と Enterprise には年間プランをご用意しています。",
+            "headers": [
+                [
+                    "h1",
+                    "料金"
+                ],
+                [
+                    "h2",
+                    "多くの企業・チームに信頼されています"
+                ],
+                [
+                    "h2",
+                    "各プランの機能を比較"
+                ],
+                [
+                    "h2",
+                    "FAQ"
+                ]
+            ],
+            "content_score": 50,
+            "readability": 16,
+            "word_count": 2680,
+            "content_len": 8745
+        },
+        {
+            "rank": 5,
+            "url": "https://zenn.dev/umi_mori/books/chatbot-chatgpt/viewer/chatgpt_plan_free_plus_team_enterprise",
+            "title": "ChatGPTのプラン比較【Free・Plus・Team・Enterpriseの違い | 料金 & できること】",
+            "desc": "",
+            "headers": [
+                [
+                    "h1",
+                    "ChatGPTのプラン比較【Free・Plus・Team・Enterpriseの違い | 料金 & できること】"
+                ]
+            ],
+            "content_score": 25,
+            "readability": 44,
+            "word_count": 13,
+            "content_len": 56
+        },
+        {
+            "rank": 6,
+            "url": "https://shift-ai.co.jp/blog/1771/",
+            "title": "【常時最新】ChatGPTの料金プランを徹底比較！無料・有料版の違いは？｜SHIFT AI TIMES",
+            "desc": "ChatGPT（チャットGPT）の料金プランには、無料プランと個人向け有料プラン2つ、組織向けプラン3つがの計6プラン用意されています。本記事では、ChatGPTの料金体系や、無料と有料の違い、APIを利用料金について詳しく解説します。",
+            "headers": [
+                [
+                    "h1",
+                    "【常時最新】ChatGPTの料金プランを徹底比較！無料・有料版の違いは？"
+                ],
+                [
+                    "h2",
+                    "ChatGPTとは？"
+                ],
+                [
+                    "h2",
+                    "【2025年12月最新】ChatGPTの料金プラン"
+                ],
+                [
+                    "h2",
+                    "ChatGPTのモデル・機能一覧！無料・有料版での利用可否も"
+                ],
+                [
+                    "h2",
+                    "【組織向け】ChatGPT Business・Enterprise・Educationプランの違い"
+                ],
+                [
+                    "h2",
+                    "ChatGPTの無料・有料プラン別のメリット・デメリット"
+                ],
+                [
+                    "h2",
+                    "ChatGPTの料金プラン選び方ガイド"
+                ],
+                [
+                    "h2",
+                    "【無料でもOK】ChatGPTの始め方と課金・支払い方法"
+                ],
+                [
+                    "h2",
+                    "ChatGPTの主要モデルの種類！API料金も解説"
+                ],
+                [
+                    "h2",
+                    "ChatGPTと他社生成AIサービスの違い"
+                ],
+                [
+                    "h2",
+                    "ChatGPTを無料で使う方法"
+                ],
+                [
+                    "h2",
+                    "ChatGPTの料金を知ってニーズに合った活用を"
+                ],
+                [
+                    "h2",
+                    "資料ダウンロード"
+                ],
+                [
+                    "h2",
+                    "お問い合わせ"
+                ]
+            ],
+            "content_score": 83,
+            "readability": 30,
+            "word_count": 11506,
+            "content_len": 25709
+        },
+        {
+            "rank": 7,
+            "url": "https://www.cloud-for-all.com/blog/how-much-does-chatgpt-cost",
+            "title": "ChatGPTの料金は？GPT-4とGPT-4oの違いやAPI・プランによる違いを解説",
+            "desc": "ChatGPTを利用する際に気になるのが利用料金です。\n本記事では、ChatGPTを利用する際の料金、GPT-4とGPT-4oの料金と機能の違いや他社サービスとの違いなどについて詳しく解説します。ChatGPTの料金について、詳しく知りたい方はぜひご覧ください。\n",
+            "headers": [
+                [
+                    "h1",
+                    "ChatGPTの料金は？GPT-4とGPT-4oの違いやAPI・プランによる違いを解説"
+                ],
+                [
+                    "h2",
+                    "ChatGPTの種類｜無料版は使えない？"
+                ],
+                [
+                    "h2",
+                    "GPT-4oの料金は？｜ChatGPTのプランと料金"
+                ],
+                [
+                    "h2",
+                    "ChatGPTのAPI料金の目安"
+                ],
+                [
+                    "h2",
+                    "ChatGPTの料金の確認方法"
+                ],
+                [
+                    "h2",
+                    "ChatGPTと他の生成AIとの料金較表"
+                ],
+                [
+                    "h2",
+                    "ChatGPTの料金に関する疑問"
+                ],
+                [
+                    "h2",
+                    "まとめ"
+                ],
+                [
+                    "h2",
+                    "カテゴリから記事を探す"
+                ],
+                [
+                    "h2",
+                    "Digital Intelligenceチャンネルへのお問い合わせはこちら"
+                ]
+            ],
+            "content_score": 46,
+            "readability": 32,
+            "word_count": 2720,
+            "content_len": 5747
+        },
+        {
+            "rank": 8,
+            "url": "https://www.youtube.com/watch?v=HNchcKWlDMY",
+            "title": "ChatGPTの料金プラン徹底解説！無料・Plus・Proの違いをわかりやすく比較｜Wondershare UniConverter - YouTube",
+            "desc": "UniConverter最新バージョンを今すぐ体験　▶https://event.wondershare.com/api/s/360ChatGPTには複数の料金プランがありますが、この動画では 無料・Plus・Proの3つのプラン を中心に解説します。無料版ではGPT-5を制限つきで使えますが、上限に達すると自動...",
+            "headers": [
+                [
+                    "h1",
+                    ""
+                ],
+                [
+                    "h1",
+                    "ChatGPTの料金プラン徹底解説！無料・Plus・Proの違いをわかりやすく比較｜Wondershare UniConverter"
+                ],
+                [
+                    "h2",
+                    "チャプター\n      \n    \n  \n  \n  \n  \n  \n  すべて表示"
+                ],
+                [
+                    "h1",
+                    "ChatGPTの料金プラン徹底解説！無料・Plus・Proの違いをわかりやすく比較｜Wondershare UniConverter"
+                ],
+                [
+                    "h2",
+                    "コメント\n      3"
+                ],
+                [
+                    "h2",
+                    "動画の関連情報"
+                ],
+                [
+                    "h2",
+                    "チャプター"
+                ],
+                [
+                    "h2",
+                    "概要"
+                ],
+                [
+                    "h2",
+                    "チャプター\n      \n    \n  \n  \n  \n  \n  \n  すべて表示"
+                ],
+                [
+                    "h2",
+                    "文字起こし"
+                ]
+            ],
+            "content_score": 50,
+            "readability": 34,
+            "word_count": 1039,
+            "content_len": 2429
+        },
+        {
+            "rank": 9,
+            "url": "https://rimo.app/blogs/chatgpt-free-paid",
+            "title": "【2026年最新】ChatGPT無料版vs有料版｜違いを徹底比較！月額料金と乗り換え判断基準 | Rimo",
+            "desc": "人工知能（AI）の進化に伴い、私たちの日常生活やビジネスにおいてもAIツールの活用が広がっています。そのなかでも、特に人気を集めているのがOpenAI社が提供するChatGPTです。ChatGPTは、文章生成や会話の支援など、さまざまな用途...",
+            "headers": [
+                [
+                    "h1",
+                    "【2026年最新】ChatGPT無料版vs有料版｜違いを徹底比較！月額料金と乗り換え判断基準"
+                ],
+                [
+                    "h2",
+                    "ChatGPTの無料版・有料版の違いは？料金プラン一覧を比較"
+                ],
+                [
+                    "h2",
+                    "無料版ChatGPTの制限"
+                ],
+                [
+                    "h2",
+                    "有料版のChatGPT Plusへ加入するメリット"
+                ],
+                [
+                    "h2",
+                    "有料版のChatGPT Plusへ加入するデメリット"
+                ],
+                [
+                    "h2",
+                    "自分に合ったChatGPTプランの選び方ガイド"
+                ],
+                [
+                    "h2",
+                    "有料版のChatGPT Plusへのアップグレード方法"
+                ],
+                [
+                    "h2",
+                    "ChatGPT以外の生成AIとの料金比較"
+                ],
+                [
+                    "h2",
+                    "ChatGPT搭載の便利ツール"
+                ],
+                [
+                    "h2",
+                    "まとめ"
+                ],
+                [
+                    "h2",
+                    "ミーティングが多いビジネスパーソンにはAIアシスタント『Rimo Voice』もおすすめ！"
+                ],
+                [
+                    "h2",
+                    "【期間限定公開】アカウント登録・ログインなしでRimo VoiceのAIチャットをすぐに体験！"
+                ]
+            ],
+            "content_score": 84,
+            "readability": 28,
+            "word_count": 7779,
+            "content_len": 16750
+        },
+        {
+            "rank": 10,
+            "url": "https://tech-camp.in/ai-navi/chatgpt-price/",
+            "title": "ChatGPT料金プラン完全ガイド【2025年版】無料・有料版の違いを徹底比較",
+            "desc": "「ChatGPTは無料でも使えるけれど、どこまでできるの？課金すべきか迷う…」そんな悩みを感じていませんか。 本記事では、ChatGPTの使い方に不安を感じている方へ向けて、2025年最新のChatGPT料金プラン一覧と無料・有料版の違いを",
+            "headers": [
+                [
+                    "h1",
+                    "ChatGPT料金プラン完全ガイド【2025年版】無料・有料版の違いを徹底比較"
+                ],
+                [
+                    "h2",
+                    "ChatGPTの料金プラン一覧【2025年最新】"
+                ],
+                [
+                    "h2",
+                    "ChatGPT無料版と有料版の違いを徹底解説"
+                ],
+                [
+                    "h2",
+                    "ChatGPT料金プラン選び方ガイド"
+                ],
+                [
+                    "h2",
+                    "ChatGPT最新モデルの料金比較表"
+                ],
+                [
+                    "h2",
+                    "ChatGPTを無料で最大限活用する方法"
+                ],
+                [
+                    "h2",
+                    "ChatGPT API料金の仕組みと計算方法"
+                ],
+                [
+                    "h2",
+                    "ChatGPTと他社AI料金を徹底比較"
+                ],
+                [
+                    "h2",
+                    "ChatGPT料金に関するよくある質問"
+                ],
+                [
+                    "h2",
+                    "ChatGPT料金プランまとめ"
+                ],
+                [
+                    "h2",
+                    "この記事を書いた人"
+                ],
+                [
+                    "h2",
+                    "関連記事"
+                ]
+            ],
+            "content_score": 83,
+            "readability": 26,
+            "word_count": 5593,
+            "content_len": 11467
+        },
+        {
+            "rank": 11,
+            "url": "https://cad-kenkyujo.com/chatgpt-ryoukin-plan/",
+            "title": "【2026】ChatGPT料金プラン比較！無料との違いや課金すべきか否かも解説 | キャド研",
+            "desc": "ChatGPTは無料でも使えますが「有料のPlusやProってそんなに違うの？」「課金する価値はあるの？」と疑問を抱く方は多いです。ChatGPTの5つのプランは、それぞれ料金や利用範囲、使えるモデルが異なります。本記事では、最新の料金体系をわかりやすく比較し、自分に合ったプランを選ぶためのヒントを紹介します。",
+            "headers": [
+                [
+                    "h1",
+                    "【2026】ChatGPT料金プラン比較！無料との違いや課金すべきか否かも解説"
+                ],
+                [
+                    "h2",
+                    "ChatGPTの料金プラン"
+                ],
+                [
+                    "h2",
+                    "ChatGPT Plusと無料プランの違い"
+                ],
+                [
+                    "h2",
+                    "ChatGPTの支払い方法や課金タイミング"
+                ],
+                [
+                    "h2",
+                    "ChatGPT PlusとProならどちらを選ぶべき？"
+                ],
+                [
+                    "h2",
+                    "ChatGPTに課金するメリット・デメリット"
+                ],
+                [
+                    "h2",
+                    "ChatGPTに課金すべき人・不要な人"
+                ],
+                [
+                    "h2",
+                    "ChatGPTの料金プランについてよくある質問"
+                ],
+                [
+                    "h2",
+                    "ChatGPTの料金プランについてまとめ"
+                ],
+                [
+                    "h2",
+                    "AIの最新記事8件"
+                ],
+                [
+                    "h2",
+                    "【2026】ソフトバンクのAI事業とは？開発会社一覧・無料サービス・ロボット名も紹介"
+                ],
+                [
+                    "h2",
+                    "【2026】ChatGPT Imagesとは？できることや注意点・他画像生成AIツールと徹底比較"
+                ],
+                [
+                    "h2",
+                    "【2026】Googleの「MIRAS」とは？Titansが示した長期記憶のフレームワークを解説"
+                ],
+                [
+                    "h2",
+                    "【2026】Googleの長期記憶AI「Titans」をわかりやすく解説！MIRASとの関係も紹介"
+                ]
+            ],
+            "content_score": 78,
+            "readability": 27,
+            "word_count": 2556,
+            "content_len": 5404
+        },
+        {
+            "rank": 12,
+            "url": "https://generative-ai.sejuku.net/blog/12655/",
+            "title": "ChatGPTの料金プラン！無料・Plus・Proの違いを解説 | 侍エンジニア",
+            "desc": "ChatGPTの料金はいくら？無料でどこまで使えるの？有料プランはお得なの？ AIを使いたいけど、どのプランを選べばいいのか迷ってしまう方も多いのではないでしょうか。 2025年現在、ChatGPTは無料から月額200ドルまで幅広いプランが",
+            "headers": [
+                [
+                    "h1",
+                    "ChatGPTの料金プラン！無料・Plus・Proの違いを解説"
+                ],
+                [
+                    "h2",
+                    "ChatGPTの主な料金プラン"
+                ],
+                [
+                    "h2",
+                    "GPT-5の登場と料金への影響"
+                ],
+                [
+                    "h2",
+                    "ChatGPTの最適なプランを選ぶためのチェックポイント3選"
+                ],
+                [
+                    "h2",
+                    "ChatGPTの料金変更や新モデル登場時の注意点3選"
+                ],
+                [
+                    "h2",
+                    "ChatGPTの料金プランに関してよくある質問3選"
+                ],
+                [
+                    "h2",
+                    "まとめ"
+                ],
+                [
+                    "h2",
+                    "この記事を書いた人"
+                ]
+            ],
+            "content_score": 77,
+            "readability": 26,
+            "word_count": 3638,
+            "content_len": 7320
+        },
+        {
+            "rank": 13,
+            "url": "https://ascii.jp/elem/000/004/364/4364253/",
+            "title": "ASCII.jp：2026年からでも間に合う！　ChatGPTやGeminiの有料プランをお勧めする理由",
+            "desc": "本連載は生成AIをこれから活用しようとしている方たちのために、生成AIの基本やコピペしてそのまま使えるプロンプトなどを紹介。兎にも角にも生成AIに触り始めることで、AIに対する理解を深め、AIスキルを身に着けて欲しい。第41回はChatGPTとGeminiの無料プランと有料プランの違いを比較してみる。",
+            "headers": [
+                [
+                    "h1",
+                    "2026年からでも間に合う！　ChatGPTやGeminiの有料プランをお勧めする理由"
+                ],
+                [
+                    "h2",
+                    "有料プランにすると制限が大幅に緩和し、賢いAIが使える"
+                ],
+                [
+                    "h2",
+                    "徹底的な調査を自律的に行ってくれるDeep Research"
+                ],
+                [
+                    "h2",
+                    "ビジネスクオリティに進化した静止画・動画生成AI"
+                ],
+                [
+                    "h2",
+                    "ChatGPTのUI内でPhotoshopやAcrobatなどのアプリが動く"
+                ],
+                [
+                    "h2",
+                    "Googleのキラーコンテンツ「NotebookLM」が超絶便利"
+                ]
+            ],
+            "content_score": 49,
+            "readability": 25,
+            "word_count": 3512,
+            "content_len": 8793
+        },
+        {
+            "rank": 14,
+            "url": "https://hatenabase.jp/blog/%E3%80%902025%E5%B9%B4%E5%AE%8C%E5%85%A8%E7%89%88%E3%80%91chatgpt%E6%96%99%E9%87%91%E3%83%97%E3%83%A9%E3%83%B3%E5%BE%B9%E5%BA%95%E6%AF%94%E8%BC%83%EF%BD%9C%E3%81%AF%E3%81%A6%E3%81%AA%E3%83%99%E3%83%BC/",
+            "title": "【2025年完全版】ChatGPT料金プラン徹底比較｜はてなベース株式会社 ‣ はてなベース株式会社",
+            "desc": "【2025年完全版】ChatGPT料金プラン徹底比較｜はてなベース株式会社 【2025年完全版】ChatGPT",
+            "headers": [
+                [
+                    "h1",
+                    "【2025年完全版】ChatGPT料金プラン徹底比較｜はてなベース株式会社"
+                ],
+                [
+                    "h1",
+                    "【2025年完全版】ChatGPT料金プラン徹底比較"
+                ],
+                [
+                    "h2",
+                    "1. 【結論】ChatGPT 料金プラン比較表"
+                ],
+                [
+                    "h2",
+                    "2. 個人向けプランの決定的な違い"
+                ],
+                [
+                    "h2",
+                    "3. ビジネス・法人向けプラン：Team vs Enterprise"
+                ],
+                [
+                    "h2",
+                    "4. API利用料とコスト最適化"
+                ],
+                [
+                    "h2",
+                    "5. 学生・教育機関向け（ChatGPT Edu）"
+                ],
+                [
+                    "h2",
+                    "6. 支払い・解約に関するQ&A"
+                ],
+                [
+                    "h2",
+                    "最適なAIプランの選定、お手伝いします"
+                ],
+                [
+                    "h2",
+                    "あわせて読みたいサービス"
+                ],
+                [
+                    "h2",
+                    "Contactお問い合わせ"
+                ]
+            ],
+            "content_score": 72,
+            "readability": 41,
+            "word_count": 1262,
+            "content_len": 2802
+        },
+        {
+            "rank": 15,
+            "url": "https://openai.com/ja-JP/index/introducing-chatgpt-go/",
+            "title": "ChatGPT Go が登場、世界中で利用可能に | OpenAI",
+            "desc": "ChatGPT Go は世界中で利用可能になりました。GPT-5.2 Instant へのアクセス拡大や利用上限の引き上げ、より長いメモリといった機能を備えています。これにより、高度な AI をこれまでより手頃な価格で、世界中の人が利用できるようになります。",
+            "headers": [
+                [
+                    "h1",
+                    "ChatGPT Go が登場、世界中で利用可能に"
+                ],
+                [
+                    "h2",
+                    "ChatGPT Go で利用できること"
+                ],
+                [
+                    "h2",
+                    "広告によるアクセス拡大"
+                ],
+                [
+                    "h2",
+                    "プラン詳細"
+                ],
+                [
+                    "h2",
+                    "著者"
+                ],
+                [
+                    "h2",
+                    "さらに読む"
+                ]
+            ],
+            "content_score": 28,
+            "readability": 41,
+            "word_count": 805,
+            "content_len": 1831
+        },
+        {
+            "rank": 16,
+            "url": "https://chatsense.jp/blog/chatgpt-business-plan",
+            "title": "ChatGPTの法人契約プラン｜利用方法・料金について",
+            "desc": "ChatGPTなどの生成AIの、法人や行政自治体での活用事例、セキュリティ安心な製品の紹介、導入事例を紹介。使い方や性能などビジネス向けの最新AI情報をお届けします。",
+            "headers": [
+                [
+                    "h1",
+                    "ChatGPTの法人契約プラン｜利用方法・料金について"
+                ]
+            ],
+            "content_score": 28,
+            "readability": 14,
+            "word_count": 94,
+            "content_len": 228
+        },
+        {
+            "rank": 17,
+            "url": "https://metaversesouken.com/ai/chatgpt/all-plans-amount-2/",
+            "title": "ChatGPTの全プランの金額/機能を徹底比較｜特徴や選び方も紹介 - AI総研｜AIのコンサル・開発・研修を一気通貫で支援｜年間300万人が利用するAI活用の相談窓口",
+            "desc": "ChatGPTの全5つのプランについて、金額や機能の違い、選び方までわかりやすくご紹介 ①ChatGPT(無料版) ②ChatGPT Plus(有料版) ③ChatGPT Team ④ChatGPT EnterPrise ⑤ChatGPTを活用したサービス",
+            "headers": [
+                [
+                    "h1",
+                    ""
+                ],
+                [
+                    "h1",
+                    "ChatGPTの全プランの金額/機能を徹底比較｜特徴や選び方も紹介"
+                ],
+                [
+                    "h2",
+                    "ChatGPTの全プランの費用/機能を徹底比較"
+                ],
+                [
+                    "h2",
+                    "ChatGPT有料版（Plus）と無料版との違い７選"
+                ],
+                [
+                    "h2",
+                    "ChatGPT Plusと無料版の選び方"
+                ],
+                [
+                    "h2",
+                    "ChatGPT有料版でしかできない７つのこと"
+                ],
+                [
+                    "h2",
+                    "ChatGPT有料版の支払方法"
+                ]
+            ],
+            "content_score": 56,
+            "readability": 20,
+            "word_count": 2071,
+            "content_len": 4223
+        },
+        {
+            "rank": 18,
+            "url": "https://ai-kenkyujo.com/software/chatgpt/chatgpt-ryoukin/",
+            "title": "【2026】ChatGPTの料金はいくら？無料と有料の違いやプラン・モデルを比較DX/AI研究所",
+            "desc": "ChatGPTは、会話形式で様々な質問ができるAIチャットサービスです。 まるで人間と会話しているかのうような",
+            "headers": [
+                [
+                    "h1",
+                    "【2026】ChatGPTの料金はいくら？無料と有料の違いやプラン・モデルを比較"
+                ],
+                [
+                    "h2",
+                    "ChatGPTの料金プラン"
+                ],
+                [
+                    "h2",
+                    "無料版のChatGPTを使うメリット・デメリット"
+                ],
+                [
+                    "h2",
+                    "有料版のChatGPT Plusを使うメリット・デメリット"
+                ],
+                [
+                    "h2",
+                    "ChatGPTの料金についてまとめ"
+                ],
+                [
+                    "h2",
+                    "ChatGPTの最新記事8件"
+                ],
+                [
+                    "h2",
+                    "【2026】ChatGPTの無料版と有料版の違いを比較！始め方から使い方まで徹底解説"
+                ],
+                [
+                    "h2",
+                    "【2026】ChatGPTで動画作成はここまで変わる！使い方3ステップと魅力アップのコツを徹底解説"
+                ],
+                [
+                    "h2",
+                    "【2026】ChatGPT Atlasとは？料金や使い方・ビジネス効率化の活用術まで解説"
+                ],
+                [
+                    "h2",
+                    "【2026】チャットGPTおすすめアプリ12選を徹底比較！無料・有料別にご紹介"
+                ]
+            ],
+            "content_score": 64,
+            "readability": 32,
+            "word_count": 2193,
+            "content_len": 4493
+        },
+        {
+            "rank": 19,
+            "url": "https://momo-gpt.com/column/chatgpt-price/",
+            "title": "ChatGPTの料金プラン完全比較：無料からPlus・Pro・Team・Enterpriseまで徹底解説 - 株式会社MoMo",
+            "desc": "本記事では、2025年時点で提供されているChatGPTの料金プラン（Free／Plus／Pro／Team／Enterprise）を徹底比較。日本円での価格や消費税、法人契約の可否、日本語対応など、日本国内ユーザーにとって本当に重要なポイントに焦点を当てて解説します。",
+            "headers": [
+                [
+                    "h1",
+                    "ChatGPTの料金プラン完全比較：無料からPlus・Pro・Team・Enterpriseまで徹底解説"
+                ],
+                [
+                    "h2",
+                    "ChatGPTの料金プラン一覧（2025年最新版）"
+                ],
+                [
+                    "h2",
+                    "プラン別の主な違いと比較表"
+                ],
+                [
+                    "h2",
+                    "モデル別の特徴と機能一覧"
+                ],
+                [
+                    "h2",
+                    "機能制限と使用上限の違い"
+                ],
+                [
+                    "h2",
+                    "どのプランが誰におすすめか？"
+                ],
+                [
+                    "h2",
+                    "日本向け特有の注意点"
+                ],
+                [
+                    "h2",
+                    "ChatGPTと他の生成AIサービスの比較"
+                ],
+                [
+                    "h2",
+                    "よくある質問と注意点（FAQ）"
+                ],
+                [
+                    "h2",
+                    "まとめ｜用途に応じて最適なChatGPTプランを選ぼう"
+                ],
+                [
+                    "h2",
+                    "この記事を書いた人"
+                ],
+                [
+                    "h2",
+                    "関連記事"
+                ]
+            ],
+            "content_score": 81,
+            "readability": 25,
+            "word_count": 3796,
+            "content_len": 8178
+        },
+        {
+            "rank": 20,
+            "url": "https://biz.moneyforward.com/ai/basic/701/",
+            "title": "ChatGPT Proとは？料金、Plusプランとの違い、何ができるかを解説 | マネーフォワード クラウド",
+            "desc": "ChatGPTには、個人向けの有料プランとして「Plus」が広く知られていますが、さらにその上位に位置する「Pro」プランについても関心が高まっています。しかし、「PlusとProは何が違うのか」「高額な料金に見合う価値はあるのか」といった疑問をお持ちの方も多…",
+            "headers": [
+                [
+                    "h1",
+                    "ChatGPT Proとは？料金、Plusプランとの違い、何ができるかを解説"
+                ],
+                [
+                    "h2",
+                    "ChatGPTのプラン階層：「Pro」の位置づけ"
+                ],
+                [
+                    "h2",
+                    "ChatGPT ProとPlusの具体的な違いは？"
+                ],
+                [
+                    "h2",
+                    "ChatGPT Proの料金と「高すぎる」という評判"
+                ],
+                [
+                    "h2",
+                    "ChatGPT Proで何ができるか？"
+                ],
+                [
+                    "h2",
+                    "ChatGPT Proと「API」は違うのか？"
+                ],
+                [
+                    "h2",
+                    "ChatGPT Proへのログインとアップグレード方法"
+                ],
+                [
+                    "h2",
+                    "Proは一部の専門家向け、ほとんどはPlusで十分"
+                ],
+                [
+                    "h2",
+                    "関連記事"
+                ],
+                [
+                    "h2",
+                    ""
+                ]
+            ],
+            "content_score": 57,
+            "readability": 26,
+            "word_count": 2245,
+            "content_len": 4663
+        },
+        {
+            "rank": 21,
+            "url": "https://herozask.ai/entry/chatgpt-price-list",
+            "title": "ChatGPT料金プラン完全ガイド：無料版・有料版・お得に使う方法まで徹底比較 - HEROZ ASK",
+            "desc": "無料で使えるChatGPTから高度なEnterprise版まで、利用シーンに合わせた選び方とお得な活用法を解説。",
+            "headers": [
+                [
+                    "h1",
+                    "ChatGPT料金プラン完全ガイド：無料版・有料版・お得に使う方法まで徹底比較"
+                ],
+                [
+                    "h2",
+                    "ChatGPTの基本料金体系"
+                ],
+                [
+                    "h2",
+                    "ChatGPTのモデルの差は？特徴と料金比較"
+                ],
+                [
+                    "h2",
+                    "各機能の詳細"
+                ],
+                [
+                    "h2",
+                    "ChatGPT Plusの月額料金と特徴"
+                ],
+                [
+                    "h2",
+                    "ChatGPT Proの月額料金と特徴"
+                ],
+                [
+                    "h2",
+                    "ChatGPT Team（チーム向け有料版）の月額料金と主な機能"
+                ],
+                [
+                    "h2",
+                    "企業向けの生成AIを探しているなら"
+                ],
+                [
+                    "h2",
+                    "Enterprise（企業向け有料版）の月額料金と主な機能"
+                ],
+                [
+                    "h2",
+                    "ChatGPTの料金を抑えながら快適に使う方法と注意点"
+                ],
+                [
+                    "h2",
+                    "企業向けChatGPTサービスの利用でお得になることも"
+                ],
+                [
+                    "h2",
+                    "HEROZ ASKならかんたん、低コストでChatGPTの最新モデルが利用可能"
+                ],
+                [
+                    "h2",
+                    "このメディアについて"
+                ]
+            ],
+            "content_score": 73,
+            "readability": 29,
+            "word_count": 4802,
+            "content_len": 9863
+        },
+        {
+            "rank": 22,
+            "url": "https://wise.com/jp/blog/chatgpt-pricing",
+            "title": "ChatGPTの料金プラン徹底解説！Plus・API・GPT-4oの料金とは - Wise",
+            "desc": "ChatGPT有料版の料金はいくら？チャットGPTの全プラン比較・料金体系を徹底解説。ChatGPT APIの料金や他生成AIとの比較も。GPT-4、GPT-40など利用可能モデルも見ていきます。料金をお得に支払うコツも紹介！",
+            "headers": [
+                [
+                    "h1",
+                    "ChatGPT（チャットGPT）有料版の料金プラン徹底解説！Plus・API・GPT-4oの料金とは"
+                ],
+                [
+                    "h2",
+                    "ChatGPTの料金体系ー全5プランの金額と特徴"
+                ],
+                [
+                    "h2",
+                    "チャットGPTの料金支払い方法"
+                ],
+                [
+                    "h2",
+                    "ChatGPTの支払いは、米ドル！日本のカードの海外手数料について理解しておきましょう"
+                ],
+                [
+                    "h2",
+                    "ChatGPT APIの料金体系"
+                ],
+                [
+                    "h2",
+                    "Claude・Gemini・Microsoft CopilotとChatGPTの料金比較"
+                ],
+                [
+                    "h2",
+                    "まとめ"
+                ],
+                [
+                    "h2",
+                    "国境のない金融"
+                ]
+            ],
+            "content_score": 70,
+            "readability": 34,
+            "word_count": 2332,
+            "content_len": 5039
+        },
+        {
+            "rank": 23,
+            "url": "https://walker-s.co.jp/ai/chatgpt-paid-difference/",
+            "title": "【一覧表つき】ChatGPTの有料版と無料版の12個の違い｜最適なプランの選び方も紹介！ | AI Walker",
+            "desc": "AIチャットボットの中でも人気の高いChatGPTには、有料版と無料版があります。この記事では、両者の違いを12個にわたって詳しく解説します。それぞれのプランのメリットとデメリットを理解することで、自分に最適なプランを選べるためぜひ最後までご覧ください。",
+            "headers": [
+                [
+                    "h1",
+                    "【一覧表つき】ChatGPTの有料版と無料版の12個の違い｜最適なプランの選び方も紹介！"
+                ],
+                [
+                    "h2",
+                    "ChatGPT有料版と無料版の12個の違いを一覧表で紹介！"
+                ],
+                [
+                    "h2",
+                    "ChatGPTの有料版（ChatGPT Plus）がおすすめな人"
+                ],
+                [
+                    "h2",
+                    "ChatGPTの無料版がおすすめな人"
+                ],
+                [
+                    "h2",
+                    "ChatGPTを有料版にする方法"
+                ]
+            ],
+            "content_score": 44,
+            "readability": 33,
+            "word_count": 2153,
+            "content_len": 4329
+        },
+        {
+            "rank": 24,
+            "url": "https://sogyotecho.jp/chatgpt-vs-gemini/",
+            "title": "【2026年最新版】ChatGPT vs Gemini 徹底比較！性能・使いやすさ検証 - 起業の「わからない」を「できる」に",
+            "desc": "ChatGPTとGeminiのどっちがいいの？強み・弱みと実際に使ってみた感想などまとめてご紹介 ChatGP",
+            "headers": [
+                [
+                    "h1",
+                    "【2026年最新版】ChatGPT vs Gemini 徹底比較！性能・使いやすさ検証"
+                ],
+                [
+                    "h2",
+                    "ChatGPTとGeminiのどっちがいいの？強み・弱みと実際に使ってみた感想などまとめてご紹介"
+                ],
+                [
+                    "h2",
+                    "ChatGPT と Gemini の概要"
+                ],
+                [
+                    "h2",
+                    "ChatGPTとGeminiの性能比較"
+                ],
+                [
+                    "h2",
+                    "ChatGPTとGeminiを実際に使って試してみる"
+                ],
+                [
+                    "h2",
+                    "用途別おすすめ：ChatGPTとGeminiのどちらを選ぶべきか？"
+                ],
+                [
+                    "h2",
+                    "今後の展望・注意点"
+                ],
+                [
+                    "h2",
+                    "よくある質問（FAQ）"
+                ],
+                [
+                    "h2",
+                    "まとめ｜ChatGPT と Gemini のそれぞれの強み・弱み"
+                ]
+            ],
+            "content_score": 59,
+            "readability": 26,
+            "word_count": 7057,
+            "content_len": 14875
+        },
+        {
+            "rank": 25,
+            "url": "https://www.onamae.com/business/article/17569/",
+            "title": "ChatGPT Plusとは？無料版との違いやメリットを解説 | ビジネスコンシェルジュ powered by お名前.com",
+            "desc": "「ChatGPT Plus」は、AIチャットサービス「ChatGPT」をアップグレードした個人向けの有料プランです。無料版と比べ、利用できるAIモデルや機能の幅が広がっています。本記事では、無料版との違いを交えてChatGPT Plusでできることやおすすめのケースなどを解説します。もっとAIを活用したいならプログラミングスクールの利用がおすすめDMM 生成AI CAMPは、生成AIの事前知識が全",
+            "headers": [
+                [
+                    "h1",
+                    "ChatGPT Plusとは？無料版との違いやメリットを解説"
+                ],
+                [
+                    "h2",
+                    "もっとAIを活用したいならプログラミングスクールの利用がおすすめ"
+                ],
+                [
+                    "h2",
+                    "DX人材を目指すなら現役エンジニアから学べるスクールがおすすめ"
+                ],
+                [
+                    "h2",
+                    "AIスキルを身につけるなら転職も支援してくれるスクールがおすすめ"
+                ],
+                [
+                    "h2",
+                    "カリキュラムにない情報も学びたいなら対面型スクールがおすすめ"
+                ],
+                [
+                    "h2",
+                    "ChatGPT Plusとは"
+                ],
+                [
+                    "h2",
+                    "ChatGPT Plusとほかのプランの違い"
+                ],
+                [
+                    "h2",
+                    "ChatGPT Plusの料金と加入方法"
+                ],
+                [
+                    "h2",
+                    "ChatGPT Plusのメリット・できること"
+                ],
+                [
+                    "h2",
+                    "ChatGPT Plusのデメリット・注意点"
+                ],
+                [
+                    "h2",
+                    "ChatGPT Plusがおすすめのケース"
+                ],
+                [
+                    "h2",
+                    "仕事での利用にはビジネス向けプランもおすすめ"
+                ],
+                [
+                    "h2",
+                    "わかるまで無制限で何度もプロに質問できるプログラミングスクール"
+                ],
+                [
+                    "h2",
+                    "短期間で業務に応用できるスキルが身につくプログラミングスクール"
+                ],
+                [
+                    "h2",
+                    "未経験でも99%が修了到達できるプログラミングスクール"
+                ],
+                [
+                    "h2",
+                    "セミオーダーカリキュラムで学びたい情報を指導してくれる対面型スクール"
+                ],
+                [
+                    "h2",
+                    "まとめ"
+                ]
+            ],
+            "content_score": 57,
+            "readability": 22,
+            "word_count": 5533,
+            "content_len": 12315
+        },
+        {
+            "rank": 26,
+            "url": "https://detail.chiebukuro.yahoo.co.jp/qa/question_detail/q12318493322",
+            "title": "ChatGPTの有料プランを使っている人に質問です。やっぱ違いま... - Yahoo!知恵袋",
+            "desc": "ChatGPTの有料プランを使っている人に質問です。やっぱ違いますか？最近、ChatGPTの利用頻度が増えて、1日に１～２回くらい「利用制限」を食らっています。 そろそろ有料プランにしようかなと検討してい...",
+            "headers": [
+                [
+                    "h1",
+                    "Chat GPTの有料プランを使っている人に質問です。やっぱ違いますか？\r\n\r\n最近、Chat GPTの利用頻度が増えて、\r\n1日に１～２回くらい「利用制限」を食らっています。\nそろそろ有料プランにしようかなと検討しているのですが\r\n月500円とか1,000円なら即買いなのですが\r\n月3,000円は、他のサブスクと比べても高いので、ちょっとためらっています。\r\n\r\n実際ご利用の方の意見を聞きたいの"
+                ],
+                [
+                    "h2",
+                    "ベストアンサー"
+                ],
+                [
+                    "h2",
+                    "カテゴリQ&Aランキング"
+                ],
+                [
+                    "h2",
+                    "あなたも答えてみませんか"
+                ],
+                [
+                    "h2",
+                    "総合Q&Aランキング"
+                ],
+                [
+                    "h2",
+                    "カテゴリ一覧"
+                ],
+                [
+                    "h2",
+                    "質問内容"
+                ],
+                [
+                    "h2",
+                    "回答文"
+                ]
+            ],
+            "content_score": 25,
+            "readability": 27,
+            "word_count": 2182,
+            "content_len": 4329
+        },
+        {
+            "rank": 27,
+            "url": "https://exawizards.com/column/article/chatgpt/chatgpt-plus/",
+            "title": "ChatGPT Plusとは？無料版との違いや費用など詳しく解説 - DXコラム - 株式会社エクサウィザーズ",
+            "desc": "「ChatGPT Plus」とは、月額20ドルで利用できるChatGPTの有料プランです。この記事ではChatGPT Plusの特徴や費用、無料版との違いなどを解説しています。具体的な活用事例も紹介しているので、導入検討中の方は最後までご覧ください。",
+            "headers": [
+                [
+                    "h1",
+                    "ChatGPT Plusとは？無料版との違いや費用など詳しく解説"
+                ],
+                [
+                    "h2",
+                    "ChatGPT Plusとは"
+                ],
+                [
+                    "h2",
+                    "ChatGPTの費用について"
+                ],
+                [
+                    "h2",
+                    "ChatGPT Plusの需要が高い理由"
+                ],
+                [
+                    "h2",
+                    "ChatGPT Plusのメリット"
+                ],
+                [
+                    "h2",
+                    "ChatGPT Plusの活用事例"
+                ],
+                [
+                    "h2",
+                    "法人向けChatGPTサービス「exaBase 生成AI」"
+                ],
+                [
+                    "h2",
+                    "まとめ"
+                ]
+            ],
+            "content_score": 49,
+            "readability": 31,
+            "word_count": 4227,
+            "content_len": 8791
+        },
+        {
+            "rank": 28,
+            "url": "https://fullvalue.co.jp/media/chatgpt-paidplans/",
+            "title": "あなたに最適なChatGPT有料プランはどれ？全プラン徹底比較 | フルバリューのAI相談室",
+            "desc": "ChatGPTは、OpenAIが開発した高性能なAIチャットボットであり、自然な文章生成能力で私たちの生活やビジネスに革新をもたらしています。無料版でも十分にその能力を体験できますが、より高度な機能や快適な利用を求めるなら、有料プランへの加",
+            "headers": [
+                [
+                    "h1",
+                    "あなたに最適なChatGPT有料プランはどれ？全プラン徹底比較"
+                ],
+                [
+                    "h2",
+                    "なぜChatGPT有料プランを検討する価値があるのか？"
+                ],
+                [
+                    "h2",
+                    "ChatGPT有料プランの種類と料金"
+                ],
+                [
+                    "h2",
+                    "プラン選びで迷ったら？ニーズ別おすすめプラン"
+                ],
+                [
+                    "h2",
+                    "ChatGPT有料プランを最大限に活用するためのプロンプト術"
+                ],
+                [
+                    "h2",
+                    "まとめ：ChatGPT有料プランでAIの可能性を最大限に引き出す"
+                ]
+            ],
+            "content_score": 57,
+            "readability": 33,
+            "word_count": 2587,
+            "content_len": 5538
+        },
+        {
+            "rank": 29,
+            "url": "https://note.com/on_consul/n/n9dfc641a4f14",
+            "title": "【2024/1最新】ChatGPTの料金プランと機能まとめ。課金すべき？200ドルの「Proプラン」正直どう？（Xで14万閲覧ちょっとバズり中）｜たてばやし淳.エクセル兄さん@ ８万部ヒット「生成AI最速仕事術」著者",
+            "desc": "『最近のChatGPT、ついていけない！ 「4o」とか「o1」とか、ワケわかんないし。 料金とか機能どうなってんの？』 という人に見て欲しい、２枚のスライド。  これをXに投稿したところ、ちょっとバズっております。 （14万回閲覧）  そこで今回は恒例の「ChatGPT料金プラン現状まとめ」を解説します。  ・ChatGPTの料金プランと機能まとめ ・課金すべき？どのプランがおすすめ？ ・無料でも代わりのサービスは無いの？ ・200ドルの「Proプラン」正直どう？ ・最高モデルの「o1 pro」ってどうなの？   ※ここからは、以下のVoicyでの音声配信の文字起こしを基にAI記事化し",
+            "headers": [
+                [
+                    "h1",
+                    "【2024/1最新】ChatGPTの料金プランと機能まとめ。課金すべき？200ドルの「Proプラン」正直どう？（Xで14万閲覧ちょっとバズり中）"
+                ],
+                [
+                    "h2",
+                    "バズり中！ChatGPTの機能と料金プランを2枚のスライドで説明"
+                ],
+                [
+                    "h2",
+                    "【図1】GPTの進歩、o1の登場"
+                ],
+                [
+                    "h2",
+                    "【図2】料金プランごとのAIモデル（GPT-4o、o1、o1 pro）"
+                ],
+                [
+                    "h2",
+                    "「o1は、Proプランでしか使えない」というのは誤解"
+                ],
+                [
+                    "h2",
+                    "その他の機能（画像PDF、Web検索、GPTs、画像生成、データ分析、高度な音声、Sora動画生成）"
+                ],
+                [
+                    "h2",
+                    "課金するならどのプランが良い？"
+                ],
+                [
+                    "h2",
+                    "無料で、他のツールで代替するには？"
+                ],
+                [
+                    "h2",
+                    "200ドルのProプランは正直どう？"
+                ],
+                [
+                    "h2",
+                    "まとめ"
+                ],
+                [
+                    "h2",
+                    "いいなと思ったら応援しよう！"
+                ]
+            ],
+            "content_score": 54,
+            "readability": 29,
+            "word_count": 3188,
+            "content_len": 6080
+        },
+        {
+            "rank": 30,
+            "url": "https://www.it-trend-aimi.jp/articles/8hs2fz1e2n",
+            "title": "ChatGPTの料金プランを徹底解説！無料版から法人向けプランまで！（〜比較表付き〜）｜ ITトレンド AIMi",
+            "desc": "ChatGPTの料金プランについて解説！無料プランから法人向けプランまで違いを比較表で確認できます。",
+            "headers": [
+                [
+                    "h1",
+                    "ChatGPTの料金プランを徹底解説！無料版から法人向けプランまで！（〜比較表付き〜）"
+                ],
+                [
+                    "h2",
+                    "はじめに"
+                ],
+                [
+                    "h2",
+                    "1.ChatGPTの料金プラン：無料、有料、法人向け"
+                ],
+                [
+                    "h2",
+                    "2.ChatGPTプランごとの比較表"
+                ],
+                [
+                    "h2",
+                    "3.安全に業務効率化を図ろう"
+                ],
+                [
+                    "h2",
+                    "まとめ"
+                ]
+            ],
+            "content_score": 59,
+            "readability": 34,
+            "word_count": 1120,
+            "content_len": 2530
+        }
+    ],
+    "metrics": {
+        "word_count": {
+            "median": 5102,
+            "target": 5102
+        },
+        "readability": {
+            "median": 27,
+            "target": 27
+        }
+    },
+    "terms": {
+        "title": [
+            {
+                "t": "chatgpt",
+                "usage_pc": 100
+            },
+            {
+                "t": "プラン",
+                "usage_pc": 80
+            },
+            {
+                "t": "料金",
+                "usage_pc": 80
+            },
+            {
+                "t": "違い",
+                "usage_pc": 70
+            },
+            {
+                "t": "比較",
+                "usage_pc": 60
+            },
+            {
+                "t": "chatgptの料金",
+                "usage_pc": 40
+            },
+            {
+                "t": "plus",
+                "usage_pc": 30
+            },
+            {
+                "t": "ai",
+                "usage_pc": 20
+            },
+            {
+                "t": "無料版",
+                "usage_pc": 20
+            },
+            {
+                "t": "enterprise",
+                "usage_pc": 20
+            },
+            {
+                "t": "年",
+                "usage_pc": 20
+            },
+            {
+                "t": "最新",
+                "usage_pc": 20
+            }
+        ],
+        "desc": [
+            {
+                "t": "料金",
+                "usage_pc": 80
+            },
+            {
+                "t": "プラン",
+                "usage_pc": 70
+            },
+            {
+                "t": "chatgpt",
+                "usage_pc": 70
+            },
+            {
+                "t": "plus",
+                "usage_pc": 40
+            },
+            {
+                "t": "違い",
+                "usage_pc": 40
+            },
+            {
+                "t": "api",
+                "usage_pc": 40
+            },
+            {
+                "t": "有料プラン",
+                "usage_pc": 40
+            },
+            {
+                "t": "enterprise",
+                "usage_pc": 30
+            },
+            {
+                "t": "月額",
+                "usage_pc": 30
+            },
+            {
+                "t": "最新",
+                "usage_pc": 30
+            },
+            {
+                "t": "利用",
+                "usage_pc": 20
+            },
+            {
+                "t": "年",
+                "usage_pc": 20
+            },
+            {
+                "t": "ユーザー",
+                "usage_pc": 20
+            },
+            {
+                "t": "chatgptの料金",
+                "usage_pc": 20
+            },
+            {
+                "t": "チャット",
+                "usage_pc": 20
+            },
+            {
+                "t": "あたり",
+                "usage_pc": 20
+            },
+            {
+                "t": "年間",
+                "usage_pc": 20
+            }
+        ],
+        "h1": [
+            {
+                "t": "料金",
+                "usage_pc": 90
+            },
+            {
+                "t": "chatgpt",
+                "usage_pc": 80
+            },
+            {
+                "t": "プラン",
+                "usage_pc": 70
+            },
+            {
+                "t": "違い",
+                "usage_pc": 70
+            },
+            {
+                "t": "比較",
+                "usage_pc": 60
+            },
+            {
+                "t": "chatgptの料金",
+                "usage_pc": 40
+            },
+            {
+                "t": "plus",
+                "usage_pc": 20
+            },
+            {
+                "t": "年",
+                "usage_pc": 20
+            },
+            {
+                "t": "最新",
+                "usage_pc": 20
+            },
+            {
+                "t": "無料版",
+                "usage_pc": 10
+            },
+            {
+                "t": "enterprise",
+                "usage_pc": 10
+            },
+            {
+                "t": "api",
+                "usage_pc": 10
+            },
+            {
+                "t": "方法",
+                "usage_pc": 10
+            },
+            {
+                "t": "月額",
+                "usage_pc": 10
+            },
+            {
+                "t": "支払い",
+                "usage_pc": 10
+            }
+        ],
+        "h2": [
+            {
+                "t": "プラン",
+                "usage_pc": 70
+            },
+            {
+                "t": "chatgpt",
+                "usage_pc": 60
+            },
+            {
+                "t": "料金",
+                "usage_pc": 60
+            },
+            {
+                "t": "違い",
+                "usage_pc": 50
+            },
+            {
+                "t": "api",
+                "usage_pc": 50
+            },
+            {
+                "t": "方法",
+                "usage_pc": 50
+            },
+            {
+                "t": "ai",
+                "usage_pc": 40
+            },
+            {
+                "t": "比較",
+                "usage_pc": 40
+            },
+            {
+                "t": "chatgptの料金",
+                "usage_pc": 40
+            },
+            {
+                "t": "無料版",
+                "usage_pc": 30
+            },
+            {
+                "t": "モデル",
+                "usage_pc": 30
+            },
+            {
+                "t": "利用",
+                "usage_pc": 20
+            },
+            {
+                "t": "有料プラン",
+                "usage_pc": 20
+            },
+            {
+                "t": "年",
+                "usage_pc": 20
+            },
+            {
+                "t": "最新",
+                "usage_pc": 20
+            },
+            {
+                "t": "チャット",
+                "usage_pc": 20
+            },
+            {
+                "t": "メリット",
+                "usage_pc": 20
+            },
+            {
+                "t": "支払い",
+                "usage_pc": 20
+            },
+            {
+                "t": "plus",
+                "usage_pc": 10
+            },
+            {
+                "t": "enterprise",
+                "usage_pc": 10
+            },
+            {
+                "t": "gpt5",
+                "usage_pc": 10
+            },
+            {
+                "t": "制限",
+                "usage_pc": 10
+            },
+            {
+                "t": "月",
+                "usage_pc": 10
+            },
+            {
+                "t": "ビジネス",
+                "usage_pc": 10
+            },
+            {
+                "t": "openai",
+                "usage_pc": 10
+            },
+            {
+                "t": "日本",
+                "usage_pc": 10
+            },
+            {
+                "t": "チーム",
+                "usage_pc": 10
+            },
+            {
+                "t": "各プラン",
+                "usage_pc": 10
+            },
+            {
+                "t": "最大",
+                "usage_pc": 10
+            },
+            {
+                "t": "表示",
+                "usage_pc": 10
+            }
+        ],
+        "content_basic": [
+            {
+                "t": "プラン",
+                "usage_pc": 100,
+                "sugg_usage": [
+                    52,
+                    101
+                ]
+            },
+            {
+                "t": "chatgpt",
+                "usage_pc": 100,
+                "sugg_usage": [
+                    24,
+                    120
+                ]
+            },
+            {
+                "t": "料金",
+                "usage_pc": 100,
+                "sugg_usage": [
+                    5,
+                    49
+                ]
+            },
+            {
+                "t": "plus",
+                "usage_pc": 100,
+                "sugg_usage": [
+                    12,
+                    39
+                ]
+            },
+            {
+                "t": "ai",
+                "usage_pc": 90,
+                "sugg_usage": [
+                    4,
+                    69
+                ]
+            },
+            {
+                "t": "違い",
+                "usage_pc": 80,
+                "sugg_usage": [
+                    1,
+                    14
+                ]
+            },
+            {
+                "t": "比較",
+                "usage_pc": 90,
+                "sugg_usage": [
+                    1,
+                    9
+                ]
+            },
+            {
+                "t": "無料版",
+                "usage_pc": 90,
+                "sugg_usage": [
+                    3,
+                    36
+                ]
+            },
+            {
+                "t": "enterprise",
+                "usage_pc": 90,
+                "sugg_usage": [
+                    2,
+                    35
+                ]
+            },
+            {
+                "t": "利用",
+                "usage_pc": 90,
+                "sugg_usage": [
+                    11,
+                    65
+                ]
+            },
+            {
+                "t": "モデル",
+                "usage_pc": 90,
+                "sugg_usage": [
+                    6,
+                    39
+                ]
+            },
+            {
+                "t": "gpt5",
+                "usage_pc": 80,
+                "sugg_usage": [
+                    3,
+                    56
+                ]
+            },
+            {
+                "t": "制限",
+                "usage_pc": 90,
+                "sugg_usage": [
+                    6,
+                    32
+                ]
+            },
+            {
+                "t": "api",
+                "usage_pc": 90,
+                "sugg_usage": [
+                    4,
+                    26
+                ]
+            },
+            {
+                "t": "方法",
+                "usage_pc": 90,
+                "sugg_usage": [
+                    2,
+                    9
+                ]
+            },
+            {
+                "t": "月額",
+                "usage_pc": 80,
+                "sugg_usage": [
+                    2,
+                    13
+                ]
+            },
+            {
+                "t": "設定",
+                "usage_pc": 80,
+                "sugg_usage": [
+                    1,
+                    14
+                ]
+            },
+            {
+                "t": "作成",
+                "usage_pc": 80,
+                "sugg_usage": [
+                    3,
+                    18
+                ]
+            },
+            {
+                "t": "有料プラン",
+                "usage_pc": 70,
+                "sugg_usage": [
+                    1,
+                    13
+                ]
+            },
+            {
+                "t": "年",
+                "usage_pc": 90,
+                "sugg_usage": [
+                    1,
+                    12
+                ]
+            },
+            {
+                "t": "上限",
+                "usage_pc": 80,
+                "sugg_usage": [
+                    2,
+                    12
+                ]
+            },
+            {
+                "t": "アプリ",
+                "usage_pc": 80,
+                "sugg_usage": [
+                    1,
+                    12
+                ]
+            },
+            {
+                "t": "ユーザー",
+                "usage_pc": 80,
+                "sugg_usage": [
+                    1,
+                    17
+                ]
+            },
+            {
+                "t": "提供",
+                "usage_pc": 80,
+                "sugg_usage": [
+                    3,
+                    13
+                ]
+            },
+            {
+                "t": "mini",
+                "usage_pc": 80,
+                "sugg_usage": [
+                    3,
+                    10
+                ]
+            },
+            {
+                "t": "アクセス",
+                "usage_pc": 80,
+                "sugg_usage": [
+                    1,
+                    12
+                ]
+            },
+            {
+                "t": "月",
+                "usage_pc": 90,
+                "sugg_usage": [
+                    2,
+                    13
+                ]
+            },
+            {
+                "t": "thinking",
+                "usage_pc": 70,
+                "sugg_usage": [
+                    1,
+                    20
+                ]
+            },
+            {
+                "t": "ビジネス",
+                "usage_pc": 80,
+                "sugg_usage": [
+                    1,
+                    4
+                ]
+            },
+            {
+                "t": "openai",
+                "usage_pc": 80,
+                "sugg_usage": [
+                    1,
+                    12
+                ]
+            },
+            {
+                "t": "chatgptの料金",
+                "usage_pc": 60,
+                "sugg_usage": [
+                    1,
+                    5
+                ]
+            },
+            {
+                "t": "請求",
+                "usage_pc": 80,
+                "sugg_usage": [
+                    1,
+                    14
+                ]
+            },
+            {
+                "t": "画像生成",
+                "usage_pc": 80,
+                "sugg_usage": [
+                    3,
+                    12
+                ]
+            },
+            {
+                "t": "時間",
+                "usage_pc": 90,
+                "sugg_usage": [
+                    1,
+                    8
+                ]
+            },
+            {
+                "t": "開発",
+                "usage_pc": 90,
+                "sugg_usage": [
+                    3,
+                    7
+                ]
+            },
+            {
+                "t": "最新",
+                "usage_pc": 70,
+                "sugg_usage": [
+                    1,
+                    10
+                ]
+            },
+            {
+                "t": "学習",
+                "usage_pc": 70,
+                "sugg_usage": [
+                    1,
+                    11
+                ]
+            },
+            {
+                "t": "チャット",
+                "usage_pc": 80,
+                "sugg_usage": [
+                    1,
+                    7
+                ]
+            },
+            {
+                "t": "対応",
+                "usage_pc": 80,
+                "sugg_usage": [
+                    1,
+                    8
+                ]
+            },
+            {
+                "t": "セキュリティ",
+                "usage_pc": 80,
+                "sugg_usage": [
+                    2,
+                    7
+                ]
+            },
+            {
+                "t": "数",
+                "usage_pc": 80,
+                "sugg_usage": [
+                    1,
+                    9
+                ]
+            },
+            {
+                "t": "あたり",
+                "usage_pc": 80,
+                "sugg_usage": [
+                    2,
+                    8
+                ]
+            },
+            {
+                "t": "必要",
+                "usage_pc": 80,
+                "sugg_usage": [
+                    1,
+                    9
+                ]
+            },
+            {
+                "t": "拡張",
+                "usage_pc": 70,
+                "sugg_usage": [
+                    1,
+                    5
+                ]
+            },
+            {
+                "t": "共有",
+                "usage_pc": 70,
+                "sugg_usage": [
+                    1,
+                    6
+                ]
+            },
+            {
+                "t": "使用",
+                "usage_pc": 70,
+                "sugg_usage": [
+                    1,
+                    8
+                ]
+            },
+            {
+                "t": "エージェント",
+                "usage_pc": 70,
+                "sugg_usage": [
+                    1,
+                    10
+                ]
+            },
+            {
+                "t": "タスク",
+                "usage_pc": 70,
+                "sugg_usage": [
+                    1,
+                    10
+                ]
+            },
+            {
+                "t": "日本",
+                "usage_pc": 80,
+                "sugg_usage": [
+                    1,
+                    7
+                ]
+            },
+            {
+                "t": "高度",
+                "usage_pc": 70,
+                "sugg_usage": [
+                    1,
+                    10
+                ]
+            },
+            {
+                "t": "チーム",
+                "usage_pc": 80,
+                "sugg_usage": [
+                    1,
+                    6
+                ]
+            },
+            {
+                "t": "推論",
+                "usage_pc": 70,
+                "sugg_usage": [
+                    1,
+                    6
+                ]
+            },
+            {
+                "t": "20",
+                "usage_pc": 80,
+                "sugg_usage": [
+                    1,
+                    6
+                ]
+            },
+            {
+                "t": "処理",
+                "usage_pc": 80,
+                "sugg_usage": [
+                    1,
+                    7
+                ]
+            },
+            {
+                "t": "プロジェクト",
+                "usage_pc": 70,
+                "sugg_usage": [
+                    1,
+                    6
+                ]
+            },
+            {
+                "t": "コード",
+                "usage_pc": 80,
+                "sugg_usage": [
+                    1,
+                    8
+                ]
+            },
+            {
+                "t": "回数",
+                "usage_pc": 70,
+                "sugg_usage": [
+                    1,
+                    5
+                ]
+            },
+            {
+                "t": "google",
+                "usage_pc": 70,
+                "sugg_usage": [
+                    1,
+                    8
+                ]
+            },
+            {
+                "t": "25",
+                "usage_pc": 80,
+                "sugg_usage": [
+                    1,
+                    6
+                ]
+            },
+            {
+                "t": "サポート",
+                "usage_pc": 70,
+                "sugg_usage": [
+                    1,
+                    6
+                ]
+            },
+            {
+                "t": "各プラン",
+                "usage_pc": 80,
+                "sugg_usage": [
+                    1,
+                    3
+                ]
+            },
+            {
+                "t": "支払い",
+                "usage_pc": 70,
+                "sugg_usage": [
+                    1,
+                    4
+                ]
+            },
+            {
+                "t": "データ分析",
+                "usage_pc": 80,
+                "sugg_usage": [
+                    1,
+                    5
+                ]
+            },
+            {
+                "t": "検索",
+                "usage_pc": 80,
+                "sugg_usage": [
+                    1,
+                    4
+                ]
+            },
+            {
+                "t": "個人向け",
+                "usage_pc": 80,
+                "sugg_usage": [
+                    1,
+                    2
+                ]
+            },
+            {
+                "t": "大規模",
+                "usage_pc": 80,
+                "sugg_usage": [
+                    1,
+                    4
+                ]
+            },
+            {
+                "t": "sso",
+                "usage_pc": 70,
+                "sugg_usage": [
+                    1,
+                    3
+                ]
+            },
+            {
+                "t": "試せる",
+                "usage_pc": 80,
+                "sugg_usage": [
+                    1,
+                    3
+                ]
+            },
+            {
+                "t": "最大",
+                "usage_pc": 70,
+                "sugg_usage": [
+                    1,
+                    3
+                ]
+            },
+            {
+                "t": "優先",
+                "usage_pc": 70,
+                "sugg_usage": [
+                    1,
+                    6
+                ]
+            },
+            {
+                "t": "表示",
+                "usage_pc": 70,
+                "sugg_usage": [
+                    1,
+                    5
+                ]
+            },
+            {
+                "t": "追加",
+                "usage_pc": 70,
+                "sugg_usage": [
+                    1,
+                    3
+                ]
+            }
+        ],
+        "content_extended": [
+            {
+                "t": "メリット",
+                "usage_pc": 40,
+                "sugg_usage": [
+                    1,
+                    8
+                ]
+            },
+            {
+                "t": "年間",
+                "usage_pc": 40,
+                "sugg_usage": [
+                    1,
+                    1
+                ]
+            }
+        ],
+        "entities": [
+            {
+                "t": "ChatGPT",
+                "importance": 45.8028,
+                "relevance": 0.458028,
+                "confidence": 15.798400000000004,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/ChatGPT"
+                    ]
+                ]
+            },
+            {
+                "t": "人工知能",
+                "importance": 28.328960000000002,
+                "relevance": 0.44264000000000003,
+                "confidence": 1.5392000000000001,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/人工知能"
+                    ]
+                ]
+            },
+            {
+                "t": "アプリケーションソフトウェア",
+                "importance": 23.344640000000002,
+                "relevance": 0.36476000000000003,
+                "confidence": 8.232,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/アプリケーションソフトウェア"
+                    ]
+                ]
+            },
+            {
+                "t": "ファイル (コンピュータ)",
+                "importance": 16.642560000000003,
+                "relevance": 0.26004000000000005,
+                "confidence": 3.7346000000000004,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/ファイル_(コンピュータ)"
+                    ]
+                ]
+            },
+            {
+                "t": "コンピュータセキュリティ",
+                "importance": 15.709439999999999,
+                "relevance": 0.24546,
+                "confidence": 4.7184,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/コンピュータセキュリティ"
+                    ]
+                ]
+            },
+            {
+                "t": "データ解析",
+                "importance": 14.544640000000003,
+                "relevance": 0.22726000000000002,
+                "confidence": 1.5677999999999999,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/データ解析"
+                    ]
+                ]
+            },
+            {
+                "t": "認証",
+                "importance": 13.436159999999997,
+                "relevance": 0.20993999999999996,
+                "confidence": 3.597600000000001,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/認証"
+                    ]
+                ]
+            },
+            {
+                "t": "データ",
+                "importance": 13.267199999999997,
+                "relevance": 0.20729999999999998,
+                "confidence": 3.7612,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/データ"
+                    ]
+                ]
+            },
+            {
+                "t": "OpenAI",
+                "importance": 12.834000000000003,
+                "relevance": 0.35650000000000004,
+                "confidence": 12.98,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/OpenAI"
+                    ]
+                ]
+            },
+            {
+                "t": "アップロード",
+                "importance": 12.703999999999999,
+                "relevance": 0.19849999999999998,
+                "confidence": 1.964,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/アップロード"
+                    ]
+                ]
+            },
+            {
+                "t": "Android (オペレーティングシステム)",
+                "importance": 11.46312,
+                "relevance": 0.31842,
+                "confidence": 16.546,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/Android_(オペレーティングシステム)"
+                    ]
+                ]
+            },
+            {
+                "t": "IOS",
+                "importance": 11.198880000000003,
+                "relevance": 0.31108,
+                "confidence": 17.576,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/IOS"
+                    ]
+                ]
+            },
+            {
+                "t": "ウィンドウ",
+                "importance": 9.696000000000002,
+                "relevance": 0.15150000000000002,
+                "confidence": 1.6280000000000001,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/ウィンドウ"
+                    ]
+                ]
+            },
+            {
+                "t": "情報プライバシー",
+                "importance": 8.71848,
+                "relevance": 0.24217999999999998,
+                "confidence": 0.7354,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/情報プライバシー"
+                    ]
+                ]
+            },
+            {
+                "t": "ユーザー (コンピュータ)",
+                "importance": 8.170559999999998,
+                "relevance": 0.22696,
+                "confidence": 0.6332,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/ユーザー_(コンピュータ)"
+                    ]
+                ]
+            },
+            {
+                "t": "アクセス制御",
+                "importance": 8.08056,
+                "relevance": 0.22446000000000002,
+                "confidence": 2.3611999999999997,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/アクセス制御"
+                    ]
+                ]
+            },
+            {
+                "t": "企業コンプライアンス",
+                "importance": 7.462800000000001,
+                "relevance": 0.20730000000000004,
+                "confidence": 1.8198,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/企業コンプライアンス"
+                    ]
+                ]
+            },
+            {
+                "t": "情報セキュリティマネジメントシステム",
+                "importance": 6.550559999999998,
+                "relevance": 0.18195999999999998,
+                "confidence": 1.8862,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/情報セキュリティマネジメントシステム"
+                    ]
+                ]
+            },
+            {
+                "t": "アプリケーションプログラミングインタフェース",
+                "importance": 6.49656,
+                "relevance": 0.18046,
+                "confidence": 13.276,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/アプリケーションプログラミングインタフェース"
+                    ]
+                ]
+            },
+            {
+                "t": "記憶装置",
+                "importance": 5.9839199999999995,
+                "relevance": 0.16622,
+                "confidence": 3.429,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/記憶装置"
+                    ]
+                ]
+            },
+            {
+                "t": "動画",
+                "importance": 5.6642399999999995,
+                "relevance": 0.15733999999999998,
+                "confidence": 0.757,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/動画"
+                    ]
+                ]
+            },
+            {
+                "t": "暗号",
+                "importance": 4.353840000000001,
+                "relevance": 0.12094,
+                "confidence": 5.424200000000001,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/暗号"
+                    ]
+                ]
+            },
+            {
+                "t": "チャット",
+                "importance": 3.5048159999999995,
+                "relevance": 0.097356,
+                "confidence": 2.0956,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/チャット"
+                    ]
+                ]
+            },
+            {
+                "t": "チャットボット",
+                "importance": 2.9516800000000005,
+                "relevance": 0.18448000000000003,
+                "confidence": 0.9042,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/チャットボット"
+                    ]
+                ]
+            },
+            {
+                "t": "ユースケース",
+                "importance": 2.9504,
+                "relevance": 0.1844,
+                "confidence": 1.2588000000000001,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/ユースケース"
+                    ]
+                ]
+            },
+            {
+                "t": "ベンチャー",
+                "importance": 2.9174399999999996,
+                "relevance": 0.08104,
+                "confidence": 4.498399999999999,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/ベンチャー"
+                    ]
+                ]
+            },
+            {
+                "t": "サブスクリプション",
+                "importance": 2.8793599999999997,
+                "relevance": 0.17995999999999998,
+                "confidence": 3.8560000000000003,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/サブスクリプション"
+                    ]
+                ]
+            },
+            {
+                "t": "Slack (ソフトウェア)",
+                "importance": 2.77408,
+                "relevance": 0.17338,
+                "confidence": 1.3562,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/Slack_(ソフトウェア)"
+                    ]
+                ]
+            },
+            {
+                "t": "MacOS",
+                "importance": 2.63808,
+                "relevance": 0.16488,
+                "confidence": 10.968,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/MacOS"
+                    ]
+                ]
+            },
+            {
+                "t": "クレジットカード",
+                "importance": 2.5612799999999996,
+                "relevance": 0.16008,
+                "confidence": 3.3496,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/クレジットカード"
+                    ]
+                ]
+            },
+            {
+                "t": "ロールベースアクセス制御",
+                "importance": 2.54592,
+                "relevance": 0.15912,
+                "confidence": 1.3004,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/ロールベースアクセス制御"
+                    ]
+                ]
+            },
+            {
+                "t": "Microsoft SharePoint",
+                "importance": 2.4934400000000005,
+                "relevance": 0.15584000000000003,
+                "confidence": 0.718,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/Microsoft_SharePoint"
+                    ]
+                ]
+            },
+            {
+                "t": "企業",
+                "importance": 2.433744,
+                "relevance": 0.067604,
+                "confidence": 0.7674,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/企業"
+                    ]
+                ]
+            },
+            {
+                "t": "広告",
+                "importance": 2.0889599999999997,
+                "relevance": 0.13056,
+                "confidence": 2.712,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/広告"
+                    ]
+                ]
+            },
+            {
+                "t": "コードベース",
+                "importance": 1.9811199999999998,
+                "relevance": 0.12382,
+                "confidence": 0.7206,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/コードベース"
+                    ]
+                ]
+            },
+            {
+                "t": "ディレクトリ",
+                "importance": 1.9251200000000004,
+                "relevance": 0.12032000000000001,
+                "confidence": 2.4408000000000003,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/ディレクトリ"
+                    ]
+                ]
+            },
+            {
+                "t": "GitHub",
+                "importance": 1.78368,
+                "relevance": 0.11148,
+                "confidence": 4.7219999999999995,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/GitHub"
+                    ]
+                ]
+            },
+            {
+                "t": "ウェブブラウザ",
+                "importance": 1.7814400000000001,
+                "relevance": 0.11134,
+                "confidence": 0.9818000000000001,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/ウェブブラウザ"
+                    ]
+                ]
+            },
+            {
+                "t": "応答時間",
+                "importance": 1.7651199999999998,
+                "relevance": 0.11032,
+                "confidence": 0.6598,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/応答時間"
+                    ]
+                ]
+            },
+            {
+                "t": "シンガポール",
+                "importance": 1.68032,
+                "relevance": 0.10502,
+                "confidence": 4.5426,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/シンガポール"
+                    ]
+                ]
+            },
+            {
+                "t": "検索",
+                "importance": 1.6358400000000002,
+                "relevance": 0.10224,
+                "confidence": 0.43316,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/検索"
+                    ]
+                ]
+            },
+            {
+                "t": "GPT-4o",
+                "importance": 1.6025599999999998,
+                "relevance": 0.10016,
+                "confidence": 1.0173999999999999,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/GPT-4o"
+                    ]
+                ]
+            },
+            {
+                "t": "生産性",
+                "importance": 1.5811199999999999,
+                "relevance": 0.09882,
+                "confidence": 0.5416000000000001,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/生産性"
+                    ]
+                ]
+            },
+            {
+                "t": "World Wide Web",
+                "importance": 1.51968,
+                "relevance": 0.09498,
+                "confidence": 0.7078,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/World_Wide_Web"
+                    ]
+                ]
+            },
+            {
+                "t": "画像",
+                "importance": 1.4869759999999999,
+                "relevance": 0.023234,
+                "confidence": 1.6702,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/画像"
+                    ]
+                ]
+            },
+            {
+                "t": "アカウント",
+                "importance": 1.40448,
+                "relevance": 0.08778,
+                "confidence": 3.0884,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/アカウント"
+                    ]
+                ]
+            },
+            {
+                "t": "Google ドライブ",
+                "importance": 1.3705280000000002,
+                "relevance": 0.08565800000000001,
+                "confidence": 1.1154,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/Google_ドライブ"
+                    ]
+                ]
+            },
+            {
+                "t": "プライバシー",
+                "importance": 1.34368,
+                "relevance": 0.08398,
+                "confidence": 2.8622,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/プライバシー"
+                    ]
+                ]
+            },
+            {
+                "t": "諜報",
+                "importance": 1.31808,
+                "relevance": 0.08238,
+                "confidence": 1.3504,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/諜報"
+                    ]
+                ]
+            },
+            {
+                "t": "アメリカ合衆国",
+                "importance": 1.24288,
+                "relevance": 0.07768,
+                "confidence": 14.542000000000002,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/アメリカ合衆国"
+                    ]
+                ]
+            },
+            {
+                "t": "ライセンス",
+                "importance": 1.13984,
+                "relevance": 0.07124,
+                "confidence": 1.0366,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/ライセンス"
+                    ]
+                ]
+            },
+            {
+                "t": "サービス",
+                "importance": 1.0841599999999998,
+                "relevance": 0.06776,
+                "confidence": 0.5032,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/サービス"
+                    ]
+                ]
+            },
+            {
+                "t": "日本",
+                "importance": 1.0236800000000001,
+                "relevance": 0.06398000000000001,
+                "confidence": 1.4469999999999998,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/日本"
+                    ]
+                ]
+            },
+            {
+                "t": "ベータ版",
+                "importance": 0.77552,
+                "relevance": 0.04847,
+                "confidence": 2.5072,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/ベータ版"
+                    ]
+                ]
+            },
+            {
+                "t": "ビジネス",
+                "importance": 0.7336320000000001,
+                "relevance": 0.045852000000000004,
+                "confidence": 0.5488,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/ビジネス"
+                    ]
+                ]
+            },
+            {
+                "t": "Google Play",
+                "importance": 0.6580799999999999,
+                "relevance": 0.16452,
+                "confidence": 2.164,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/Google_Play"
+                    ]
+                ]
+            },
+            {
+                "t": "FAQ",
+                "importance": 0.653408,
+                "relevance": 0.040838,
+                "confidence": 0.9958,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/FAQ"
+                    ]
+                ]
+            },
+            {
+                "t": "コネクタ",
+                "importance": 0.5660160000000001,
+                "relevance": 0.035376000000000005,
+                "confidence": 0.663,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/コネクタ"
+                    ]
+                ]
+            },
+            {
+                "t": "ロボティック・プロセス・オートメーション",
+                "importance": 0.53496,
+                "relevance": 0.13374,
+                "confidence": 0.627,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/ロボティック・プロセス・オートメーション"
+                    ]
+                ]
+            },
+            {
+                "t": "脆弱性報奨金制度",
+                "importance": 0.53088,
+                "relevance": 0.13272,
+                "confidence": 0.3572,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/脆弱性報奨金制度"
+                    ]
+                ]
+            },
+            {
+                "t": "Gemini (チャットボット)",
+                "importance": 0.50096,
+                "relevance": 0.12524,
+                "confidence": 0.791,
+                "links": [
+                    [
+                        "wikipedia",
+                        "http://ja.wikipedia.org/wiki/Gemini_(チャットボット)"
+                    ]
+                ]
+            }
+        ]
+    },
+    "terms_txt": {
+        "title": "chatgpt\nプラン\n料金\n違い\n比較\nchatgptの料金\nplus\nai\n無料版\nenterprise\n年\n最新",
+        "desc_title": "料金\nプラン\nchatgpt\nplus\n違い\napi\n有料プラン\nenterprise\n月額\n最新\n利用\n年\nユーザー\nchatgptの料金\nチャット\nあたり\n年間",
+        "h1": "料金\nchatgpt\nプラン\n違い\n比較\nchatgptの料金\nplus\n年\n最新\n無料版\nenterprise\napi\n方法\n月額\n支払い",
+        "h2": "プラン\nchatgpt\n料金\n違い\napi\n方法\nai\n比較\nchatgptの料金\n無料版\nモデル\n利用\n有料プラン\n年\n最新\nチャット\nメリット\n支払い\nplus\nenterprise\ngpt5\n制限\n月\nビジネス\nopenai\n日本\nチーム\n各プラン\n最大\n表示",
+        "content_basic": "プラン\nchatgpt\n料金\nplus\nai\n違い\n比較\n無料版\nenterprise\n利用\nモデル\ngpt5\n制限\napi\n方法\n月額\n設定\n作成\n有料プラン\n年\n上限\nアプリ\nユーザー\n提供\nmini\nアクセス\n月\nthinking\nビジネス\nopenai\nchatgptの料金\n請求\n画像生成\n時間\n開発\n最新\n学習\nチャット\n対応\nセキュリティ\n数\nあたり\n必要\n拡張\n共有\n使用\nエージェント\nタスク\n日本\n高度\nチーム\n推論\n20\n処理\nプロジェクト\nコード\n回数\ngoogle\n25\nサポート\n各プラン\n支払い\nデータ分析\n検索\n個人向け\n大規模\nsso\n試せる\n最大\n優先\n表示\n追加",
+        "content_basic_w_ranges": "プラン: 52-101x\nchatgpt: 24-120x\n料金: 5-49x\nplus: 12-39x\nai: 4-69x\n違い: 1-14x\n比較: 1-9x\n無料版: 3-36x\nenterprise: 2-35x\n利用: 11-65x\nモデル: 6-39x\ngpt5: 3-56x\n制限: 6-32x\napi: 4-26x\n方法: 2-9x\n月額: 2-13x\n設定: 1-14x\n作成: 3-18x\n有料プラン: 1-13x\n年: 1-12x\n上限: 2-12x\nアプリ: 1-12x\nユーザー: 1-17x\n提供: 3-13x\nmini: 3-10x\nアクセス: 1-12x\n月: 2-13x\nthinking: 1-20x\nビジネス: 1-4x\nopenai: 1-12x\nchatgptの料金: 1-5x\n請求: 1-14x\n画像生成: 3-12x\n時間: 1-8x\n開発: 3-7x\n最新: 1-10x\n学習: 1-11x\nチャット: 1-7x\n対応: 1-8x\nセキュリティ: 2-7x\n数: 1-9x\nあたり: 2-8x\n必要: 1-9x\n拡張: 1-5x\n共有: 1-6x\n使用: 1-8x\nエージェント: 1-10x\nタスク: 1-10x\n日本: 1-7x\n高度: 1-10x\nチーム: 1-6x\n推論: 1-6x\n20: 1-6x\n処理: 1-7x\nプロジェクト: 1-6x\nコード: 1-8x\n回数: 1-5x\ngoogle: 1-8x\n25: 1-6x\nサポート: 1-6x\n各プラン: 1-3x\n支払い: 1-4x\nデータ分析: 1-5x\n検索: 1-4x\n個人向け: 1-2x\n大規模: 1-4x\nsso: 1-3x\n試せる: 1-3x\n最大: 1-3x\n優先: 1-6x\n表示: 1-5x\n追加: 1-3x",
+        "content_extended": "メリット\n年間",
+        "content_extended_w_ranges": "メリット: 1-8x\n年間: 1x",
+        "entities": "ChatGPT\n人工知能\nアプリケーションソフトウェア\nファイル (コンピュータ)\nコンピュータセキュリティ\nデータ解析\n認証\nデータ\nOpenAI\nアップロード\nAndroid (オペレーティングシステム)\nIOS\nウィンドウ\n情報プライバシー\nユーザー (コンピュータ)\nアクセス制御\n企業コンプライアンス\n情報セキュリティマネジメントシステム\nアプリケーションプログラミングインタフェース\n記憶装置\n動画\n暗号\nチャット\nチャットボット\nユースケース\nベンチャー\nサブスクリプション\nSlack (ソフトウェア)\nMacOS\nクレジットカード\nロールベースアクセス制御\nMicrosoft SharePoint\n企業\n広告\nコードベース\nディレクトリ\nGitHub\nウェブブラウザ\n応答時間\nシンガポール\n検索\nGPT-4o\n生産性\nWorld Wide Web\n画像\nアカウント\nGoogle ドライブ\nプライバシー\n諜報\nアメリカ合衆国\nライセンス\nサービス\n日本\nベータ版\nビジネス\nGoogle Play\nFAQ\nコネクタ\nロボティック・プロセス・オートメーション\n脆弱性報奨金制度\nGemini (チャットボット)"
+    },
+    "status": "ready",
+    "keyword": "chatgpt 料金プラン 比較",
+    "language": "Japanese",
+    "engine": "google.co.jp",
+    "project": "1258aa8abe935e25",
+    "query": "e9829d8148bb9315",
+    "serp_summary": {
+        "top_intent": "informational",
+        "intent_stats": {
+            "navigational": 6.7,
+            "informational": 100
+        },
+        "top_content_type": "comparison",
+        "content_type_stats": {
+            "product-page": 6.7,
+            "comparison": 90,
+            "blog-post": 83.3,
+            "guide": 73.3,
+            "video": 3.3,
+            "news": 6.7,
+            "social-media": 6.7
+        }
+    },
+    "query_url": "https://app.neuronwriter.com/analysis/view/e9829d8148bb9315",
+    "share_url": "https://app.neuronwriter.com/analysis/share/e9829d8148bb9315/11aed4bc6a4c54b591a64299bcc5443637bb8",
+    "readonly_url": "https://app.neuronwriter.com/analysis/content-preview/e9829d8148bb9315/a6aa437c9e0b597453070a29f6ace69c37bb8"
+}

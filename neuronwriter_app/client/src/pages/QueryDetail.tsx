@@ -9,7 +9,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { trpc } from "@/lib/trpc";
-import { ArrowLeft, ArrowUp, Download, FileText, Lightbulb, TrendingUp, BarChart, Globe, Users, Target, Sparkles, Copy, RefreshCw, Code, Eye, CheckCircle2, Loader2, Link as LinkIcon, MessageSquare } from "lucide-react";
+import { ArrowLeft, ArrowUp, Download, FileText, Lightbulb, TrendingUp, BarChart, Globe, Users, Target, Sparkles, Copy, RefreshCw, Code, Eye, CheckCircle2, Loader2, Link as LinkIcon, MessageSquare, ChevronUp, ChevronDown, ListTree } from "lucide-react";
 import { useState, useEffect, useCallback } from "react";
 import { Link, useParams } from "wouter";
 import { toast } from "sonner";
@@ -433,81 +433,272 @@ export default function QueryDetail() {
     const hasIntents = intents.length > 0;
     const hasContentTypes = contentTypes.length > 0;
 
+    // 検索意図のアイコンと色を取得
+    const getIntentStyle = (name: string) => {
+      const styles: Record<string, { color: string; bg: string; icon: string; label: string }> = {
+        informational: { color: "text-blue-600", bg: "bg-blue-100", icon: "📚", label: "情報収集" },
+        navigational: { color: "text-purple-600", bg: "bg-purple-100", icon: "🧭", label: "ナビゲーション" },
+        commercial: { color: "text-amber-600", bg: "bg-amber-100", icon: "🛒", label: "商業目的" },
+        transactional: { color: "text-green-600", bg: "bg-green-100", icon: "💳", label: "取引目的" },
+      };
+      return styles[name.toLowerCase()] || { color: "text-gray-600", bg: "bg-gray-100", icon: "📄", label: name };
+    };
+
+    // コンテンツタイプのアイコンと色を取得
+    const getContentTypeStyle = (name: string) => {
+      const styles: Record<string, { color: string; bg: string; icon: string; label: string }> = {
+        "blog-post": { color: "text-indigo-600", bg: "bg-indigo-500", icon: "📝", label: "ブログ記事" },
+        guide: { color: "text-emerald-600", bg: "bg-emerald-500", icon: "📖", label: "ガイド" },
+        educational: { color: "text-sky-600", bg: "bg-sky-500", icon: "🎓", label: "教育コンテンツ" },
+        "case-study": { color: "text-orange-600", bg: "bg-orange-500", icon: "📊", label: "事例紹介" },
+        review: { color: "text-rose-600", bg: "bg-rose-500", icon: "⭐", label: "レビュー" },
+        news: { color: "text-red-600", bg: "bg-red-500", icon: "📰", label: "ニュース" },
+        product: { color: "text-violet-600", bg: "bg-violet-500", icon: "🏷️", label: "商品紹介" },
+        "product-page": { color: "text-violet-600", bg: "bg-violet-500", icon: "🛍️", label: "製品ページ" },
+        comparison: { color: "text-amber-600", bg: "bg-amber-500", icon: "⚖️", label: "比較記事" },
+        video: { color: "text-pink-600", bg: "bg-pink-500", icon: "🎬", label: "動画" },
+        "social-media": { color: "text-cyan-600", bg: "bg-cyan-500", icon: "📱", label: "SNS" },
+        listicle: { color: "text-lime-600", bg: "bg-lime-500", icon: "📋", label: "リスト記事" },
+        "landing-page": { color: "text-fuchsia-600", bg: "bg-fuchsia-500", icon: "🎯", label: "LP" },
+        tool: { color: "text-teal-600", bg: "bg-teal-500", icon: "🔧", label: "ツール" },
+        "short-answer": { color: "text-slate-600", bg: "bg-slate-500", icon: "💬", label: "Q&A" },
+      };
+      return styles[name.toLowerCase()] || { color: "text-gray-600", bg: "bg-gray-500", icon: "📄", label: name };
+    };
+
+    // top_intentとtop_content_typeの日本語訳
+    const translateTopIntent = (intent: string) => {
+      const map: Record<string, string> = {
+        informational: "情報収集",
+        navigational: "ナビゲーション",
+        commercial: "商業目的",
+        transactional: "取引目的",
+      };
+      return map[intent?.toLowerCase()] || intent;
+    };
+
+    const translateTopContentType = (type: string) => {
+      const map: Record<string, string> = {
+        "blog-post": "ブログ記事",
+        guide: "ガイド",
+        educational: "教育コンテンツ",
+        "case-study": "事例紹介",
+        review: "レビュー",
+        news: "ニュース",
+        product: "商品紹介",
+        "product-page": "製品ページ",
+        comparison: "比較記事",
+        video: "動画",
+        "social-media": "SNS",
+        listicle: "リスト記事",
+        "landing-page": "LP",
+        tool: "ツール",
+        "short-answer": "Q&A",
+      };
+      return map[type?.toLowerCase()] || type;
+    };
+
     return (
-      <div className={cn("grid gap-4", compact ? "grid-cols-1" : "md:grid-cols-2")}>
-        <div className="space-y-2">
-          {!compact && <h4 className="font-medium text-sm text-muted-foreground">検索意図 (Intents)</h4>}
-          <div className="space-y-1">
-            {compact && <span className="text-xs font-semibold text-muted-foreground">検索意図</span>}
-            {!hasIntents && <p className="text-sm text-gray-400">データなし</p>}
-            {intents.map((intent: any, i: number) => (
-              <div key={i} className="flex justify-between text-sm items-center p-2 bg-slate-50 rounded">
-                <span className="font-medium">{intent.type || intent.name}</span>
-                <Badge variant="secondary" className="bg-white">
-                  {typeof intent.percentage === 'number' ? Math.round(intent.percentage) : intent.percentage}%
-                </Badge>
-              </div>
-            ))}
+      <div className={cn("grid gap-6", compact ? "grid-cols-1" : "md:grid-cols-2")}>
+        {/* 検索意図 */}
+        <div className="space-y-3">
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center">
+              <span className="text-lg">🎯</span>
+            </div>
+            <div>
+              <h4 className="font-semibold text-sm">検索意図 (Intents)</h4>
+              {summary.top_intent && (
+                <p className="text-xs text-muted-foreground">
+                  主要: <span className="font-medium text-blue-600">{translateTopIntent(summary.top_intent)}</span>
+                </p>
+              )}
+            </div>
+          </div>
+          {!hasIntents && <p className="text-sm text-gray-400">データなし</p>}
+          <div className="space-y-2">
+            {intents.map((intent: any, i: number) => {
+              const style = getIntentStyle(intent.type || intent.name);
+              const pct = typeof intent.percentage === 'number' ? Math.round(intent.percentage) : parseFloat(intent.percentage) || 0;
+              return (
+                <div key={i} className="group">
+                  <div className="flex justify-between items-center mb-1">
+                    <div className="flex items-center gap-2">
+                      <span className="text-base">{style.icon}</span>
+                      <span className={cn("font-medium text-sm", style.color)}>
+                        {style.label}
+                      </span>
+                    </div>
+                    <span className={cn("text-sm font-bold", style.color)}>{pct}%</span>
+                  </div>
+                  <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+                    <div
+                      className={cn("h-full rounded-full transition-all duration-500", style.bg)}
+                      style={{ width: `${pct}%` }}
+                    />
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
-        <div className="space-y-2">
-          {!compact && <h4 className="font-medium text-sm text-muted-foreground">コンテンツタイプ</h4>}
-          <div className="space-y-1">
-            {compact && <span className="text-xs font-semibold text-muted-foreground border-t pt-2 mt-2 block">コンテンツタイプ</span>}
-            {!hasContentTypes && <p className="text-sm text-gray-400">データなし</p>}
-            {contentTypes.map((type: any, i: number) => (
-              <div key={i} className="flex justify-between text-sm items-center p-2 bg-slate-50 rounded">
-                <span className="font-medium">{type.type || type.name}</span>
-                <Badge variant="secondary" className="bg-white">
-                  {typeof type.percentage === 'number' ? Math.round(type.percentage) : type.percentage}%
-                </Badge>
-              </div>
-            ))}
+
+        {/* コンテンツタイプ */}
+        <div className="space-y-3">
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-8 h-8 rounded-lg bg-indigo-100 flex items-center justify-center">
+              <span className="text-lg">📂</span>
+            </div>
+            <div>
+              <h4 className="font-semibold text-sm">コンテンツタイプ</h4>
+              {summary.top_content_type && (
+                <p className="text-xs text-muted-foreground">
+                  主要: <span className="font-medium text-indigo-600">{translateTopContentType(summary.top_content_type)}</span>
+                </p>
+              )}
+            </div>
+          </div>
+          {!hasContentTypes && <p className="text-sm text-gray-400">データなし</p>}
+          <div className="space-y-2">
+            {contentTypes.map((type: any, i: number) => {
+              const style = getContentTypeStyle(type.type || type.name);
+              const pct = typeof type.percentage === 'number' ? Math.round(type.percentage) : parseFloat(type.percentage) || 0;
+              return (
+                <div key={i} className="group">
+                  <div className="flex justify-between items-center mb-1">
+                    <div className="flex items-center gap-2">
+                      <span className="text-base">{style.icon}</span>
+                      <span className={cn("font-medium text-sm", style.color)}>
+                        {style.label}
+                      </span>
+                    </div>
+                    <span className={cn("text-sm font-bold", style.color)}>{pct}%</span>
+                  </div>
+                  <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+                    <div
+                      className={cn("h-full rounded-full transition-all duration-500", style.bg)}
+                      style={{ width: `${pct}%` }}
+                    />
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
     );
   };
 
-  const renderMetrics = (metrics: any) => {
+  const renderMetrics = (metrics: any, competitors?: any[]) => {
     if (!metrics) return null;
-    // Assuming metrics is an object with avg_word_count etc, or array of competitor metrics?
-    // Let's assume simple key-value display for average metrics
+
+    // 競合データから平均値を計算
+    const calcAvg = (arr: any[], key: string) => {
+      if (!arr || arr.length === 0) return 0;
+      const values = arr.map(c => c[key]).filter(v => typeof v === 'number' && v > 0);
+      return values.length > 0 ? Math.round(values.reduce((a, b) => a + b, 0) / values.length) : 0;
+    };
+
+    const avgWordCount = competitors ? calcAvg(competitors, 'word_count') : 0;
+    const avgScore = competitors ? calcAvg(competitors, 'content_score') : 0;
+    const avgReadability = competitors ? calcAvg(competitors, 'readability') : 0;
+    const targetWordCount = metrics?.word_count?.target || metrics?.word_count?.median || avgWordCount;
+    const targetReadability = metrics?.readability?.target || metrics?.readability?.median || avgReadability;
+
+    const metricCards = [
+      {
+        value: targetWordCount.toLocaleString(),
+        label: "目標文字数",
+        icon: "📝",
+        color: "bg-blue-500",
+        desc: `競合中央値: ${(metrics?.word_count?.median || avgWordCount).toLocaleString()}`,
+      },
+      {
+        value: avgScore,
+        label: "平均スコア",
+        icon: "📊",
+        color: "bg-green-500",
+        desc: "競合サイトの平均",
+      },
+      {
+        value: targetReadability,
+        label: "目標読みやすさ",
+        icon: "📖",
+        color: "bg-amber-500",
+        desc: "低いほど読みやすい",
+      },
+      {
+        value: competitors?.length || 0,
+        label: "競合数",
+        icon: "🏆",
+        color: "bg-purple-500",
+        desc: "分析対象サイト数",
+      },
+    ];
+
     return (
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="bg-muted/30 p-3 rounded text-center">
-          <div className="text-2xl font-bold">{metrics.avg_word_count || 0}</div>
-          <div className="text-xs text-muted-foreground">平均文字数</div>
-        </div>
-        <div className="bg-muted/30 p-3 rounded text-center">
-          <div className="text-2xl font-bold">{metrics.avg_img_count || 0}</div>
-          <div className="text-xs text-muted-foreground">平均画像数</div>
-        </div>
-        <div className="bg-muted/30 p-3 rounded text-center">
-          <div className="text-2xl font-bold">{metrics.avg_da || 50}</div>
-          <div className="text-xs text-muted-foreground">平均DA</div>
-        </div>
-        <div className="bg-muted/30 p-3 rounded text-center">
-          <div className="text-2xl font-bold">{metrics.avg_pa || 40}</div>
-          <div className="text-xs text-muted-foreground">平均PA</div>
-        </div>
+        {metricCards.map((card, idx) => (
+          <div key={idx} className="bg-white border rounded-xl p-4 text-center shadow-sm hover:shadow-md transition-shadow">
+            <div className="flex items-center justify-center gap-2 mb-2">
+              <span className={`w-8 h-8 rounded-lg ${card.color} flex items-center justify-center text-white text-lg`}>
+                {card.icon}
+              </span>
+            </div>
+            <div className="text-2xl font-bold text-gray-800">{card.value}</div>
+            <div className="text-sm font-medium text-gray-600">{card.label}</div>
+            <div className="text-xs text-muted-foreground mt-1">{card.desc}</div>
+          </div>
+        ))}
       </div>
     );
   };
 
-  const renderTermsTable = (terms: any[], title: string) => {
+  const renderTermsTable = (terms: any[], title: string, icon?: string) => {
     if (!terms || terms.length === 0) return null;
+
+    // 使用率でソート（高い順）
+    const sortedTerms = [...terms].sort((a, b) => (b.usage_pc || 0) - (a.usage_pc || 0));
+
+    // 使用率に応じた色を取得
+    const getUsageStyle = (usage: number) => {
+      if (usage >= 80) return { bg: "bg-green-100", text: "text-green-700", border: "border-green-300" };
+      if (usage >= 50) return { bg: "bg-blue-100", text: "text-blue-700", border: "border-blue-300" };
+      if (usage >= 30) return { bg: "bg-amber-100", text: "text-amber-700", border: "border-amber-300" };
+      return { bg: "bg-gray-100", text: "text-gray-600", border: "border-gray-300" };
+    };
+
     return (
-      <div className="space-y-2">
+      <div className="space-y-3">
         <h4 className="font-semibold text-sm flex items-center gap-2">
-          <Target className="w-4 h-4" /> {title}
+          <span>{icon || "🎯"}</span> {title}
+          <span className="text-xs font-normal text-muted-foreground">（{terms.length}件）</span>
         </h4>
-        <div className="flex flex-wrap gap-2 max-h-[150px] overflow-y-auto p-2 border rounded bg-white">
-          {terms.map((term: any, idx: number) => (
-            <Badge key={idx} variant="secondary" className="text-xs">
-              {term.t} <span className="ml-1 opacity-70">({term.usage_pc || 0}%)</span>
-            </Badge>
-          ))}
+        <div className="flex flex-wrap gap-2 max-h-[180px] overflow-y-auto p-3 border rounded-lg bg-white/50">
+          {sortedTerms.map((term: any, idx: number) => {
+            const usage = term.usage_pc || 0;
+            const style = getUsageStyle(usage);
+            const range = term.sugg_usage ? `${term.sugg_usage[0]}-${term.sugg_usage[1]}回` : null;
+
+            return (
+              <div
+                key={idx}
+                className={cn(
+                  "inline-flex items-center gap-1 px-2 py-1 rounded-md text-xs border transition-all hover:shadow-sm",
+                  style.bg, style.text, style.border
+                )}
+                title={range ? `推奨: ${range}` : undefined}
+              >
+                <span className="font-medium">{term.t}</span>
+                <span className="opacity-70">({usage}%)</span>
+                {range && (
+                  <span className="ml-1 px-1 bg-white/50 rounded text-[10px]">
+                    {range}
+                  </span>
+                )}
+              </div>
+            );
+          })}
         </div>
       </div>
     );
@@ -532,27 +723,212 @@ export default function QueryDetail() {
     );
   };
 
+  // topic_matrixを表示する関数
+  const renderTopicMatrix = (topicMatrix: Record<string, { importance: number }>) => {
+    if (!topicMatrix || Object.keys(topicMatrix).length === 0) return null;
+
+    // 重要度でソート（高い順）
+    const sortedTopics = Object.entries(topicMatrix)
+      .map(([question, data]) => ({ question, importance: data.importance }))
+      .sort((a, b) => b.importance - a.importance);
+
+    // 重要度に応じた色を取得
+    const getImportanceStyle = (importance: number) => {
+      if (importance >= 9) return { bg: "bg-rose-500", text: "text-rose-600", bgLight: "bg-rose-50", border: "border-rose-200" };
+      if (importance >= 7) return { bg: "bg-amber-500", text: "text-amber-600", bgLight: "bg-amber-50", border: "border-amber-200" };
+      if (importance >= 5) return { bg: "bg-blue-500", text: "text-blue-600", bgLight: "bg-blue-50", border: "border-blue-200" };
+      return { bg: "bg-gray-400", text: "text-gray-600", bgLight: "bg-gray-50", border: "border-gray-200" };
+    };
+
+    return (
+      <div className="space-y-4">
+        <div className="flex items-center gap-2 mb-2">
+          <div className="w-8 h-8 rounded-lg bg-amber-100 flex items-center justify-center">
+            <span className="text-lg">💡</span>
+          </div>
+          <div>
+            <h4 className="font-semibold text-sm">トピックマトリックス</h4>
+            <p className="text-xs text-muted-foreground">読者が知りたい質問（重要度順）</p>
+          </div>
+        </div>
+        <div className="grid gap-3">
+          {sortedTopics.map((topic, idx) => {
+            const style = getImportanceStyle(topic.importance);
+            return (
+              <div
+                key={idx}
+                className={cn(
+                  "p-3 rounded-lg border transition-all hover:shadow-sm",
+                  style.bgLight,
+                  style.border
+                )}
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex items-start gap-3 flex-1">
+                    <div className={cn(
+                      "w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-bold shrink-0",
+                      style.bg
+                    )}>
+                      {idx + 1}
+                    </div>
+                    <p className="text-sm font-medium text-gray-800 leading-relaxed">
+                      {topic.question}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2 shrink-0">
+                    <div className="flex items-center gap-1">
+                      <span className={cn("text-xs font-bold", style.text)}>
+                        重要度: {topic.importance}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div className="mt-2 ml-9">
+                  <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden w-full">
+                    <div
+                      className={cn("h-full rounded-full transition-all", style.bg)}
+                      style={{ width: `${topic.importance * 10}%` }}
+                    />
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  };
+
   const renderCompetitors = (competitors: any[]) => {
     if (!competitors || competitors.length === 0) return null;
+
+    // スコアに基づいた色を取得
+    const getScoreStyle = (score: number) => {
+      if (score >= 60) return { bg: "bg-emerald-500", text: "text-emerald-600", light: "bg-emerald-50" };
+      if (score >= 45) return { bg: "bg-blue-500", text: "text-blue-600", light: "bg-blue-50" };
+      if (score >= 30) return { bg: "bg-amber-500", text: "text-amber-600", light: "bg-amber-50" };
+      return { bg: "bg-gray-400", text: "text-gray-600", light: "bg-gray-50" };
+    };
+
     return (
-      <div className="space-y-3">
-        {competitors.slice(0, 5).map((comp: any, idx: number) => (
-          <div key={idx} className="flex items-start gap-2 p-2 border rounded-md hover:bg-muted/50 transition-colors">
-            <div className="bg-primary/10 text-primary w-6 h-6 flex items-center justify-center rounded-full text-xs font-bold shrink-0">
-              {idx + 1}
-            </div>
-            <div className="min-w-0 flex-1">
-              <a href={comp.url} target="_blank" rel="noopener noreferrer" className="text-sm font-medium hover:underline text-blue-600 truncate block">
-                {comp.title}
-              </a>
-              <div className="text-xs text-muted-foreground truncate">{comp.url}</div>
-              <div className="flex gap-2 mt-1 text-[10px] text-gray-500">
-                <span>文字数: {comp.word_count || '-'}</span>
-                <span>DA: {comp.da || '-'}</span>
-              </div>
-            </div>
-          </div>
-        ))}
+      <div className="space-y-4">
+        {/* 競合リスト */}
+        <div className="space-y-3 max-h-[800px] overflow-y-auto pr-2">
+          {competitors.map((comp: any, idx: number) => {
+            const scoreStyle = getScoreStyle(comp.content_score || 0);
+
+            return (
+              <details
+                key={idx}
+                open={idx < 3}
+                className={cn(
+                  "border rounded-lg overflow-hidden transition-all group",
+                  idx < 3 ? "border-indigo-200" : "border-gray-200"
+                )}
+              >
+                <summary
+                  className={cn(
+                    "p-3 cursor-pointer hover:bg-gray-50 transition-colors list-none",
+                    idx < 3 && "bg-indigo-50/30"
+                  )}
+                >
+                  <div className="flex items-start gap-3">
+                    <div className={cn(
+                      "w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold shrink-0",
+                      idx < 3 ? "bg-indigo-500" : idx < 10 ? "bg-blue-500" : "bg-gray-400"
+                    )}>
+                      {comp.rank || idx + 1}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <a
+                        href={comp.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm font-semibold hover:underline text-blue-600 line-clamp-2"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        {comp.title}
+                      </a>
+                      <div className="text-xs text-muted-foreground truncate mt-0.5">{comp.url}</div>
+                      <div className="flex flex-wrap gap-2 mt-2">
+                        <Badge variant="outline" className={cn("text-xs", scoreStyle.text, scoreStyle.light)}>
+                          スコア: {comp.content_score || 0}
+                        </Badge>
+                        <Badge variant="outline" className="text-xs">
+                          {(comp.word_count || 0).toLocaleString()}文字
+                        </Badge>
+                        <Badge variant="outline" className="text-xs">
+                          読みやすさ: {comp.readability || 0}
+                        </Badge>
+                        {comp.headers && (
+                          <Badge variant="secondary" className="text-xs">
+                            見出し: {comp.headers.length}個
+                          </Badge>
+                        )}
+                      </div>
+                    </div>
+                    <div className="shrink-0">
+                      <ChevronDown className="w-5 h-5 text-gray-400 group-open:rotate-180 transition-transform" />
+                    </div>
+                  </div>
+                </summary>
+
+                {/* 展開時：目次構成 */}
+                {comp.headers && comp.headers.length > 0 && (
+                  <div className="border-t bg-gray-50/50 p-3">
+                    <div className="flex items-center gap-2 mb-2">
+                      <ListTree className="w-4 h-4 text-indigo-500" />
+                      <span className="text-xs font-semibold text-gray-600">目次構成</span>
+                    </div>
+                    <div className="space-y-1 max-h-[300px] overflow-y-auto">
+                      {comp.headers.map((header: [string, string], hIdx: number) => {
+                        const [level, text] = header;
+                        const isH1 = level === "h1";
+                        const isH2 = level === "h2";
+                        return (
+                          <div
+                            key={hIdx}
+                            className={cn(
+                              "flex items-start gap-2 py-1 px-2 rounded text-sm",
+                              isH1 && "bg-indigo-100/50 font-semibold",
+                              isH2 && "bg-blue-50/50 ml-2",
+                              !isH1 && !isH2 && "ml-4 text-gray-600"
+                            )}
+                          >
+                            <span className={cn(
+                              "text-[10px] font-mono px-1 py-0.5 rounded shrink-0",
+                              isH1 ? "bg-indigo-200 text-indigo-700" :
+                                isH2 ? "bg-blue-200 text-blue-700" :
+                                  "bg-gray-200 text-gray-600"
+                            )}>
+                              {level.toUpperCase()}
+                            </span>
+                            <span className={cn(
+                              "flex-1",
+                              isH1 && "text-indigo-800",
+                              isH2 && "text-blue-800"
+                            )}>
+                              {text || "(空)"}
+                            </span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+
+                {/* 展開時：説明文 */}
+                {comp.desc && (
+                  <div className="border-t bg-white p-3">
+                    <div className="text-xs text-gray-600 line-clamp-3">
+                      {comp.desc}
+                    </div>
+                  </div>
+                )}
+              </details>
+            );
+          })}
+        </div>
       </div>
     );
   };
@@ -670,7 +1046,7 @@ export default function QueryDetail() {
                         </AccordionTrigger>
                         <AccordionContent>
                           <div className="p-4">
-                            {renderMetrics(recommendations.metrics)}
+                            {renderMetrics(recommendations.metrics, recommendations.competitors)}
                           </div>
                         </AccordionContent>
                       </AccordionItem>
@@ -687,10 +1063,10 @@ export default function QueryDetail() {
                         </AccordionTrigger>
                         <AccordionContent>
                           <div className="p-4 space-y-6">
-                            {renderTermsTable(recommendations.terms.title, "タイトル推奨キーワード")}
-                            {renderTermsTable(recommendations.terms.h1, "H1推奨キーワード")}
-                            {renderTermsTable(recommendations.terms.h2, "H2推奨キーワード")}
-                            {renderTermsTable(recommendations.terms.content_basic, "基本コンテンツキーワード")}
+                            {renderTermsTable(recommendations.terms.title, "タイトル推奨キーワード", "👑")}
+                            {renderTermsTable(recommendations.terms.h1, "H1推奨キーワード", "🥇")}
+                            {renderTermsTable(recommendations.terms.h2, "H2推奨キーワード", "🥈")}
+                            {renderTermsTable(recommendations.terms.content_basic, "基本コンテンツキーワード", "📄")}
                           </div>
                         </AccordionContent>
                       </AccordionItem>
@@ -707,6 +1083,7 @@ export default function QueryDetail() {
                         </AccordionTrigger>
                         <AccordionContent>
                           <div className="p-4 space-y-6">
+                            {renderTopicMatrix(recommendations.ideas.topic_matrix)}
                             {renderQuestions(recommendations.ideas.people_also_ask, "よくある質問 (People Also Ask)")}
                             {renderQuestions(recommendations.ideas.suggest_questions, "推奨質問")}
                             {renderQuestions(recommendations.ideas.content_questions, "コンテンツ質問")}
