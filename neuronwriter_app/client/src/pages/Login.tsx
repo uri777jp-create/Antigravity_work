@@ -158,64 +158,26 @@ export default function Login() {
                     <TabsContent value="register">
                         <Card className="border-slate-200 shadow-xl backdrop-blur-sm bg-white/80">
                             <CardHeader>
-                                <CardTitle>アカウント作成</CardTitle>
-                                <CardDescription>SEO最適化の旅を始めましょう</CardDescription>
+                                <CardTitle>新規登録</CardTitle>
+                                <CardDescription>現在、招待制で運用しています</CardDescription>
                             </CardHeader>
-                            <CardContent>
-                                <form onSubmit={handleRegister} className="space-y-4">
-                                    <div className="space-y-2">
-                                        <Label htmlFor="name">お名前 / ニックネーム</Label>
-                                        <div className="relative">
-                                            <UserIcon className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
-                                            <Input
-                                                id="name"
-                                                type="text"
-                                                placeholder="例: Taro Yamada"
-                                                className="pl-9"
-                                                value={name}
-                                                onChange={(e) => setName(e.target.value)}
-                                                required
-                                            />
-                                        </div>
-                                        <p className="text-xs text-slate-500 mt-1">※ ダッシュボードでの表示名になります</p>
+                            <CardContent className="py-12">
+                                <div className="text-center space-y-4">
+                                    <div className="inline-flex items-center justify-center p-4 rounded-full bg-primary/10">
+                                        <Zap className="w-10 h-10 text-primary" />
                                     </div>
-                                    <div className="space-y-2">
-                                        <Label htmlFor="reg-email">メールアドレス</Label>
-                                        <div className="relative">
-                                            <Mail className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
-                                            <Input
-                                                id="reg-email"
-                                                type="email"
-                                                placeholder="name@example.com"
-                                                className="pl-9"
-                                                value={email}
-                                                onChange={(e) => setEmail(e.target.value)}
-                                                required
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="space-y-2">
-                                        <Label htmlFor="reg-password">パスワード</Label>
-                                        <div className="relative">
-                                            <Lock className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
-                                            <Input
-                                                id="reg-password"
-                                                type="password"
-                                                placeholder="••••••••"
-                                                className="pl-9"
-                                                value={password}
-                                                onChange={(e) => setPassword(e.target.value)}
-                                                required
-                                                minLength={4}
-                                            />
-                                        </div>
-                                    </div>
-                                    <Button type="submit" className="w-full group" size="lg" disabled={isLoading}>
-                                        {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-                                        アカウント作成
-                                        <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                                    </Button>
-                                </form>
+                                    <h3 className="text-xl font-semibold text-slate-800">
+                                        Coming Soon
+                                    </h3>
+                                    <p className="text-slate-500 max-w-sm mx-auto">
+                                        現在、限定テスト運用中のため新規登録を一時停止しています。
+                                        <br />
+                                        サービス開始までしばらくお待ちください。
+                                    </p>
+                                    <p className="text-xs text-slate-400 pt-4">
+                                        招待をご希望の方はお問い合わせください
+                                    </p>
+                                </div>
                             </CardContent>
                         </Card>
                     </TabsContent>
